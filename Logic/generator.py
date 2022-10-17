@@ -88,7 +88,7 @@ def random_algo(clas, clas_name, room, room_name):
     The seating is displayed and saved as an image and can be remade on the spot.
     Also it is then saved as a .txt file to later read and display it.
 
-    :param clas: directory containing the student list
+    :param clas: Directory containing the student list
     :param clas_name: Name of the student list/class to be seated as string
     :param room: Room information as string
     :param room_name: Room name as string
@@ -182,7 +182,7 @@ def weighted_algo(clas, clas_name, room, room_name):
     A function which should later create an optimized version of the seating.
     It is also the only access to the preference lists right now.
 
-    :param clas: directory containing the student list
+    :param clas: Directory containing the student list
     :param clas_name: Name of the student list/class to be seated as string
     :param room: Room information as string
     :param room_name: Room name as string
@@ -224,7 +224,7 @@ def weighted_r_algo(clas, clas_name, room, room_name):
     """
     A function which should try to create an optimized seating but is given a random variable/constraint.
 
-    :param clas: directory containing the student list
+    :param clas: Directory containing the student list
     :param clas_name: Name of the student list/class to be seated as string
     :param room: Room information as string
     :param room_name: Room name as string

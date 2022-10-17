@@ -7,6 +7,8 @@ Student lists are saved as .json files in data/classes.
 
 TODO: update save_students(), edit_students(), delete_students()
 
+TODO: implement linkage to preference lists for editing or deleting student lists
+
 Functions:
     save_students()
     edit_students()
@@ -203,8 +205,8 @@ def get_student_list(name_class):
     """
     This function reads a student list as a dictionary from a .json file and returns it.
 
-    :param name_class: name of the student list which should be accessed as String
-    :return: dictionary of the student list
+    :param name_class: Name of the student list which should be accessed as String
+    :return: Dictionary of the student list
     """
 
     student_dict = {}

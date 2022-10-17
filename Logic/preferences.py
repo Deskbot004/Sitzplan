@@ -1,11 +1,41 @@
 import os, time, json, platform
 
-# Biggest TODO
+'''
+Method to create and read preference lists which can either contain real preferences
+or constraints for seating creation.
+
+TODO: finish validate first
+
+TODO: change and finish creation
+
+TODO: nearly all rest functions not done
+
+TODO: see student list linkage
+
+Functions:
+    preferences_create(dictionary, string)
+    preferences_edit()
+    preferences_delete()
+    preferences_read()
+    validate_entry(string, int) -> Boolean
+    clear_screen()
+'''
 
 path = os.path.abspath(os.getcwd())
 pref_path = path + "/data/preferences/"
 
+
 def preferences_create(clas, clas_name):
+    """
+    For now a text based creation of a preference list which goes through every student in order.
+    As such each entry has to be created manually.
+    The preference list is saved as a .json file containing a dictionary with each entry being
+    related to the student list.
+
+    :param clas: Dictionary of student list
+    :param clas_name: Name of student list
+    :return: void
+    """
     clear_screen()
     print("--- Create a new preference list ---")
     
@@ -34,26 +64,65 @@ def preferences_create(clas, clas_name):
     
     
 def preferences_edit():
+    """
+    Function to edit an existing preference list.
+
+    :return: void
+    """
     clear_screen()
     print("not implemented yet")
     time.sleep(3)
-    
+
+
 def preferences_delete():
+    """
+    Function to delete an existing .json file containing a preference list.
+
+    :return: void
+    """
     clear_screen()
     print("not implemented yet")
     time.sleep(3)
     
     
 def preferences_read():
+    """
+    Function to read a preference list from an existing .json.
+
+    :return: void
+    """
     print("not implemented yet")
     time.sleep(3)
-    
+
+
 def validate_entry(entry, studentnr):
+    """
+    Function to validate the user input for a preference list.
+    Valid Inputs are in the form of x;x;x;x;x; with a max entry of 5.
+    The first four are numerical, and symbolize the other students, the last is empty.
+
+    Should contain...
+        ...1-3 positive weightings, no change is a positive weighting indicated by 0.
+        ...0-1 negative weighting.
+        ...0-1 positional preference, either "front" or "back".
+
+    Neither positive or negative weighting should contain self.
+
+    :param entry: String entry from user
+    :param studentnr: Number of student to be validated
+    :return: Boolean answering the question
+    """
     entry = entry.split()
     return
-    
-# i dont know why i was to lazy to implement this until now    
+
+
 def clear_screen():
+    """
+    Honestly should be retroactively implemented in a general usage method or smth.
+    Clears the console depending on system.
+
+    :return: void
+    """
     if platform.system() == "Linux":
         os.system('clear')
     elif platform.system() == "Windows":
