@@ -8,9 +8,6 @@ def hello():
     return render_template("test.html")
 
 
-def testpage(name):
-        return f
-
 if __name__ == "__main__":
         app.run()
 
