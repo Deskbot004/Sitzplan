@@ -1,12 +1,21 @@
 from logic import LogicMain
 
-# Simple main which should later open the gui
-# For now it starts the textbased logic
+'''
+Acts as the starting main and activates the main logic remotely.
+
+Classes:
+    main()
+'''
+
 
 def main():
-    LogicMain.startlogic()
+    """
+    Starts the main logic. Can be later updated to start the GUI.
+
+    :return: void
+    """
+    LogicMain.start_logic()
+
 
 if __name__ == "__main__":
     main()
-    
- 
