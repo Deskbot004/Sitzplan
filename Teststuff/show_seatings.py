@@ -4,6 +4,13 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+'''
+A Method which reads an existing seating from a .txt file and displays it.
+
+Functions:
+    show_seatings()
+'''
+
 path = os.path.abspath(os.getcwd())
 class_path = path + "/data/classes/"
 room_path =  path + "/data/rooms/"
@@ -11,6 +18,11 @@ seatings_path = path + "/data/seatings/"
     
     
 def show_seatings():
+    """
+    Function that displays the seating as an image without changing the content
+
+    :return: void
+    """
     room_name = input("Room: ")
     clas_name = input("Class: ")
     
@@ -43,5 +55,6 @@ def show_seatings():
     fig.tight_layout()
     plt.savefig(seatings_path + clas_name + "_" + room_name + "_" + str(date.today()) + ".png", dpi = 300)
     plt.show() # pip install pyqt5
-    
+
+
 show_seatings()
