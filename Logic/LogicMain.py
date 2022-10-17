@@ -1,12 +1,20 @@
 import time, os
 from logic import students, classrooms, generator
 
-# The main function for the logic
+'''
+Starts the logic in a text based environment.
+
+Classes:
+    start_logic()
+'''
 
 
-# A function which starts the process of selection for the user
-# can be later replaced by the GUI
-def startlogic():
+def start_logic():
+    """
+    Function starts the text based selection for the user. Should be later replaced by GUI.
+
+    :return: void
+    """
     running = 1
     
     # Main loop for user selection
