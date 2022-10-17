@@ -1,0 +1,106 @@
+<!-- 2a)
+	src_rect ist ein Element, welches sich über Drag and Drop in ein dst_rect oder auf ein anderes src_rect ziehen lässt.
+
+	dst_rect ist ein Element, welches unbeweglich ist, aber über Drag and Drop hineingezogene src_rect Elemente aufnehmen kann.
+
+	30/30
+-->
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<style>
+			* {
+				font-family: "Lucida Sans", sans-serif;
+			}
+
+			.dst_rect {
+				width: 74px;
+				height: 212px;
+				margin: 0px;
+				padding: 0px;
+				border: 2px solid #aaaaaa;
+			}
+
+			.src_rect {
+				width: 50px;
+				height: 50px;
+				margin: 5px;
+				padding: 5px;
+				background-color: #eeeeee;
+				border: 2px solid #aaaaaa;
+			}
+		</style>
+		<script>
+			function showMessage(m) {
+				var msg = document.getElementById("msg");
+				msg.innerHTML = m;
+			}
+
+			function dropFiles(ev) {
+				ev.preventDefault();
+				var files = ev.dataTransfer.files;
+				var n = files.length;
+				console.log(files.name);
+				showMessage(files.name);
+				for (var i = 0; i < n; i++) {
+					console.log(files[i].name + "   " + files[i].size + " B");
+					showMessage(files[i].name + "   " + files[i].size + " B");
+				}
+			}
+
+			function allowDrop(ev) {
+				if (ev.target.className == "dst_rect") {
+					ev.preventDefault();
+				}
+			}
+
+			function drag(ev) {
+				var src = ev.target.id;
+				console.log(src);
+				showMessage(src);
+				ev.dataTransfer.setData("text/plain", ev.target.id);
+			}
+
+			function drop(ev) {
+				ev.preventDefault();
+				ev.target.style.background = "white";
+				var src = ev.dataTransfer.getData("text/plain");
+				var dst = ev.target.id;
+				console.log(src + " -> " + dst);
+				showMessage(src + " -> " + dst);
+				if (src != "" && ev.target.className == "dst_rect") {
+					ev.target.appendChild(document.getElementById(src));
+					ev.target.style.background = "";
+				} else {
+					dropFiles(ev);
+				}
+			}
+
+
+			function enterDrag(ev) {
+				ev.target.style.background = "yellow";
+			}
+
+			function exitDrag(ev) {
+				ev.target.style.background = "white";
+			}
+		</script>
+	</head>
+	<body>
+
+		<p>Drag 1, 2, 3:</p>
+
+		<div id="msg">(no drag)</div>
+
+		<div id="dst1" class="dst_rect" ondrop="drop(event)" ondragover="allowDrop(event)" ondragenter="enterDrag(event)" ondragleave="exitDrag(event)"></div>
+		<br>
+
+		<div id="dst2" class="dst_rect" ondrop="drop(event)" ondragover="allowDrop(event)" ondragenter="enterDrag(event)" ondragleave="exitDrag(event)"></div>
+		<br>
+
+		<div id="src1" class="src_rect" draggable="true" ondragstart="drag(event)">1</div>
+		<div id="src2" class="src_rect" draggable="true" ondragstart="drag(event)">2</div>
+		<div id="src3" class="src_rect" draggable="true" ondragstart="drag(event)">3</div>
+
+	</body>
+</html>
