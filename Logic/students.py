@@ -3,7 +3,7 @@ import time, os, glob, json, platform
 # This function handles all interaction with students and their respective lists. To access a studentlist call the get_studentslist() function.
 
 path = os.path.abspath(os.getcwd())
-class_path = path + "/Data/classes/"
+class_path = path + "/data/classes/"
 
 
 # This function reads the input of an user to create a dictionary with number:name pairs of students. This dictionary is then saved in the subdirectory /classes as a .json file. The user can switch to edit or delete after creation. For the best visualisation use the same number of letters (10) for everyone. Else the names get automatically padded or trimmed.

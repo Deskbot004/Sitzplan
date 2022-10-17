@@ -1,14 +1,13 @@
-import os, time, random, platform
+import os
 from datetime import date
-import classrooms, students, preferences
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
 path = os.path.abspath(os.getcwd())
-class_path = path + "/Data/classes/"
-room_path =  path + "/Data/rooms/"
-seatings_path = path + "/Data/seatings/"
+class_path = path + "/data/classes/"
+room_path =  path + "/data/rooms/"
+seatings_path = path + "/data/seatings/"
     
     
 def show_seatings():

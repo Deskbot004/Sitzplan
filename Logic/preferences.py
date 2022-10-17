@@ -3,7 +3,7 @@ import os, time, json, platform
 #Biggest TODO
 
 path = os.path.abspath(os.getcwd())
-pref_path = path + "/Data/preferences/"
+pref_path = path + "/data/preferences/"
 
 def preferences_create(clas, clas_name):
     clear_screen()

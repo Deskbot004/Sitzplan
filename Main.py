@@ -1,5 +1,4 @@
-import sys
-from Logic import LogicMain
+from logic import LogicMain
 
 # Simple main which should later open the gui
 # For now it starts the textbased logic

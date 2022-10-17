@@ -1,5 +1,5 @@
 import time, os
-from Logic import students, classrooms, generator
+from logic import students, classrooms, generator
 
 # The main function for the logic
 
