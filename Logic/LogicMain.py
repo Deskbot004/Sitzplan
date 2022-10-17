@@ -1,10 +1,10 @@
-import time, os
+import time, os, platform
 from logic import students, classrooms, generator
 
 '''
 Starts the logic in a text based environment.
 
-Classes:
+Functions:
     start_logic()
 '''
 
@@ -19,7 +19,10 @@ def start_logic():
     
     # Main loop for user selection
     while running == 1:
-        os.system('clear')
+        if platform.system() == "Linux":
+            os.system('clear')
+        elif platform.system() == "Windows":
+            os.system('cls')
         print("--- Main menu --- \nChoose your action: \n 1: Save a new student list \n 2: Edit a student list\n 3: Create a classroom \n 4: Edit a classroom \n 5: Generate a new seating list \n 6: Delete a student list \n 7: Delete a classroom \n 8: Close the program")
         user_num = input("Chosen action: ")
         

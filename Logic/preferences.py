@@ -1,6 +1,6 @@
 import os, time, json, platform
 
-#Biggest TODO
+# Biggest TODO
 
 path = os.path.abspath(os.getcwd())
 pref_path = path + "/data/preferences/"

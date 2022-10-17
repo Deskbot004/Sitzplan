@@ -3,7 +3,7 @@ from logic import LogicMain
 '''
 Acts as the starting main and activates the main logic remotely.
 
-Classes:
+Functions:
     main()
 '''
 

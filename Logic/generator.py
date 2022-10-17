@@ -36,7 +36,7 @@ def start():
         if file.endswith(".json"):
             print(file.removesuffix(".json") + "| ", end= ' ')
     clas_name = input("\nSelection: ")
-    clas = students.get_studentslist(clas_name)
+    clas = students.get_student_list(clas_name)
     
     if len(clas) > room.count("1"):
         print("This room does not have enough seatings for the class! Returning to main menu.")
