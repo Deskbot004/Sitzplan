@@ -1,12 +1,38 @@
 import os, time, platform
 
-# This class handles all interactions with the classrooms. To access a classroom use the get_classroom() function.
+'''
+This class handles all interactions with the classrooms.
+To access a classroom as a string use the get_classroom(name_room) function.
+Rooms are saved as .txt files in data/rooms.
+
+TODO: update create_classroom(), edit_classroom(), delete_classroom()
+
+TODO: replace print_room(room) with a function which shows the room visually in the GUI
+
+TODO: implement room_valid
+
+Functions:
+    create_classroom()
+    edit_classroom()
+    delete_classroom()
+    get_classroom(string) -> string
+    print_room(string)
+    room_valid(room) -> boolean
+'''
 
 path = os.path.abspath(os.getcwd())
 room_path = path + "/data/rooms/"
 
-# This function reads the input of an user to create a list of rows. This dictionary is then saved in the subdirectory Data/rooms as a .txt file. The user can switch to edit or delete after creation.
+
 def create_classroom():
+    """
+    This function reads the input of an user to create a list of rows.
+    This string is then saved in the subdirectory Data/rooms as a .txt file.
+    The user can switch to edit or delete after creation.
+
+    :return: void
+    """
+
     if platform.system() == "Linux":
         os.system('clear')
     elif platform.system() == "Windows":
@@ -25,8 +51,7 @@ def create_classroom():
         print("If you want to modify the class chose the edit option.")
         time.sleep(3)
         return
-    
-    
+
     if name_class.lower() == "quit" or name_class.lower() == "q":
         return
     
@@ -59,9 +84,16 @@ def create_classroom():
             return
         else:
             print("Please choose a given option.")
-        
-# This function allows the editing of existing rows in an existing classroom. The option to add or shift rows is not implemented.
+
+
 def edit_classroom():
+    """
+    This function allows the editing of existing rows in an existing classroom.
+    The option to add or shift rows is not implemented.
+
+    :return: void
+    """
+
     if platform.system() == "Linux":
         os.system('clear')
     elif platform.system() == "Windows":
@@ -102,8 +134,14 @@ def edit_classroom():
         room[int(row_num)] = new_row
         print_room(room)
 
-# This funtion deletes an existing .txt file containing a room.
+
 def delete_classroom():
+    """
+    This function deletes an existing .txt file containing a room.
+
+    :return: void
+    """
+
     if platform.system() == "Linux":
         os.system('clear')
     elif platform.system() == "Windows":
@@ -135,8 +173,15 @@ def delete_classroom():
     time.sleep(3)
     return
 
-# This function returns a room from an existing .txt file.
+
 def get_classroom(name_room):
+    """
+    This function returns a room from an existing .txt file.
+
+    :param name_room: Name of the room as a string
+    :return: String containing the room information
+    """
+
     room = ""
     if os.path.exists(room_path + name_room + ".txt"):
         read_file = open(room_path + name_room + ".txt", "r")
@@ -144,15 +189,31 @@ def get_classroom(name_room):
         read_file.close()
     return room
 
-# This function is a helper function to easily print a room
+
 def print_room(room):
+    """
+    This function is a helper function to easily print a room.
+    Should be majorly updated soon.
+
+    :param room: Name of the room as a string
+    :return: void
+    """
+
     rows = 0
     for x in room:
         print("Row "+str(rows)+": "+x)
         rows += 1
-        
-# Checker if there are any errors in room creation        
+
+
 def room_valid(room):
+    """
+    Check function to see if the room, that was created is valid.
+    Valid meaning, at least one empty seat for a student.
+    At least one teacher desk.
+
+    :param room: Name of the room as a string
+    :return: Boolean that answers the question
+    """
     print("not implemented yet")
     time.sleep(3)
     return

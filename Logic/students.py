@@ -2,14 +2,18 @@ import time, os, json, platform
 
 '''
 This function handles all interaction with students and their respective lists.
-To access a student list call the get_student_list() function.
+To access a student list as a dictionary call the get_student_list(name_class) function.
+Student lists are saved as .json files in data/classes.
+
+TODO: update save_students(), edit_students(), delete_students()
 
 Functions:
-    save_students
-    edit_students
-    delete_students
-    get_student_list
+    save_students()
+    edit_students()
+    delete_students()
+    get_student_list(string) -> dictionary
 '''
+
 path = os.path.abspath(os.getcwd())
 class_path = path + "/data/classes/"
 
