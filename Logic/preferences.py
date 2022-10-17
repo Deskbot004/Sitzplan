@@ -2,7 +2,7 @@ import os, time, json, platform
 
 
 path = os.path.abspath(os.getcwd())
-pref_path = path + "/preferences/"
+pref_path = path + "/Data/preferences/"
 
 def preferences_create(clas, clas_name):
     clear_screen()

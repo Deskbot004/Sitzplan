@@ -6,9 +6,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 path = os.path.abspath(os.getcwd())
-class_path = path + "/classes/"
-room_path =  path + "/rooms/"
-seatings_path = path + "/seatings/"
+class_path = path + "/Data/classes/"
+room_path =  path + "/Data/rooms/"
+seatings_path = path + "/Data/seatings/"
     
     
 def show_seatings():
