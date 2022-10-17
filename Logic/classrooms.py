@@ -1,10 +1,11 @@
 import os, time, platform
 
 # This class handles all interactions with the classrooms. To access a classroom use the get_classroom() function.
+
 path = os.path.abspath(os.getcwd())
 room_path =  path + "/Data/rooms/"
 
-# This function reads the input of an user to create a list of rows. This dictionary is then saved in the subdirectory /rooms as a .txt file. The user can switch to edit or delete after creation.
+# This function reads the input of an user to create a list of rows. This dictionary is then saved in the subdirectory Data/rooms as a .txt file. The user can switch to edit or delete after creation.
 def create_classroom():
     if platform.system() == "Linux":
         os.system('clear')

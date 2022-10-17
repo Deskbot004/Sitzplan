@@ -1,12 +1,18 @@
 import time, os
 from Logic import students, classrooms, generator
 
+# The main function for the logic
+
+
+# A function which starts the process of selection for the user
+# can be later replaced by the GUI
 def startlogic():
     running = 1
     
+    # Main loop for user selection
     while running == 1:
         os.system('clear')
-        print("--- Main menu --- \nChoose your action: \n 1: Save a new studentslist \n 2: Edit a studentslist\n 3: Create a classroom \n 4: Edit a classroom \n 5: Generate a new seatingslist \n 6: Delete a studentslist \n 7: Delete a classroom \n 8: Close the program")
+        print("--- Main menu --- \nChoose your action: \n 1: Save a new student list \n 2: Edit a student list\n 3: Create a classroom \n 4: Edit a classroom \n 5: Generate a new seating list \n 6: Delete a student list \n 7: Delete a classroom \n 8: Close the program")
         user_num = input("Chosen action: ")
         
         if user_num == "1":
