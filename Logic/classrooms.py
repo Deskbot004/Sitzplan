@@ -1,7 +1,7 @@
 import os, time, platform
 
 '''
-This class handles all interactions with the classrooms.
+This Method handles all interactions with the classrooms.
 To access a classroom as a string use the get_classroom(name_room) function.
 Rooms are saved as .txt files in data/rooms.
 
