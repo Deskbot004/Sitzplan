@@ -207,9 +207,8 @@ def weighted_algo(clas, clas_name, room, room_name):
             time.sleep(3)
         elif action == "2":
             preferences.preferences_create(clas, clas_name)
-            preferences.preferences_edit(clas_name)
         elif action == "3":
-            preferences.preferences_edit(clas_name)
+            preferences.preferences_edit(clas, clas_name)
         elif action == "4":
             preferences.preferences_delete(clas_name)
         elif action.lower() == "quit" or action.lower() == "q" or action == "5":

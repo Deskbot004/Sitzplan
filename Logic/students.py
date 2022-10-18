@@ -111,7 +111,7 @@ def edit_students():
             print(file[:-5]+ " |")
     print("")
         
-    name_class = input("Please enter the name of the class e.g. \"5a\": ")
+    name_class = input("Please enter the name of the class: ")
     
     if name_class.lower() == "quit" or name_class.lower() == "q":
         return

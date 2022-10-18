@@ -66,10 +66,36 @@ def check_int(s):
         return s[1:].isdigit()
     return s.isdigit()
 
-
+'''
 for test in valids:
     print(validate("5", test))
 
 print("__________________________________")
 for test in invalids:
     print(validate("5", test))
+'''
+
+
+def editing():
+    pref_dict = {"1": "0", "2": "0", "3": "0", "4": "0", "5": "0", "6": "0", "7": "0", "8": "0", "9": "0", "10": "0"}
+    student_dict = {"1": "Liam", "2": "Olivia", "3": "Noah", "4": "Emma", "5": "Oliver", "6": "Charlotte", "7": "Elijah",
+                    "8": "Amelia", "9": "James", "10": "Ava"}
+
+    while 1:
+        print("--- Editing a preference list ---\nEither change the preference or quit with \"done\".")
+        for elem in student_dict.keys():
+            print(elem + ". " + student_dict[elem] + ": " + pref_dict[elem])
+
+        student = input("Please enter the number of the student which preferences should be changed: ")
+
+        if student.lower() == "done" or student.lower() == "quit" or student.lower() == "q":
+            return
+
+        pref = input("Please enter the new preferences for the student " + student_dict[student] + ": ")
+        if not validate(student, pref):
+            print("Please enter a valid preference!")
+        else:
+            pref_dict[student] = pref
+
+
+editing()
