@@ -4,12 +4,6 @@ import os, time, json, platform
 Method to create and read preference lists which can either contain real preferences
 or constraints for seating creation.
 
-TODO: finish validate first
-
-TODO: change and finish creation
-
-TODO: nearly all rest functions not done
-
 TODO: see student list linkage
 
 Functions:
