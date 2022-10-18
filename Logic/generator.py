@@ -1,9 +1,6 @@
-import os, time, random, platform
-from datetime import date
-from logic import classrooms, students, preferences
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
+import os, time, platform
+from logic import classrooms, students
+from logic.algorithms import random_algo, weighted_optimized, weighted_random, constraint_random
 
 '''
 Starts the process of generating the seating.
@@ -11,20 +8,12 @@ Right now every algorithm is at least present as a stub.
 Current plan is to have a complete random algorithm, a optimized weighted algorithm and
 an optimized algorithm with more random elements.
 
-TODO: Usage of preferences.py needs to be updated
-
-TODO: create external methods for each algorithm
-
 TODO: create simple weighted random algorithm (only constraints) [random_constraint()]
 
 TODO: pretty much everything except complete random
 
 Functions:
     start()
-    random_algo(directory, string, string, string)
-    weighted_algo(directory, string, string, string)
-    weighted_r_algo(directory, string, string, string)
-    
 '''
 
 path = os.path.abspath(os.getcwd())
@@ -48,7 +37,7 @@ def start():
         time.sleep(5)
         return
     
-    print("--- Algorithm select ---\nPlease choose the algorithm:\n 1. Complete random\n 2. Weighted optimized\n 3. Weighted random")
+    print("--- Algorithm select ---\nPlease choose the algorithm:\n 1. Complete random\n 2. Random with Constraints\n 3. Weighted optimized\n 4. Weighted random")
     algorithm = input("Selection: ")
     
     print("--- Room select ---\nPlease choose one of these rooms: ")
@@ -71,162 +60,18 @@ def start():
         return
     
     if algorithm == "1":
-        random_algo(clas, clas_name, room, room_name)
+        random_algo.start(clas, clas_name, room, room_name)
     elif algorithm == "2":
-        weighted_algo(clas, clas_name, room, room_name)
+        used_algorithm = constraint_random.ConstraintRandom(clas, clas_name, room, room_name)
+        used_algorithm.algorithm()
     elif algorithm == "3":
-        weighted_r_algo(clas, clas_name, room, room_name)
+        used_algorithm = weighted_optimized.WeightedOptimized(clas, clas_name, room, room_name)
+        used_algorithm.algorithm()
+    elif algorithm == "4":
+        used_algorithm = weighted_random.WeightedRandom(clas, clas_name, room, room_name)
+        used_algorithm.algorithm()
     elif algorithm.lower() == "q" or algorithm.lower() == "quit":
         return
     else:
         print("Please select a valid algorithm. Returning to main menu.")
         time.sleep(3)
-
-
-def random_algo(clas, clas_name, room, room_name):
-    """
-    A completely random algorithm, which assigns any seating to any student.
-    For the best results use rooms with the same number of students as seating available.
-    The seating is displayed and saved as an image and can be remade on the spot.
-    Also it is then saved as a .txt file to later read and display it.
-
-    :param clas: Directory containing the student list
-    :param clas_name: Name of the student list/class to be seated as string
-    :param room: Room information as string
-    :param room_name: Room name as string
-    :return: void
-    """
-    old_room = room
-    old_clas = clas
-    room = room.split(";")
-    
-    row = 0
-    for line in room:
-        new_row = []
-        for char in line:
-            new_row.append(int(char))
-        room[row] = new_row
-        row += 1
-    
-    values = []
-    for val in clas.keys():
-        values.append(val)
-    
-    while len(values) > 0:
-        rand_row = random.randrange(len(room))
-        rand_col = random.randrange(len(room[rand_row]))
-        if room[rand_row][rand_col] == 1:
-            rand_stud = random.randrange(len(values))
-            room[rand_row][rand_col] = clas[values[rand_stud]]
-            values.remove(values[rand_stud])
-    
-    row_val = 0
-    for row in room:
-        col_val = 0
-        for col in row:
-            if room[row_val][col_val] == 1 or room[row_val][col_val] == 2:
-                room[row_val][col_val] = "Empty"
-            elif room[row_val][col_val] == 0:
-                room[row_val][col_val] = ""
-            elif room[row_val][col_val] == 3:
-                room[row_val][col_val] = "Teacher desk"
-            col_val += 1
-        row_val += 1
-
-    fig, ax = plt.subplots()
-    
-    fig.patch.set_visible(False)
-    ax.axis('off')
-    ax.axis('tight')
-    
-    # expects each room to be at least 2 spaces wide
-    info_arr = [ "" for x in range(len(room[0]))]
-    info_arr[0] = "Class: " + clas_name
-    info_arr[len(room[0]) - 1] = "Room: " + room_name
-    
-    df = pd.DataFrame(np.array(room), columns=info_arr)
-    
-    ax.table(cellText=df.values, colLabels=df.columns, loc='center')
-    fig.tight_layout()
-    plt.savefig(seatings_path + clas_name + "_" + room_name + "_" + str(date.today()) + ".png", dpi = 300)
-    plt.show() # pip install pyqt5
-    
-    # save seatings
-    try:
-        file = open(seatings_path+clas_name+room_name+ ".txt", "x")
-    except FileExistsError:
-        file = open(seatings_path+clas_name+room_name+".txt", "w")    
-    
-    action = input("Press any key to continue or \"a\" to try again: ")
-    
-    if action == "a":
-        random_algo(old_clas, clas_name, old_room, room_name)
-        return
-    else:
-        print("Image saved in "+ seatings_path+ ". Returning to main menu.")
-        
-        room_list = ""
-        for element in room:
-            for name in element:
-                room_list += name + ","
-            room_list = room_list[:-1]
-            room_list += ";"
-        room_list = room_list[:-1]
-        
-        file.write(room_list)
-        file.close()
-        time.sleep(5)
-        return
-                                
-    
-def weighted_algo(clas, clas_name, room, room_name):
-    """
-    A function which should later create an optimized version of the seating.
-    It is also the only access to the preference lists right now.
-
-    :param clas: Directory containing the student list
-    :param clas_name: Name of the student list/class to be seated as string
-    :param room: Room information as string
-    :param room_name: Room name as string
-    :return: void
-    """
-    if platform.system() == "Linux":
-        os.system('clear')
-    elif platform.system() == "Windows":
-        os.system('cls')
-    else:
-        print("Unsupported System detected. Please either use Windows or Linux.")
-        time.sleep(5)
-        return
-    
-    while 1:
-        print(" --- Weighted algorithm ---\nPlease choose an option.\n 1: Use an existing preference list\n 2: Create a new one\n 3: Edit an existing one\n 4: Delete a preference list\n 5: Return")
-        action = input("Chosen option: ")
-        if action == "1":
-            print("not implemented yet")
-            time.sleep(3)
-        elif action == "2":
-            preferences.preferences_create(clas, clas_name)
-        elif action == "3":
-            preferences.preferences_edit(clas, clas_name)
-        elif action == "4":
-            preferences.preferences_delete(clas_name)
-        elif action.lower() == "quit" or action.lower() == "q" or action == "5":
-            return
-        else:
-            print("Please choose an existing option.")
-            time.sleep(3)
-
-
-def weighted_r_algo(clas, clas_name, room, room_name):
-    """
-    A function which should try to create an optimized seating but is given a random variable/constraint.
-
-    :param clas: Directory containing the student list
-    :param clas_name: Name of the student list/class to be seated as string
-    :param room: Room information as string
-    :param room_name: Room name as string
-    :return: void
-    """
-    print("not implemented yet")
-    time.sleep(3)
