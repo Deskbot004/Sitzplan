@@ -71,10 +71,10 @@ def preferences_create(clas, clas_name):
     file = open(pref_path + clas_name + ".json", "w")
     json.dump(pref_dict, file)
     file.close()
-    return
+    preferences_edit(clas, clas_name)
     
     
-def preferences_edit(clas_name):
+def preferences_edit(student_dict, clas_name):
     """
     Function to edit an existing preference list.
 
@@ -82,7 +82,26 @@ def preferences_edit(clas_name):
     """
     pref_dict = preferences_read(clas_name)
 
-    return
+    while 1:
+        print("--- Editing a preference list ---\nEither change the preference or quit with \"done\".")
+        for elem in student_dict.keys():
+            print(elem + ". " + student_dict[elem] + ": " + pref_dict[elem])
+
+        student = input("Please enter the number of the student which preferences should be changed: ")
+
+        if student.lower() == "done" or student.lower() == "quit" or student.lower() == "q":
+            write_file = open(pref_path + clas_name + ".json", "w")
+            print("Finished editing. Returning to main menu.")
+            json.dump(pref_dict, write_file)
+            write_file.close()
+            return
+
+        pref = input("Please enter the new preferences for the student " + student_dict[student] + ": ")
+        if not validate_entry(student, pref):
+            print("Please enter a valid preference!")
+            time.sleep(3)
+        else:
+            pref_dict[student] = pref
 
 
 def preferences_delete(name_class):
