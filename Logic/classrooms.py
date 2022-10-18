@@ -29,6 +29,12 @@ def create_classroom():
     This function reads the input of an user to create a list of rows.
     This string is then saved in the subdirectory Data/rooms as a .txt file.
     The user can switch to edit or delete after creation.
+    
+    The saved numbers have the following meaning:
+        0 = No seating here, for example ground
+        1 = Seating available
+        2 = Seating available but should be left empty
+        3 = Teacher desk
 
     :return: void
     """

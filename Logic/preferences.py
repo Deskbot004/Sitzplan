@@ -18,6 +18,7 @@ Functions:
     preferences_delete()
     preferences_read()
     validate_entry(string, int) -> Boolean
+    check_int(String) -> Boolean
     clear_screen()
 '''
 
@@ -55,7 +56,7 @@ def preferences_create(clas, clas_name):
         clear_screen()
         for student in clas.items():
             print(student)
-        new_pref = "0;"
+        new_pref = "0"
         pref_dict[studentnr] = new_pref
 
     '''
@@ -110,7 +111,7 @@ def preferences_read():
 def validate_entry(entry, studentnr):
     """
     Function to validate the user input for a preference list.
-    Valid Inputs are in the form of x;x;x;x;x; with a max entry of 5.
+    Valid Inputs are in the form of x;x;x;x;x with a max entry of 5.
     The first four are numerical, and symbolize the other students, the last is empty.
 
     Should contain...
@@ -124,8 +125,58 @@ def validate_entry(entry, studentnr):
     :param studentnr: Number of student to be validated
     :return: Boolean answering the question
     """
-    entry = entry.split()
-    return
+
+    to_validate = entry.split(";")
+
+    if not to_validate:
+        print("List is empty!")
+        return False
+    elif studentnr in to_validate or "-" + studentnr in to_validate:
+        print("Student contained in own preferences!")
+        return False
+    elif not to_validate[0].isdigit():
+        print("No starting Zero!")
+        return False
+    elif int(to_validate[0]) < 0:
+        print("No starting Zero!")
+        return False
+
+    pos_pref = 0
+    for pref in to_validate:
+        if pos_pref == -1:
+            if not check_int(pref):
+                pos_pref = -2
+            elif int(pref) >= 0:
+                print("Positive preference after no more allowed!")
+                return False
+            else:
+                pos_pref = -2
+        elif pos_pref == -2:
+            print("Position statement should be end of preference!")
+            return False
+        elif not check_int(pref):
+            pos_pref = -2
+        elif int(pref) <= 0:
+            pos_pref = -1
+        elif pos_pref > 2:
+            print("Positive preference after no more allowed!")
+            return False
+        else:
+            pos_pref = pos_pref + 1
+
+    return True
+
+
+def check_int(s):
+    """
+    Simple helper function to check a String to be a Number.
+
+    :param s: String possibly containing a number
+    :return: Boolean answering if the String was a number
+    """
+    if s[0] in ('-', '+'):
+        return s[1:].isdigit()
+    return s.isdigit()
 
 
 def clear_screen():
