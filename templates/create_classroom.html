@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+
+    .flex-container {
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-wrap: wrap; /* Safari 6.1+ */
+        flex-wrap: wrap;
+    }
+
+    /* Phones: */
+    .phone-12-cols {width: 100%;}
+
+    /* Desktop: */
+    @media only screen and (min-width: 750px) {
+        .desktop-1-cols {width: 8.33%;}
+        .desktop-2-cols {width: 16.66%;}
+        .desktop-3-cols {width: 25%;}
+        .desktop-4-cols {width: 33.33%;}
+        .desktop-5-cols {width: 41.66%;}
+        .desktop-6-cols {width: 50%;}
+        .desktop-7-cols {width: 58.33%;}
+        .desktop-8-cols {width: 66.66%;}
+        .desktop-9-cols {width: 75%;}
+        .desktop-10-cols {width: 83.33%;}
+        .desktop-11-cols {width: 91.66%;}
+        .desktop-12-cols {width: 100%;}
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
+    }
+
+    .grid-item {
+        border: 1px solid rgba(0, 0, 0, 0.8);
+        padding: 5px;
+        font-size: 30px;
+        text-align: center;
+        height: 20px;
+        width: 20px;
+    }
+
+    .grid-parent {
+        height: 100px;
+        width: 100px;
+    }
+
+    </style>
+	<title>123</title>
+
+
+</head>
+<body ondragstart="return false;" ondrop="return false;">
+<div class="flex-container">
+    <div class=" menu desktop-6-cols phone-12-cols">
+        <div class="grid-container grid-parent">
+            {% for x in range(100) %}
+                <div class="grid-item"></div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class=" menu desktop-6-cols phone-12-cols">
+        <ul>
+            <li><button onclick="changeColor('white')">Clear</button></li>
+            <li><button onclick="changeColor('lightblue')">Table</button></li>
+            <li><button onclick="changeColor('orange')">Unusable Table</button></li>
+            <li><button onclick="changeColor('pink')">Teacher Table</button></li>
+        </ul>
+        <p id="demo"></p>
+    </div>
+</div>
+<script>
+    // track if mouse button is held down
+    window.mouseDown = false;
+    document.onmousedown = function() {
+        window.mouseDown = true;
+        document.getElementById("demo").innerHTML = "True";
+    }
+    document.onmouseup = function() {
+        window.mouseDown = false;
+        document.getElementById("demo").innerHTML = "False";
+    }
+    const divs = document.querySelectorAll('.grid-item');
+    var color = 'white';
+
+    Array.from(divs).forEach(div => {
+        div.addEventListener('mouseover', addColor);
+        div.addEventListener('mousedown', addColorClick);
+    });
+
+    function changeColor(color_arg) {
+        color = color_arg;
+    };
+    function addColor() {
+        if (window.mouseDown) this.style.backgroundColor = color;
+    };
+    function addColorClick() {
+        this.style.backgroundColor = color;
+    };
+</script>
+
+
+</body>
+</html>
+
