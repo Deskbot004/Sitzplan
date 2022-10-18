@@ -57,8 +57,10 @@
 <div class="flex-container">
     <div class=" menu desktop-6-cols phone-12-cols">
         <div class="grid-container grid-parent">
-            {% for x in range(100) %}
-                <div class="grid-item"></div>
+            {% for x in range(10) %}
+                {% for y in range(10) %}
+                    <div class="grid-item"></div>
+                {% endfor %}
             {% endfor %}
         </div>
     </div>
@@ -77,12 +79,19 @@
     window.mouseDown = false;
     document.onmousedown = function() {
         window.mouseDown = true;
-        document.getElementById("demo").innerHTML = "True";
     }
     document.onmouseup = function() {
         window.mouseDown = false;
-        document.getElementById("demo").innerHTML = "False";
     }
+
+    // create empty array
+    var classroom = new Array(10);
+
+    for (var i = 0; i < classroom.length; i++) {
+        classroom[i] = new Array(10).fill(0);
+    }
+    document.getElementById("demo").innerHTML = classroom[9][9];
+
     const divs = document.querySelectorAll('.grid-item');
     var color = 'white';
 
