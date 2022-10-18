@@ -54,8 +54,6 @@ def preferences_create(clas, clas_name):
     # Creation of empty dict to setup
     for studentnr in clas:
         clear_screen()
-        for student in clas.items():
-            print(student)
         new_pref = "0"
         pref_dict[studentnr] = new_pref
 
@@ -76,36 +74,48 @@ def preferences_create(clas, clas_name):
     return
     
     
-def preferences_edit():
+def preferences_edit(clas_name):
     """
     Function to edit an existing preference list.
 
     :return: void
     """
-    clear_screen()
-    print("not implemented yet")
-    time.sleep(3)
+    pref_dict = preferences_read(clas_name)
+
+    return
 
 
-def preferences_delete():
+def preferences_delete(name_class):
     """
     Function to delete an existing .json file containing a preference list.
 
     :return: void
     """
     clear_screen()
-    print("not implemented yet")
+    if os.path.exists(pref_path + name_class + ".json"):
+        os.remove(pref_path + name_class + ".json")
+    else:
+        print("This list does not exist yet. Returning to main menu.")
+        time.sleep(3)
+        return
+    print("Done! Returning to main menu.")
     time.sleep(3)
+    return
     
     
-def preferences_read():
+def preferences_read(name_class):
     """
     Function to read a preference list from an existing .json.
 
-    :return: void
+    :param name_class: Name of the connected student list in question
+    :return: Dictionary containing the preferences
     """
-    print("not implemented yet")
-    time.sleep(3)
+    pref_dict = {}
+    if os.path.exists(pref_path + name_class + ".json"):
+        read_file = open(pref_path + name_class + ".json", "r")
+        pref_dict = json.load(read_file)
+        read_file.close()
+    return pref_dict
 
 
 def validate_entry(entry, studentnr):

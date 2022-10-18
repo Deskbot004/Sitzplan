@@ -108,7 +108,7 @@ def edit_students():
     
     for file in os.listdir(class_path):
         if file.endswith(".json"):
-            print(file.removesuffix(".json") + "| ", end= ' ')
+            print(file[:-5]+ " |")
     print("")
         
     name_class = input("Please enter the name of the class e.g. \"5a\": ")
@@ -178,14 +178,14 @@ def delete_students():
         time.sleep(5)
         return
     
-    print("--- Delete a studentlist ---\nExisting classes:")
+    print("--- Delete a student list ---\nExisting classes:")
     
     for file in os.listdir(class_path):
         if file.endswith(".json"):
-            print(file.removesuffix(".json") + "| ", end= ' ')
+            print(file[:-5]+ " |")
     print("")
         
-    name_class = input("Please enter the name of the class e.g. \"5a\": ")
+    name_class = input("Please enter the name of the class: ")
     
     if name_class.lower() == "quit" or name_class.lower() == "q":
         return

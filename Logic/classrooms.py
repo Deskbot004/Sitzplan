@@ -113,7 +113,7 @@ def edit_classroom():
     
     for file in os.listdir(room_path):
         if file.endswith(".txt"):
-            print(file.removesuffix(".txt") + "| ", end= ' ')
+            print(file[:-4]+ " |")
     print("")
         
     name_room = input("Please enter the name of the room e.g. \"A001\": ")
@@ -161,7 +161,7 @@ def delete_classroom():
     
     for file in os.listdir(room_path):
         if file.endswith(".txt"):
-            print(file.removesuffix(".txt") + "| ", end= ' ')
+            print(file[:-4]+ " |")
     print("")
         
     name_room = input("Please enter the name of the room e.g. \"A001\": ")

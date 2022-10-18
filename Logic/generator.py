@@ -54,14 +54,14 @@ def start():
     print("--- Room select ---\nPlease choose one of these rooms: ")
     for file in os.listdir(room_path):
         if file.endswith(".txt"):
-            print(file.removesuffix(".txt") + "| ", end= ' ')
+            print(file[:-4]+ " |")
     room_name = input ("\nSelection: ")
     room = classrooms.get_classroom(room_name)
     
     print("--- Class select ---\nPlease choose one of these classes: ")
     for file in os.listdir(class_path):
         if file.endswith(".json"):
-            print(file.removesuffix(".json") + "| ", end= ' ')
+            print(file[:-5]+ " |")
     clas_name = input("\nSelection: ")
     clas = students.get_student_list(clas_name)
     
@@ -199,22 +199,19 @@ def weighted_algo(clas, clas_name, room, room_name):
         time.sleep(5)
         return
     
-    print(" --- Weighted algorithm ---\nPlease choose an option.\n 1: Use an existing preference list\n 2: Create a new one\n 3: Edit an existing one\n 4: Delete a preference list\n 5: Return")
-    action = input("Chosen option: ")
-    
     while 1:
+        print(" --- Weighted algorithm ---\nPlease choose an option.\n 1: Use an existing preference list\n 2: Create a new one\n 3: Edit an existing one\n 4: Delete a preference list\n 5: Return")
+        action = input("Chosen option: ")
         if action == "1":
             print("not implemented yet")
             time.sleep(3)
         elif action == "2":
             preferences.preferences_create(clas, clas_name)
-            return
+            preferences.preferences_edit(clas_name)
         elif action == "3":
-            print("not implemented yet")
-            time.sleep(3)
+            preferences.preferences_edit(clas_name)
         elif action == "4":
-            print("not implemented yet")
-            time.sleep(3)
+            preferences.preferences_delete(clas_name)
         elif action.lower() == "quit" or action.lower() == "q" or action == "5":
             return
         else:
