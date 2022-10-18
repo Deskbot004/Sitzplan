@@ -1,7 +1,7 @@
 import time, os, json, platform
 
 '''
-This Method handles all interaction with students and their respective lists.
+This Module handles all interaction with students and their respective lists.
 To access a student list as a dictionary call the get_student_list(name_class) function.
 Student lists are saved as .json files in data/classes.
 

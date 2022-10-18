@@ -1,7 +1,7 @@
 import os, time, json, platform
 
 '''
-Method to create and read preference lists which can either contain real preferences
+Module to create and read preference lists which can either contain real preferences
 or constraints for seating creation.
 
 TODO: see student list linkage

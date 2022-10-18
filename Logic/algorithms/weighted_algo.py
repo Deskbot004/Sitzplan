@@ -2,21 +2,64 @@ import os, time, platform
 from logic import preferences
 
 '''
-Module containing 
+Module containing the super class for all weighted algorithms.
+
+TODO: Create generic functions for all algorithms e.g. Saving/showing the image
+
+Classes:
+    WeightedAlgo
 '''
-path = os.path.abspath(os.getcwd())
-seatings_path = path + "/data/seatings/"
 
 
 class WeightedAlgo:
+    """
+    Class for every weighted algorithm.
 
+    ...
+
+    Attributes
+    -----------
+    clas : dictionary
+        Contains the student list
+    clas_name : string
+        The name of the student list
+    room: string
+        The room information
+    room_name: string
+        The room name
+    seatings_path: string
+        The path to the seating data
+
+    Methods
+    -----------
+    startup():
+        Exists to interact with preference lists.
+    algorithm():
+        Exists as a stub for subclasses to use.
+    """
     def __init__(self, clas, clas_name, room, room_name):
+        """
+        Constructs all attributes necessary for the algorithm
+
+        :param clas: Contains the student list
+        :param clas_name: The name of the student list
+        :param room: The room information
+        :param room_name: The room name
+        """
         self.clas = clas
         self.clas_name = clas_name
         self.room = room
         self.room_name = room_name
+        path = os.path.abspath(os.getcwd())
+        self.seatings_path = path + "/data/seatings/"
 
     def startup(self):
+        """
+        Starts the preference list selection and editing process, until the algorithm is started.
+
+        :return: void
+        """
+
         if platform.system() == "Linux":
             os.system('clear')
         elif platform.system() == "Windows":
