@@ -11,6 +11,8 @@ Right now every algorithm is at least present as a stub.
 Current plan is to have a complete random algorithm, a optimized weighted algorithm and
 an optimized algorithm with more random elements.
 
+TODO: Usage of preferences.py needs to be updated
+
 TODO: create external methods for each algorithm
 
 TODO: create simple weighted random algorithm (only constraints) [random_constraint()]

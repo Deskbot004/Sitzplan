@@ -27,10 +27,11 @@ pref_path = path + "/data/preferences/"
 
 def preferences_create(clas, clas_name):
     """
-    For now a text based creation of a preference list which goes through every student in order.
-    As such each entry has to be created manually.
-    The preference list is saved as a .json file containing a dictionary with each entry being
-    related to the student list.
+    A function that creates a new empty preference list from a given student list.
+    The empty list is then saved as a dictionary in an .json file.
+    The user can then edit the list to see fit.
+
+    "Empty" meaning no preferences in this case.
 
     :param clas: Dictionary of student list
     :param clas_name: Name of student list
@@ -48,7 +49,17 @@ def preferences_create(clas, clas_name):
         print("Preference list does already exist. Either edit or delete.")
         time.sleep(3)
         return
-    
+
+    # Creation of empty dict to setup
+    for studentnr in clas:
+        clear_screen()
+        for student in clas.items():
+            print(student)
+        new_pref = "0;"
+        pref_dict[studentnr] = new_pref
+
+    '''
+    # Old implementation that goes through every student
     for studentnr in clas:
         clear_screen()
         print("Use the format with the listed studentnumbers or 0's if no preference exists for x1 to x3: x1;x2;x3;y;z.\n x1: 1. Partner\n x2: 2. Partner\n x3: 3. Partner\n y: Should not be Partner (signaled by negative number)\n z: \"front\" or \"back\"\n y and z are optional(e.g. \"1;12;3;-9;front\" or \"3;4;7;back\")")
@@ -56,7 +67,8 @@ def preferences_create(clas, clas_name):
             print(student)
         new_pref = input("Please enter the preferences for " + str(clas[studentnr])+ ": ")
         pref_dict[studentnr] = new_pref
-    
+    '''
+
     file = open(pref_path + clas_name + ".json", "w")
     json.dump(pref_dict, file)
     file.close()
