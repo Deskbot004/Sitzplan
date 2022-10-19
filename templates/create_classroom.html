@@ -48,8 +48,65 @@
         width: 100px;
     }
 
-    </style>
-	<title>123</title>
+    /* Popup container - can be anything you want */
+    .popup {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    /* The actual popup */
+    .popup .popuptext {
+      visibility: hidden;
+      width: 160px;
+      background-color: #555;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 8px 0;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -80px;
+    }
+
+    /* Popup arrow */
+    .popup .popuptext::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #555 transparent transparent transparent;
+    }
+
+    /* Toggle this class - hide and show the popup */
+    .popup .show {
+      visibility: visible;
+      -webkit-animation: fadeIn 1s;
+      animation: fadeIn 1s;
+    }
+
+    /* Add animation (fade in the popup) */
+    @-webkit-keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity:1 ;}
+    }
+
+</style>
+    <title>Classroom Editor</title>
 
 
 </head>
@@ -70,7 +127,9 @@
             <li><button onclick="changeColor('lightblue')">Table</button></li>
             <li><button onclick="changeColor('orange')">Unusable Table</button></li>
             <li><button onclick="changeColor('pink')">Teacher Table</button></li>
-            <li><button onclick="download('classroom.txt')">Download Classroom</button></li>
+            <li><button class="popup" onclick="download('classroom.txt')">Download Classroom
+                <span class="popuptext" id="Invalid">Invalid Entry!</span>
+            </button></li>
         </ul>
         <p id="demo"></p>
     </div>
@@ -214,8 +273,27 @@
         return [start_height, end_height];
     };
 
+    function check_validity() {
+        var student_found = 0;
+        var teacher_found = 0;
+        for (let x = 0; x < grid_height; x++) {
+	        found_num = 0;
+	        for (let y = 0; y < grid_length; y++) {
+                if (classroom[x][y] == 1) student_found = 1;
+                if (classroom[x][y] == 3) teacher_found = 1;
+            }
+        }
+        return !(student_found && teacher_found);
+    };
+
     // Function to download data to a file
     function download(filename) {
+        // Also change filename to "Invalid"
+        if (check_validity()) {
+            var popup = document.getElementById("Invalid");
+            popup.classList.toggle("show");
+            return;
+        }
         var element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(arrayToText()));
         element.setAttribute('download', filename);
