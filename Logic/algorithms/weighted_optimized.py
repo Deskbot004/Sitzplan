@@ -27,7 +27,7 @@ class WeightedOptimized(WeightedAlgo):
 
     def algorithm(self):
         """
-        Updated self.room with created seating!
+        Update self.room with created seating!
 
         :return: void
         """
