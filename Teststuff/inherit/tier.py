@@ -6,6 +6,7 @@ class Tier():
         self.farbe   = farbe
         self.alter   = alter
         self.schlafdauer = 0
+        self.redet = "Nope"
 
     def tut_schlafen(self, dauer):
         print(self.rufname, " schläft jetzt ", dauer , " Minuten ")

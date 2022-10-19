@@ -8,4 +8,6 @@ class Hund(Tier):
         super().__init__(rufname, farbe, alter)
 
     def tut_reden(self, anzahl = 1):
-        print("Bin Hund, rede nicht")
+        print("Bin Hund, rede nicht, speicher aber!")
+        self.redet = 2
+

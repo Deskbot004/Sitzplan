@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 Module only containing the algorithm to create a completely random seating.
 The seating is shown as an image and saved as a .txt and .png file.
 
+TODO: this Module can easily make use of the new weighted_algo class
+
 Functions:
     start(dictionary, string, string, string)
 '''
