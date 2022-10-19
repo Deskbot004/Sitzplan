@@ -80,10 +80,11 @@ def start():
         else:
             print("Please select a valid algorithm.")
             time.sleep(3)
+            continue
 
-    used_algorithm.create_image()
-    reader = input("Image created. Type to continue")
-    used_algorithm.show_result()
-    reader = input("Result was shown. Type to continue")
-    used_algorithm.save_result()
-    del used_algorithm
+        used_algorithm.create_image()
+        #reader = input("Image created. Type to continue")
+        used_algorithm.show_result()
+        #reader = input("Result was shown. Type to continue")
+        used_algorithm.save_result()
+        del used_algorithm
