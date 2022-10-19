@@ -156,14 +156,62 @@
     };
 
     function arrayToText() {
+        var width = detectWidthToTrim();
+        var height = detectHeightToTrim();
+        var place_semi = 0;
         var text = "";
+
         for (let x = 0; x < grid_height; x++) {
+            place_semi = 0;
             for (let y = 0; y < grid_length; y++) {
-                text += classroom[x][y].toString()
+                if (width[0] <= y && y <= width[1] && height[0] <= x && x <= height[1]) {
+                    text += classroom[x][y].toString();
+                    place_semi = 1;
+                }
             }
-            text += ";"
+            if (place_semi) text += ";";
         }
-        return text
+        return text;
+    };
+
+    function detectWidthToTrim() {
+        var start_width = 99;
+        var end_width = 0;
+        var found_num = 0;
+        var entry = 0;
+
+        for (let x = 0; x < grid_height; x++) {
+	        found_num = 0;
+	        for (let y = 0; y < grid_length; y++) {
+                entry = classroom[x][y];
+                if (entry != 0 && found_num == 0) {
+                    found_num = 1;
+                    if (y < start_width) start_width = y;
+                } else if (entry != 0) {
+                    if (y > end_width) end_width = y;
+      	        }
+            }
+        }
+        return [start_width, end_width];
+    };
+
+    function detectHeightToTrim() {
+        var start_height = 99;
+        var end_height = 0;
+        var found_num = 0;
+
+        for (let x = 0; x < grid_height; x++) {
+	        found_num = 0;
+	        for (let y = 0; y < grid_length; y++) {
+                if (classroom[x][y] != 0) found_num = 1;
+            }
+            if (found_num == 1) {
+                if (x < start_height) start_height = x;
+                if (x > end_height) end_height = x;
+            }
+        }
+
+        return [start_height, end_height];
     };
 
     // Function to download data to a file
