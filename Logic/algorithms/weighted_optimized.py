@@ -27,9 +27,10 @@ class WeightedOptimized(WeightedAlgo):
 
     def algorithm(self):
         """
+        Updated self.room with created seating!
 
-        :return: Result array containing the calculated seating
+        :return: void
         """
         print("WeightedOptimized not implemented yet!")
         time.sleep(3)
-        return []
+        return

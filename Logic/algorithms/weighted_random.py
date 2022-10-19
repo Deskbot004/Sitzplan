@@ -28,8 +28,9 @@ class WeightedRandom(WeightedAlgo):
 
     def algorithm(self):
         """
+        Updated self.room with created seating!
 
-        :return: Result array containing the calculated seating
+        :return: void
         """
         print("WeightedRandom not implemented yet!")
         time.sleep(3)

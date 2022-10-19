@@ -29,13 +29,11 @@ class WeightedAlgo:
     clas_name : string
         The name of the student list
     room : string
-        The room information
+        The room information which gets updated by the algorithm
     room_name : string
         The room name
     seatings_path : string
         The path to the seating data
-    result : array
-        At first an empty array before the result gets saved
 
     Methods
     -----------
@@ -66,7 +64,6 @@ class WeightedAlgo:
         self.room_name = room_name
         path = os.path.abspath(os.getcwd())
         self.seatings_path = path + "/data/seatings/"
-        self.result = []
 
     def startup(self):
         """
@@ -88,7 +85,7 @@ class WeightedAlgo:
             print(" --- Weighted algorithm ---\nPlease choose an option.\n 1: Use an existing preference list\n 2: Create a new one\n 3: Edit an existing one\n 4: Delete a preference list\n 5: Return")
             action = input("Chosen option: ")
             if action == "1":
-                self.result = self.algorithm()
+                self.algorithm()
             elif action == "2":
                 preferences.preferences_create(self.clas, self.clas_name)
             elif action == "3":
@@ -103,22 +100,20 @@ class WeightedAlgo:
 
     def algorithm(self):
         print("Only stub for real implementations in sub classes!")
-        return ""
+        return
 
     def save_result(self):
         """
         Function to save the result as an image and as text.
 
-        TODO: Update to fit into class, as it was copied
-
         :return: void
         """
         try:
-            file = open(self.seatings_path + self.clas_name + self.room_name + ".txt", "x")
+            file = open(self.seatings_path + self.clas_name + self.room_name + str(date.today()) + ".txt", "x")
         except FileExistsError:
-            file = open(self.seatings_path + self.clas_name + self.room_name + ".txt", "w")
+            file = open(self.seatings_path + self.clas_name + self.room_name + str(date.today()) + ".txt", "w")
 
-        with open(self.seatings_path + self.clas_name + self.room_name + ".txt", 'w') as fid:
+        with open(self.seatings_path + self.clas_name + self.room_name + ".pkl", 'rb') as fid:
             ax = pickle.load(fid)
 
         plt.savefig(self.seatings_path + self.clas_name + "_" + self.room_name + "_" + str(date.today()) + ".png",
@@ -137,13 +132,12 @@ class WeightedAlgo:
         file.write(room_list)
         file.close()
         time.sleep(5)
+        plt.close()
         return
 
     def create_image(self):
         """
         Function to create an image from the result and saves the plt for later usage.
-
-        TODO: update room mentions to result where it is fit
 
         :return: void
         """
@@ -164,15 +158,16 @@ class WeightedAlgo:
         ax.table(cellText=df.values, colLabels=df.columns, loc='center')
         fig.tight_layout()
 
-        with open(self.seatings_path + self.clas_name + self.room_name + ".txt", 'w') as fid:
+        with open(self.seatings_path + self.clas_name + self.room_name + ".pkl", 'wb') as fid:
             pickle.dump(ax, fid)
+        plt.close()
 
     def show_result(self):
         """
-        Simple function to show the result of a finished algorithm as an image
+        Simple function to show the result of a finished algorithm as an image.
 
         :return: void
         """
-        with open(self.seatings_path + self.clas_name + self.room_name + ".txt", 'w') as fid:
-            ax = pickle.load(fid)
-        plt.show()  # pip install pyqt5
+        with open(self.seatings_path + self.clas_name + self.room_name + ".pkl", 'rb') as fid:
+           ax = pickle.load(fid)
+        plt.show()

@@ -28,8 +28,9 @@ class ConstraintRandom(WeightedAlgo):
 
     def algorithm(self):
         """
+        Updated self.room with created seating!
 
-        :return: Result array containing the calculated seating
+        :return: void
         """
         print("ConstraintRandom not implemented yet!")
         time.sleep(3)

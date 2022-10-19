@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 '''
 A Method which reads an existing seating from a .txt file and displays it.
 
+!!!NOT WORKING ANYMORE AS THE TXT NOW NEEDS THE DATE OF CREATION!!!
+
 Functions:
     show_seatings()
 '''

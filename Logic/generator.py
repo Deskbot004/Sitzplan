@@ -37,9 +37,6 @@ def start():
         time.sleep(5)
         return
     
-    print("--- Algorithm select ---\nPlease choose the algorithm:\n 1. Complete random\n 2. Random with Constraints\n 3. Weighted optimized\n 4. Weighted random")
-    algorithm = input("Selection: ")
-    
     print("--- Room select ---\nPlease choose one of these rooms: ")
     for file in os.listdir(room_path):
         if file.endswith(".txt"):
@@ -58,20 +55,35 @@ def start():
         print("This room does not have enough seating available for the class! Returning to main menu.")
         time.sleep(3)
         return
-    
-    if algorithm == "1":
-        random_algo.start(clas, clas_name, room, room_name)
-    elif algorithm == "2":
-        used_algorithm = constraint_random.ConstraintRandom(clas, clas_name, room, room_name)
-        used_algorithm.algorithm()
-    elif algorithm == "3":
-        used_algorithm = weighted_optimized.WeightedOptimized(clas, clas_name, room, room_name)
-        used_algorithm.algorithm()
-    elif algorithm == "4":
-        used_algorithm = weighted_random.WeightedRandom(clas, clas_name, room, room_name)
-        used_algorithm.algorithm()
-    elif algorithm.lower() == "q" or algorithm.lower() == "quit":
-        return
-    else:
-        print("Please select a valid algorithm. Returning to main menu.")
-        time.sleep(3)
+
+    running = 1
+    while running == 1:
+        print(
+            "--- Algorithm select ---\nPlease choose the algorithm:\n 1. Complete random\n 2. Random with Constraints\n 3. Weighted optimized\n 4. Weighted random")
+        algorithm = input("Selection: ")
+
+        if algorithm == "1":
+            room = random_algo.start(clas, clas_name, room, room_name)
+            used_algorithm = weighted_random.WeightedRandom(clas, clas_name, room, room_name)
+            running = 0
+        elif algorithm == "2":
+            used_algorithm = constraint_random.ConstraintRandom(clas, clas_name, room, room_name)
+            running = 0
+        elif algorithm == "3":
+            used_algorithm = weighted_optimized.WeightedOptimized(clas, clas_name, room, room_name)
+            running = 0
+        elif algorithm == "4":
+            used_algorithm = weighted_random.WeightedRandom(clas, clas_name, room, room_name)
+            running = 0
+        elif algorithm.lower() == "q" or algorithm.lower() == "quit":
+            return
+        else:
+            print("Please select a valid algorithm.")
+            time.sleep(3)
+
+    used_algorithm.create_image()
+    reader = input("Image created. Type to continue")
+    used_algorithm.show_result()
+    reader = input("Result was shown. Type to continue")
+    used_algorithm.save_result()
+    del used_algorithm

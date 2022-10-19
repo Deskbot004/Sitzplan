@@ -69,6 +69,8 @@ def start(clas, clas_name, room, room_name):
             col_val += 1
         row_val += 1
 
+    return room
+    '''
     fig, ax = plt.subplots()
 
     fig.patch.set_visible(False)
@@ -113,3 +115,4 @@ def start(clas, clas_name, room, room_name):
         file.close()
         time.sleep(5)
         return
+    '''
