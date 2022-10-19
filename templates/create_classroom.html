@@ -70,6 +70,7 @@
             <li><button onclick="changeColor('lightblue')">Table</button></li>
             <li><button onclick="changeColor('orange')">Unusable Table</button></li>
             <li><button onclick="changeColor('pink')">Teacher Table</button></li>
+            <li><button onclick="download('classroom.txt')">Download Classroom</button></li>
         </ul>
         <p id="demo"></p>
     </div>
@@ -86,28 +87,97 @@
 
     // create empty array
     var classroom = new Array(10);
-
+    const grid_length = 10;
+    const grid_height = 10;
     for (var i = 0; i < classroom.length; i++) {
         classroom[i] = new Array(10).fill(0);
     }
-    document.getElementById("demo").innerHTML = classroom[9][9];
+
 
     const divs = document.querySelectorAll('.grid-item');
     var color = 'white';
 
-    Array.from(divs).forEach(div => {
+    var x = 1;
+    var y = 2;
+
+    grid = Array.from(divs)
+    grid.forEach(div => {
         div.addEventListener('mouseover', addColor);
         div.addEventListener('mousedown', addColorClick);
     });
 
+    // assign ids to grid divs
+    var grid_number = 0;
+    for (let x = 0; x < grid_height; x++) {
+        for (let y = 0; y < grid_length; y++) {
+            grid[grid_number].setAttribute("id", x.toString() + y.toString());
+            grid_number += 1;
+        }
+    }
+
+    document.getElementById("demo").innerHTML = grid[99].getAttribute("id");
+
     function changeColor(color_arg) {
         color = color_arg;
     };
-    function addColor() {
-        if (window.mouseDown) this.style.backgroundColor = color;
+
+    function changeArray(array_id, color) {
+        var x_val = array_id[0]
+        var y_val = array_id[1]
+        switch(color) {
+            case "white":
+                classroom[x_val][y_val] = 0;
+                break;
+            case "lightblue":
+                classroom[x_val][y_val] = 1;
+                break;
+            case "orange":
+                classroom[x_val][y_val] = 2;
+                break;
+            case "pink":
+                classroom[x_val][y_val] = 3;
+                break;
+            default:
+        }
     };
+
+    function addColor() {
+        if (window.mouseDown) {
+            this.style.backgroundColor = color;
+            var div_id = this.getAttribute("id");
+            changeArray(div_id, color);
+        }
+    };
+
     function addColorClick() {
         this.style.backgroundColor = color;
+        var div_id = this.getAttribute("id");
+        changeArray(div_id, color);
+    };
+
+    function arrayToText() {
+        var text = "";
+        for (let x = 0; x < grid_height; x++) {
+            for (let y = 0; y < grid_length; y++) {
+                text += classroom[x][y].toString()
+            }
+            text += ";"
+        }
+        return text
+    };
+
+    // Function to download data to a file
+    function download(filename) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(arrayToText()));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
     };
 </script>
 
