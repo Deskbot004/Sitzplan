@@ -1,10 +1,17 @@
-dict ={}
+dictionary ={}
 
 for x in range(10):
-    dict[10-x] = "A" + str(x)
+    dictionary[str(10-x)] = "A" + str(x)
 
-for x in dict:
+for x in dictionary:
     print(x)
-    print(dict[x])
-print(dict)
+    print(dictionary[x])
+print(dictionary)
 print("test")
+
+
+dictionary = {int(k):v for k,v in dictionary.items()}
+dictionary = dict(sorted(dictionary.items()))
+dictionary = {str(k):v for k,v in dictionary.items()}
+
+print(dictionary)

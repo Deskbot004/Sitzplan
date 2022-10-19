@@ -74,7 +74,6 @@ def preferences_update(name_class, entry, name):
         pref_dict[entry] = "0"
 
     write_file = open(pref_path + name_class + ".json", "w")
-    print("Finished editing. Returning to main menu.")
     json.dump(pref_dict, write_file)
     write_file.close()
     return
@@ -83,6 +82,8 @@ def preferences_update(name_class, entry, name):
 def preferences_edit(student_dict, clas_name):
     """
     Function to edit an existing preference list.
+
+    TODO: catch non-existing
 
     :return: void
     """
@@ -97,7 +98,7 @@ def preferences_edit(student_dict, clas_name):
 
         if student.lower() == "done" or student.lower() == "quit" or student.lower() == "q":
             write_file = open(pref_path + clas_name + ".json", "w")
-            print("Finished editing. Returning to main menu.")
+            print("Finished editing.")
             json.dump(pref_dict, write_file)
             write_file.close()
             return
@@ -120,7 +121,7 @@ def preferences_delete(name_class):
     if os.path.exists(pref_path + name_class + ".json"):
         os.remove(pref_path + name_class + ".json")
     else:
-        print("This list does not exist yet. Returning to main menu.")
+        print("This list does not exist yet.")
         time.sleep(3)
         return
     print("Done! Returning to main menu.")

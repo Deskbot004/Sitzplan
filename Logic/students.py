@@ -122,6 +122,12 @@ def edit_students():
     student_dict = get_student_list(name_class)
     while 1:
         print("Current class members:")
+
+        # Sort by value
+        student_dict = {int(k): v for k, v in student_dict.items()}
+        student_dict = dict(sorted(student_dict.items()))
+        student_dict = {str(k): v for k, v in student_dict.items()}
+
         for student in student_dict.items():
             print(student)
         action = input("Choose your action:\n 1: Add a new student\n 2: Delete a student\n 3: Change the name of a student\n 4: Search if a student is in the list\n 5: Finish editing\nChosen action: ")

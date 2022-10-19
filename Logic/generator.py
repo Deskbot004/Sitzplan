@@ -57,6 +57,8 @@ def start():
         return
 
     running = 1
+    error = 0
+
     while running == 1:
         print(
             "--- Algorithm select ---\nPlease choose the algorithm:\n 1. Complete random\n 2. Random with Constraints\n 3. Weighted optimized\n 4. Weighted random")
@@ -68,12 +70,15 @@ def start():
             running = 0
         elif algorithm == "2":
             used_algorithm = constraint_random.ConstraintRandom(clas, clas_name, room, room_name)
+            error = used_algorithm.startup()
             running = 0
         elif algorithm == "3":
             used_algorithm = weighted_optimized.WeightedOptimized(clas, clas_name, room, room_name)
+            error = used_algorithm.startup()
             running = 0
         elif algorithm == "4":
             used_algorithm = weighted_random.WeightedRandom(clas, clas_name, room, room_name)
+            error = used_algorithm.startup()
             running = 0
         elif algorithm.lower() == "q" or algorithm.lower() == "quit":
             return
@@ -81,6 +86,9 @@ def start():
             print("Please select a valid algorithm.")
             time.sleep(3)
             continue
+
+        if error == -1:
+            return
 
         used_algorithm.create_image()
         #reader = input("Image created. Type to continue")

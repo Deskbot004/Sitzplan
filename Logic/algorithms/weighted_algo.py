@@ -69,7 +69,7 @@ class WeightedAlgo:
         """
         Starts the preference list selection and editing process, until the algorithm is started.
 
-        :return: void
+        :return: -1 for error case so that the programm does not try to create an image
         """
 
         if platform.system() == "Linux":
@@ -79,7 +79,7 @@ class WeightedAlgo:
         else:
             print("Unsupported System detected. Please either use Windows or Linux.")
             time.sleep(5)
-            return
+            return -1
 
         while 1:
             print(" --- Weighted algorithm ---\nPlease choose an option.\n 1: Use an existing preference list\n 2: Create a new one\n 3: Edit an existing one\n 4: Delete a preference list\n 5: Return")
@@ -93,7 +93,7 @@ class WeightedAlgo:
             elif action == "4":
                 preferences.preferences_delete(self.clas_name)
             elif action.lower() == "quit" or action.lower() == "q" or action == "5":
-                return
+                return -1
             else:
                 print("Please choose an existing option.")
                 time.sleep(3)
