@@ -1,4 +1,5 @@
 import time, os, json, platform
+from logic import preferences
 
 '''
 This Module handles all interaction with students and their respective lists.
@@ -74,6 +75,7 @@ def save_students():
         action = input("--- Done ---\nPlease check the list you entered. Confirm with \"done\", edit with \"edit\" or delete with \"delete\": ")
         if action.lower() == "done":
             print("File saved. Returning to main menu.")
+            preferences.preferences_create(student_dict, name_class)
             time.sleep(3)
             return
         elif action.lower() == "edit":
@@ -115,7 +117,8 @@ def edit_students():
     
     if name_class.lower() == "quit" or name_class.lower() == "q":
         return
-    
+
+    update_dict = {}
     student_dict = get_student_list(name_class)
     while 1:
         print("Current class members:")
@@ -131,18 +134,19 @@ def edit_students():
             
             for number in range(dict_length):
                 if student_dict.get(str(number + 1)) == None:
-                    student_dict[number + 1] = new_name
+                    student_dict[str(number + 1)] = new_name
+                    update_dict[str(number + 1)] = new_name
                     break
                 elif number + 1 == dict_length:
-                    student_dict[number + 2] = new_name      
+                    student_dict[str(number + 2)] = new_name
+                    update_dict[str(number + 2)] = new_name
         elif action == "2":
             to_remove = input("Please enter the number of the student to be removed: ")
             student_dict.pop(to_remove)
+            update_dict[to_remove] = "r"
         elif action == "3":
             to_edit = input("Please enter the number of the student to be edited: ")
             new_name = input("Please enter the new name of the student: ")
-            new_name = new_name.rjust(10, '-')
-            new_name = new_name[:10]
             student_dict.update({to_edit: new_name})
         elif action == "4":
             search_name = input("Please enter the name to search: ")
@@ -157,6 +161,8 @@ def edit_students():
             print("Finished editing. Returning to main menu.")
             json.dump(student_dict, write_file)
             write_file.close()
+            for number in update_dict:
+                preferences.preferences_update(name_class, number, update_dict[number])
             return
         else:
             print("Please enter an existing command.")
