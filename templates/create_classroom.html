@@ -127,6 +127,10 @@
             <li><button onclick="changeColor('lightblue')">Table</button></li>
             <li><button onclick="changeColor('orange')">Unusable Table</button></li>
             <li><button onclick="changeColor('pink')">Teacher Table</button></li>
+            <li><form>
+                <label for="filename">File name:</label><br>
+                <input type="text" id="filename" name="filename" value="classroom">
+            </form></li>
             <li><button class="popup" onclick="download('classroom.txt')">Download Classroom
                 <span class="popuptext" id="Invalid">Invalid Entry!</span>
             </button></li>
@@ -296,6 +300,9 @@
         }
         var element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(arrayToText()));
+
+        read_input = document.getElementById("filename").value;
+        if (read_input.length) filename = read_input + ".txt";
         element.setAttribute('download', filename);
 
         element.style.display = 'none';
