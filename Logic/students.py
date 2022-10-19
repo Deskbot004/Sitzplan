@@ -8,8 +8,6 @@ Student lists are saved as .json files in data/classes.
 
 TODO: update save_students(), edit_students(), delete_students()
 
-TODO: implement linkage to preference lists for editing or deleting student lists
-
 Functions:
     save_students()
     edit_students()

@@ -4,8 +4,6 @@ import os, time, json, platform
 Module to create and read preference lists which can either contain real preferences
 or constraints for seating creation.
 
-TODO: see student list linkage
-
 Functions:
     preferences_create(dictionary, string)
     preferences_edit()
@@ -66,6 +64,17 @@ def preferences_create(clas, clas_name):
 
 
 def preferences_update(name_class, entry, name):
+    """
+    Updated the preference list, after being changed by student editing.
+    If "r" is entered as a name the entry is removed.
+
+    TODO: implement detection of student occurances in other preferences?
+
+    :param name_class: The name of the student list
+    :param entry: The number of the student that changed
+    :param name: The name of the student that changed or "r"
+    :return: void
+    """
     entry = str(entry)
     pref_dict = preferences_read(name_class)
     if name == "r":
