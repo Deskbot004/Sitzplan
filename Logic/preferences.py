@@ -113,7 +113,7 @@ def preferences_edit(student_dict, clas_name):
             return
 
         pref = input("Please enter the new preferences for the student " + student_dict[student] + ": ")
-        if not validate_entry(student, pref):
+        if not validate_entry(pref, student):
             print("Please enter a valid preference!")
             time.sleep(3)
         else:
