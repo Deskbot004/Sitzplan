@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <div class="headerContainer">
+
+		<h2>About</h2>
+
+	</div>
+</head>
+<body>
+    <div class="container">
+        <div class="left" col ="1">
+            <li><a href="#home" onclick="switchToHome()">Home</a></li>
+            <li><a href="#seating" onclick="switchToSeating()">Create seating</a></li>
+            <li><a href="#student" onclick="switchToStudents()">Student lists</a></li>
+            <li><a href="#room" onclick="switchToClassroom()">Classrooms</a></li>
+            <li><a href="#about" onclick="switchToAbout()">About</a></li>
+        </div>
+        <div class="center" col="2">
+            <h2>Hier könnte ihre Werbung stehen! (About)</h2>
+        </div>
+    </div>
+<script>
+    function switchToClassroom() {
+        window.location = "classrooms";
+    }
+
+    function switchToHome() {
+        window.location = "home";
+    }
+
+    function switchToSeating() {
+        window.location = "seating";
+    }
+
+    function switchToStudents() {
+        window.location = "students";
+    }
+
+    function switchToAbout() {
+        window.location = "about";
+    }
+</script>
+</body>
+</html>

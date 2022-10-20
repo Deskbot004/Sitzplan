@@ -1,0 +1,447 @@
+:root {
+  --cursorForLink: pointer;
+  --font1: Verdana, "Lucida Sans";
+  --font2: Arial, serif;
+}
+
+img {
+	max-width: 65%;
+    height: auto;
+	cursor: var(--cursorForLink);
+}
+
+h2 {
+	padding: 10px;
+}
+
+
+p {
+	padding: 10px;
+}
+
+.text1 {
+	font-family: var(--font1);
+	font-size: 20px;
+	color: black;
+	padding-top: 10px;
+}
+
+.title{
+	display: block;
+	font-size: 36px;
+	font-family: var(--font1);
+	color: #00519E;
+	font-weight: bold;
+	text-align: center;
+}
+
+.headerContainer {  
+	background: #FFFFFF;
+	display: flex;
+	flex-wrap: wrap;
+	column-count: 3;
+}
+
+.headerImage {
+	flex: 15%;
+	text-align: center;
+}
+
+
+.container {  
+	background: #FFFFFF;
+	display: flex;
+	flex-wrap: wrap;
+	column-count: 3;
+}
+
+@media screen and (max-width: 749px) {
+  .container {   
+    flex-direction: column;
+  }
+}
+
+
+
+/* Menu with tutors */
+.left {
+	flex: 15%;
+	display: flex;
+	flex-direction: column;
+	background-color: #CCCCCC;
+	font-family: var(--font1);
+}
+
+.tutorOn {
+	background: green;
+	font-size: 30px;
+	font-family: var(--font1);
+	color: #FFFFFF;
+	width: auto;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	margin-right: 10px;
+	text-align: center;
+}
+
+.tutorOff {
+	background: darkred;
+	font-size: 30px;
+	font-family: var(--font1);
+	color: #FFFFFF;
+	width: auto;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	margin-right: 10px;
+	text-align: center;
+}
+
+/* Center */
+.center {
+	flex: 85%;
+	display: flex;
+	flex-direction: column;
+	background-color: #FFFFFF;
+	font-family: var(--font1);
+	text-align:center;
+}
+
+.button2{
+		font-size: 32px;
+}
+	
+.divider{
+	width:180px;
+	height:auto;
+	display:inline-block;
+}
+
+.footer{
+	width: 100%;
+	height: 10%;
+	float: bottom;
+	font-size: 12px;
+	font-family: var(--font1);
+	font-weight: bold;
+	color: #3876B0;
+	text-align: center;
+}
+
+.li {
+	padding: 0;
+	margin: 0;
+}
+
+.tutorOn:hover {
+	background-color: lightgreen;
+}
+
+.tutorOff:hover {
+	background-color: red;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+	flex: 85%;
+	background-color: #000000;
+	overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+	height: 100%;
+	float: right;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 20px 22px;;
+	text-decoration: none;
+	font-size: 20px;
+	font-family: var(--font1);
+}
+
+/* Style the links inside the navigation bar */
+.b {
+	float: left;
+	padding: 0;
+	margin: 0;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+	background-color: #ddd;
+	cursor: var(--cursorForLink);
+	color: black;
+}
+
+/* Change the color of links on hover */
+.topnav a.logout {
+	background-color: darkred;
+	color: white;
+}
+
+.topnav a.active {
+	background-color: grey;
+	color: white;
+}
+
+a.logout:hover {
+	background-color: lightred;
+	color: black;
+}
+
+a.active:hover {
+	background-color: #ddd;
+	color: black;
+}
+
+.header {
+	font-size: 36pt;
+	font-weight: bold;
+	color: black;
+	padding: 15px;
+	display: -webkit-flex; /* Safari */
+	-webkit-justify-content: center; /* Safari 6.1+ */
+	display: flex;
+	justify-content: center;
+	text-align: center;
+}
+	
+.body {
+	font-size: 24pt;
+	color: black;
+	padding: 15px;
+}
+	
+.button {
+	font-size: 24pt;
+	margin: auto;
+	display: block;
+}
+
+.status {
+	font-size: 24pt;
+	color: green;
+	padding: 15px;
+	display: -webkit-flex; /* Safari */
+	-webkit-justify-content: center; /* Safari 6.1+ */
+	display: flex;
+	justify-content: center;
+	text-align: center;
+}
+.button2{
+	font-size: 32px;
+}
+.divider{
+	width:180px;
+	height:auto;
+	display:inline-block;
+}
+
+.chatWindowLeft {
+	background: darkgray;
+	font-size: 30px;
+	font-family: var(--font1);
+	color: #FFFFFF;
+	width: auto;
+	padding: 10px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	margin-right: 250px;
+	margin-left: 25px;
+	text-align: center;
+	border-radius: 15px 15px 15px 15px
+}
+
+.chatWindowRight {
+	background: gray;
+	font-size: 30px;
+	font-family: var(--font1);
+	color: #FFFFFF;
+	width: auto;
+	padding: 10px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	margin-right: 25px;
+	margin-left: 250px;
+	text-align: right;
+	border-radius: 15px 15px 15px 15px
+}
+
+.chatHistory {
+	background: Black;
+	font-size: 30px;
+	font-family: var(--font1);
+	color: #FFFFFF;
+	width: auto;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	text-align: center;
+}
+
+.button {
+	cursor: var(--cursorForLink);
+}
+
+/* Issue 5*/
+/* Is online ... */
+.online {
+	height: 15px; width: 15px;
+	border-radius: 50%;
+	background-color: #1fcd34;
+	display: inline-block;
+	margin-top: 6px;
+	margin-right: 5px;
+}
+
+/* Is offline ... */
+.nonline {
+	height: 15px; width: 15px;
+	border-radius: 50%;
+	background-color: red;
+	display: inline-block;
+	margin-top: 6px;
+	margin-right: 5px;
+}
+
+.tutors {
+	font-size: 16pt;
+	cursor: var(--cursorForLink);
+}
+
+.tutors:hover {
+	color: white;
+}
+
+/*
+-----------------------------------------------------------------------------------------
+from here for current project
+-----------------------------------------------------------------------------------------
+*/
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  background-color: #f1f1f1;
+}
+
+li a {
+  display: block;
+  color: #000;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color on hover */
+li a:hover {
+  background-color: #555;
+  color: white;
+}
+.flex-container {
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-wrap: wrap; /* Safari 6.1+ */
+        flex-wrap: wrap;
+}
+
+/* Phones: */
+.phone-12-cols {width: 100%;}
+
+/* Desktop: */
+@media only screen and (min-width: 750px) {
+    .desktop-1-cols {width: 8.33%;}
+    .desktop-2-cols {width: 16.66%;}
+    .desktop-3-cols {width: 25%;}
+    .desktop-4-cols {width: 33.33%;}
+    .desktop-5-cols {width: 41.66%;}
+    .desktop-6-cols {width: 50%;}
+    .desktop-7-cols {width: 58.33%;}
+    .desktop-8-cols {width: 66.66%;}
+    .desktop-9-cols {width: 75%;}
+    .desktop-10-cols {width: 83.33%;}
+    .desktop-11-cols {width: 91.66%;}
+    .desktop-12-cols {width: 100%;}
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
+}
+
+.grid-item {
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 5px;
+    font-size: 30px;
+    text-align: center;
+    height: 20px;
+    width: 20px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.grid-parent {
+    height: 100px;
+    width: 100px;
+}
+
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
