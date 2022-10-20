@@ -137,14 +137,16 @@
                 <label for="filename">File name:</label><br>
                 <input type="text" id="filename" name="filename" value="classroom">
             </form></li>
-            <li><button class="popup" onclick="download('classroom.txt')">Download Classroom
+            <li>
+                <button class="popup" onclick="sendClassroomToFlask()">Save Classroom
                 <span class="popuptext" id="Invalid">Invalid classroom!</span>
-            </button></li>
+                </button>
+            </li>
         </ul>
         <p id="demo"></p>
     </div>
 </div>
-<script>
+<script src="https://code.jquery.com/jquery-3.6.1.js">
     // track if mouse button is held down
     window.mouseDown = false;
     document.onmousedown = function() {
@@ -185,7 +187,7 @@
     }
 
     document.getElementById("demo").innerHTML = grid[99].getAttribute("id");
-
+    console.log("test");
     function changeColor(color_arg) {
         color = color_arg;
     };
@@ -340,6 +342,17 @@
 
         document.body.removeChild(element);
     };
+    /*
+    function sendClassroomToFlask() {
+        var userinfo = arrayToText();
+        $.ajax({
+            type: "POST",
+
+        })
+        const request = new XMLHttpRequest();
+        request.open("POST", "/ProcessUserInfo/${JSON.stringify(userinfo)}")
+        request.send();
+    }*/
 </script>
 
 
