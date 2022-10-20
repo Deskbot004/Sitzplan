@@ -20,7 +20,12 @@
             <li><a href="#about" onclick="switchToAbout()">About</a></li>
         </div>
         <div class="center" col="2">
-            <h2>Hier könnte ihre Werbung stehen! (Students)</h2>
+            <h2>List of Students:</h2>
+            <ul>
+                <li>Test</li>
+                <li><label onclick="addElement()">Add undefined :)</label></li>
+
+            </ul>
         </div>
     </div>
 <script>
@@ -43,6 +48,14 @@
     function switchToAbout() {
         window.location = "about";
     }
+
+    /* Adds given String as Element to the shown list */
+    function addElement(text) {
+        var node = document.createElement('li');
+        node.appendChild(document.createTextNode(text));
+        document.querySelector('ul').appendChild(node);
+    }
+
 </script>
 </body>
 </html>
