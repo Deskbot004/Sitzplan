@@ -13,6 +13,7 @@ TODO: implement room_valid
 
 Functions:
     create_classroom()
+    save_classroom(string, string, string)
     edit_classroom()
     delete_classroom()
     get_classroom(string) -> string
@@ -90,6 +91,24 @@ def create_classroom():
             return
         else:
             print("Please choose a given option.")
+
+
+def save_classroom(class_name, class_information, class_information_trimmed):
+    """
+    A function to save the information of a classroom in /data.
+
+    :param class_name: Name of the room to be saved
+    :param class_information: Information about the classroom untrimmed for the editor
+    :param class_information_trimmed: Information about the classroom trimmed for the algorithm
+    :return: void
+    """
+    file = open(room_path + class_name + ".txt", "w")
+    file.write(class_information_trimmed)
+    file.close()
+
+    file = open(room_path + class_name, "w")
+    file.write(class_information)
+    file.close()
 
 
 def edit_classroom():
