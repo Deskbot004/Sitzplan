@@ -124,15 +124,15 @@
     <div class=" menu desktop-6-cols phone-12-cols">
         <ul>
             <li><button onclick="changeColor('white')">Clear</button></li>
-            <li><button onclick="changeColor('lightblue')">Table</button></li>
-            <li><button onclick="changeColor('orange')">Unusable Table</button></li>
-            <li><button onclick="changeColor('pink')">Teacher Table</button></li>
+            <li><button onclick="changeColor('lightblue')">Desk</button></li>
+            <li><button onclick="changeColor('orange')">Unusable Desk</button></li>
+            <li><button onclick="changeColor('pink')">Teacher Desk</button></li>
             <li><form>
                 <label for="filename">File name:</label><br>
                 <input type="text" id="filename" name="filename" value="classroom">
             </form></li>
             <li><button class="popup" onclick="download('classroom.txt')">Download Classroom
-                <span class="popuptext" id="Invalid">Invalid Entry!</span>
+                <span class="popuptext" id="Invalid">Invalid classroom!</span>
             </button></li>
         </ul>
         <p id="demo"></p>
@@ -277,6 +277,7 @@
         return [start_height, end_height];
     };
 
+    // checks for a valid classroom (at least one teacher and one student desk in the room)
     function check_validity() {
         var student_found = 0;
         var teacher_found = 0;
@@ -287,17 +288,38 @@
                 if (classroom[x][y] == 3) teacher_found = 1;
             }
         }
-        return !(student_found && teacher_found);
+        return student_found.toString() + teacher_found.toString();
     };
 
     // Function to download data to a file
     function download(filename) {
         // Also change filename to "Invalid"
+        var validity = check_validity();
+        switch (validity) {
+            case "01":  // no student desk
+                var popup = document.getElementById("Invalid");
+                popup.innerHTML = "Your classroom needs at least one student desk!";
+                popup.classList.toggle("show");
+                return;
+            case "10":  // no teacher desk
+                var popup = document.getElementById("Invalid");
+                popup.innerHTML = "Your classroom needs at least one teacher desk!";
+                popup.classList.toggle("show");
+                return;
+            case "00":  // neither student nor teacher desk
+                var popup = document.getElementById("Invalid");
+                popup.innerHTML = "Your classroom needs at least one student and teacher desk!";
+                popup.classList.toggle("show");
+                return;
+            default: break;
+        }
+        /*
         if (check_validity()) {
             var popup = document.getElementById("Invalid");
             popup.classList.toggle("show");
             return;
         }
+        */
         var element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(arrayToText()));
 
