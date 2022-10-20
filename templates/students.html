@@ -21,9 +21,10 @@
         </div>
         <div class="center" col="2">
             <h2>List of Students:</h2>
-            <ul>
+            <ul id="student_lists">
                 <li>Test</li>
-                <li><label onclick="addElement()">Add undefined :)</label></li>
+                <li><label onclick="addElement('entry')">Add entry :)</label></li>
+                <li><label onclick="deleteElement('entry')">Deletes entry :(</label></li>
 
             </ul>
         </div>
@@ -54,6 +55,19 @@
         var node = document.createElement('li');
         node.appendChild(document.createTextNode(text));
         document.querySelector('ul').appendChild(node);
+    }
+
+    /* Deletes Entry from list !!Does not delete in data yet!! */
+    function deleteElement(text) {
+        const elem = document.getElementById('student_lists');
+        var ul_elements = elem.getElementsByTagName('li');
+        for (var i = 0, len = ul_elements.length; i < len; i++) {
+            if (text == ul_elements[i].innerHTML) {
+                elem.removeChild(ul_elements[i]);
+                i--;
+            }
+        }
+        return;
     }
 
 </script>
