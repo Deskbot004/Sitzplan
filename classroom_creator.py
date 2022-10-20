@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return render_template("create_classroom.html")
+    return render_template("classroom.html")
 
 
 @app.route("/ProcessUserInfo<string:userinfo>", methods=["POST"])

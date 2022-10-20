@@ -1,151 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <style>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <div class="headerContainer">
 
-    .flex-container {
-        display: -webkit-flex;
-        display: flex;
-        -webkit-flex-wrap: wrap; /* Safari 6.1+ */
-        flex-wrap: wrap;
-    }
+		<h2>Classroom</h2>
 
-    /* Phones: */
-    .phone-12-cols {width: 100%;}
-
-    /* Desktop: */
-    @media only screen and (min-width: 750px) {
-        .desktop-1-cols {width: 8.33%;}
-        .desktop-2-cols {width: 16.66%;}
-        .desktop-3-cols {width: 25%;}
-        .desktop-4-cols {width: 33.33%;}
-        .desktop-5-cols {width: 41.66%;}
-        .desktop-6-cols {width: 50%;}
-        .desktop-7-cols {width: 58.33%;}
-        .desktop-8-cols {width: 66.66%;}
-        .desktop-9-cols {width: 75%;}
-        .desktop-10-cols {width: 83.33%;}
-        .desktop-11-cols {width: 91.66%;}
-        .desktop-12-cols {width: 100%;}
-    }
-
-    .grid-container {
-        display: grid;
-        grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
-    }
-
-    .grid-item {
-        border: 1px solid rgba(0, 0, 0, 0.8);
-        padding: 5px;
-        font-size: 30px;
-        text-align: center;
-        height: 20px;
-        width: 20px;
-    }
-
-    ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    .grid-parent {
-        height: 100px;
-        width: 100px;
-    }
-
-    /* Popup container - can be anything you want */
-    .popup {
-      position: relative;
-      display: inline-block;
-      cursor: pointer;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-    /* The actual popup */
-    .popup .popuptext {
-      visibility: hidden;
-      width: 160px;
-      background-color: #555;
-      color: #fff;
-      text-align: center;
-      border-radius: 6px;
-      padding: 8px 0;
-      position: absolute;
-      z-index: 1;
-      bottom: 125%;
-      left: 50%;
-      margin-left: -80px;
-    }
-
-    /* Popup arrow */
-    .popup .popuptext::after {
-      content: "";
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      margin-left: -5px;
-      border-width: 5px;
-      border-style: solid;
-      border-color: #555 transparent transparent transparent;
-    }
-
-    /* Toggle this class - hide and show the popup */
-    .popup .show {
-      visibility: visible;
-      -webkit-animation: fadeIn 1s;
-      animation: fadeIn 1s;
-    }
-
-    /* Add animation (fade in the popup) */
-    @-webkit-keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity:1 ;}
-    }
-
-</style>
-    <title>Classroom Editor</title>
-
-
+	</div>
 </head>
 <body ondragstart="return false;" ondrop="return false;">
-<div class="flex-container">
-    <div class=" menu desktop-6-cols phone-12-cols">
-        <div class="grid-container grid-parent">
-            {% for x in range(10) %}
-                {% for y in range(10) %}
-                    <div class="grid-item"></div>
-                {% endfor %}
-            {% endfor %}
+    <div class="container">
+        <div class="left" col ="1">
+            <li><a href="#home" onclick="switchToHome()">Home</a></li>
+            <li><a href="#seating" onclick="switchToSeating()">Create seating</a></li>
+            <li><a href="#student" onclick="switchToStudents()">Student lists</a></li>
+            <li><a href="#room" onclick="switchToClassroom()">Classrooms</a></li>
+            <li><a href="#about" onclick="switchToAbout()">About</a></li>
+        </div>
+    <div class="center" col="2">
+            <div class="flex-container">
+                <div class=" menu desktop-6-cols phone-12-cols">
+                    <div class="grid-container grid-parent">
+                        {% for x in range(10) %}
+                            {% for y in range(10) %}
+                                <div class="grid-item"></div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class=" menu desktop-6-cols phone-12-cols">
+                    <ul>
+                        <li><button onclick="changeColor('white')">Clear</button></li>
+                        <li><button onclick="changeColor('lightblue')">Desk</button></li>
+                        <li><button onclick="changeColor('orange')">Unusable Desk</button></li>
+                        <li><button onclick="changeColor('pink')">Teacher Desk</button></li>
+                        <li><form>
+                            <label for="filename">File name:</label><br>
+                            <input type="text" id="filename" name="filename" value="classroom">
+                        </form></li>
+                        <li>
+                            <button class="popup" onclick="sendClassroomToFlask()">Save Classroom
+                            <span class="popuptext" id="Invalid">Invalid classroom!</span>
+                            </button>
+                        </li>
+                    </ul>
+                    <p id="demo"></p>
+                </div>
+            </div>
         </div>
     </div>
-    <div class=" menu desktop-6-cols phone-12-cols">
-        <ul>
-            <li><button onclick="changeColor('white')">Clear</button></li>
-            <li><button onclick="changeColor('lightblue')">Desk</button></li>
-            <li><button onclick="changeColor('orange')">Unusable Desk</button></li>
-            <li><button onclick="changeColor('pink')">Teacher Desk</button></li>
-            <li><form>
-                <label for="filename">File name:</label><br>
-                <input type="text" id="filename" name="filename" value="classroom">
-            </form></li>
-            <li>
-                <button class="popup" onclick="sendClassroomToFlask()">Save Classroom
-                <span class="popuptext" id="Invalid">Invalid classroom!</span>
-                </button>
-            </li>
-        </ul>
-        <p id="demo"></p>
-    </div>
-</div>
 <script src="https://code.jquery.com/jquery-3.6.1.js">
     // track if mouse button is held down
     window.mouseDown = false;
@@ -353,9 +258,28 @@
         request.open("POST", "/ProcessUserInfo/${JSON.stringify(userinfo)}")
         request.send();
     }*/
+
+    function switchToClassroom() {
+        window.location = "classrooms";
+    }
+
+    function switchToHome() {
+        window.location = "home";
+    }
+
+    function switchToSeating() {
+        window.location = "seating";
+    }
+
+    function switchToStudents() {
+        window.location = "students";
+    }
+
+    function switchToAbout() {
+        window.location = "about";
+    }
 </script>
-
-
 </body>
 </html>
+
 

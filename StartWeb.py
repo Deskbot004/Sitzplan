@@ -15,7 +15,7 @@ def hello6():
 
 @app.route('/classrooms')
 def hello2():
-    return render_template("create_classroom.html")
+    return render_template("classroom.html")
 
 
 @app.route('/seating')
