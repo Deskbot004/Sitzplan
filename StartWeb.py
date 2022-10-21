@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from logic import students
 
 app = Flask(__name__)
 
@@ -34,7 +35,9 @@ def hello5():
 
 
 #Functions
-
+@app.route('/getstudentlists', methods=["GET"])
+def testfn():
+    return students.get_all_student_lists()
 
 
 

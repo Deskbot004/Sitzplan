@@ -241,4 +241,4 @@ def get_all_student_lists():
         if file.endswith(".json"):
             file_arr.append(file[:-5])
 
-    return file_arr
+    return sorted(file_arr)
