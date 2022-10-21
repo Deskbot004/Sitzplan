@@ -46,6 +46,7 @@
                             <span class="popuptext" id="Invalid">Invalid classroom!</span>
                             </button>
                         </li>
+                        <li><button onclick="switchToClassroomList()">My Classrooms</button></li>
                     </ul>
                     <p id="demo"></p>
                 </div>
@@ -136,18 +137,22 @@
         var height = detectHeightToTrim();
         var place_semi = 0;
         var text = "";
+        var text_untrimmed = "";
 
         for (let x = 0; x < grid_height; x++) {
             place_semi = 0;
             for (let y = 0; y < grid_length; y++) {
+                text_untrimmed += classroom[x][y].toString();
                 if (width[0] <= y && y <= width[1] && height[0] <= x && x <= height[1]) {
                     text += classroom[x][y].toString();
                     place_semi = 1;
                 }
             }
+            text_untrimmed += ";";
             if (place_semi) text += ";";
         }
-        return text;
+        var text_array = [text, text_untrimmed];
+        return text_array;
     };
 
     function detectWidthToTrim() {
@@ -205,11 +210,13 @@
     };
 
     function sendClassroomToFlask() {
-        var userinfo = arrayToText();
+        var name = document.getElementById("filename").value;
+        var layout_array = arrayToText();
+
         $.ajax({
             type: "POST",
             url: "{{ url_for("classroom_info") }}",
-            data: {"classroom" : userinfo},
+            data: {"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]},
         })
     }
 
@@ -231,6 +238,10 @@
 
     function switchToAbout() {
         window.location = "about";
+    }
+
+    function switchToClassroomList() {
+        window.location = "classroom_list";
     }
 </script>
 </body>
