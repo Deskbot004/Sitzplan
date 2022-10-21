@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from logic import students, classrooms
+from logic import students, classrooms, preferences
 
 app = Flask(__name__)
 
@@ -49,6 +49,11 @@ def testfn():
 @app.route('/getclassroomlists', methods=["GET"])
 def testfn2():
     return classrooms.get_all_classroom_lists()
+
+
+@app.route('/getpreflists', methods=["GET"])
+def testfn3():
+    return preferences.get_all_pref_lists()
 
 
 @app.route("/classroom_info", methods=["POST"])

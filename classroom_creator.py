@@ -8,9 +8,15 @@ app = Flask(__name__)
 def hello():
     return render_template("classroom.html")
 
+
 @app.route("/classroom")
 def hello2():
     return render_template("classroom.html")
+
+
+@app.route('/getclassroomlists', methods=["GET"])
+def testfn2():
+    return classrooms.get_all_classroom_lists()
 
 
 @app.route("/classroom_info", methods=["POST"])

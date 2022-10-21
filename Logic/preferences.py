@@ -239,3 +239,19 @@ def clear_screen():
         print("Unsupported System detected. Please either use Windows or Linux.")
         time.sleep(5)
         return
+
+
+def get_all_pref_lists():
+    """
+    Simple function to find all preference lists in /data.
+    All found lists are then returned as an array.
+
+    :return: Array containing all found lists as String
+    """
+    file_arr = []
+
+    for file in os.listdir(pref_path):
+        if file.endswith(".json"):
+            file_arr.append(file[:-5])
+
+    return sorted(file_arr)
