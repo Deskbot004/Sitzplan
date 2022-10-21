@@ -8,6 +8,10 @@ app = Flask(__name__)
 def hello():
     return render_template("classroom.html")
 
+@app.route("/classroom")
+def hello2():
+    return render_template("classroom.html")
+
 
 @app.route("/classroom_info", methods=["POST"])
 def classroom_info():
@@ -16,6 +20,11 @@ def classroom_info():
         classrooms.save_classroom(classroom_dict["name"], classroom_dict["layout_untrimmed"], classroom_dict["layout"])
         print(classroom_dict)
         return "", 204
+
+
+@app.route('/classroom_list')
+def my_classrooms():
+    return render_template("classroom_list.html")
 
 
 if __name__ == "__main__":
