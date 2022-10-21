@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
     <div class="headerContainer">
 		<h2>My Classrooms</h2>
 	</div>
@@ -22,25 +24,7 @@
         </div>
     </div>
 <script>
-    function switchToClassroom() {
-        window.location = "classroom";
-    }
 
-    function switchToHome() {
-        window.location = "home";
-    }
-
-    function switchToSeating() {
-        window.location = "seating";
-    }
-
-    function switchToStudents() {
-        window.location = "students";
-    }
-
-    function switchToAbout() {
-        window.location = "about";
-    }
 </script>
 </body>
 </html>
