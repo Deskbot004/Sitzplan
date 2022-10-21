@@ -25,11 +25,10 @@
         <div class="center" col="2">
             <h2>List of students:</h2>
             <ul id="var_list">
-                <li class="elem">Test</li>
             </ul>
         </div>
         <div class="right" col="3">
-            <h2>Add new List</h2>
+            <h2>Test functions (can be deleted)</h2>
             <form>
                 <label for="filename">New List:</label><br>
                 <input type="text" id="filename" name="filename" value="Class">
@@ -37,7 +36,7 @@
             <button style="width:50%" onclick="AddNewList()">Create</button>
             <button style="width:50%" onclick="addElement('entry')">Add entry :)</button>
             <button style="width:50%" onclick="deleteElement('entry')">Deletes entry :(</button>
-            <button style="width:50%" onclick="getLists()">Reads?</button>
+            <button style="width:50%" onclick="getLists()">Refresh</button>
         </div>
     </div>
 <script>
@@ -51,6 +50,8 @@
                 addList(data);
             });
     }
+
+    window.onload = getLists();
 </script>
 </body>
 </html>
