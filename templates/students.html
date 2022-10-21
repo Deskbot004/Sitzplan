@@ -6,6 +6,7 @@
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/listings.js') }}"></script>
     <div class="headerContainer">
 
 		<h2>Students</h2>
@@ -22,8 +23,8 @@
             <li><a href="#about" onclick="switchToAbout()">About</a></li>
         </div>
         <div class="center" col="2">
-            <h2>List of Students:</h2>
-            <ul id="student_lists">
+            <h2>List of students:</h2>
+            <ul id="var_list">
                 <li class="elem">Test</li>
             </ul>
         </div>
@@ -40,45 +41,6 @@
         </div>
     </div>
 <script>
-    /* Adds given String as Element to the shown list */
-    function addElement(text) {
-        if (existsElement(text)) return;
-        var node = document.createElement('li');
-        node.appendChild(document.createTextNode(text));
-        node.className += 'elem';
-        document.querySelector('ul').appendChild(node);
-    }
-
-    function existsElement(text) {
-        var detected = 0;
-        const elem = document.getElementById('student_lists');
-        var ul_elements = elem.getElementsByTagName('li');
-        for (var i = 0, len = ul_elements.length; i < len; i++) {
-            if (text == ul_elements[i].innerHTML) {
-                detected = 1;
-            }
-        }
-        return detected;
-    }
-
-    /* Deletes Entry from list !!Does not delete in data yet!! */
-    function deleteElement(text) {
-        const elem = document.getElementById('student_lists');
-        var ul_elements = elem.getElementsByTagName('li');
-        for (var i = 0, len = ul_elements.length; i < len; i++) {
-            if (text == ul_elements[i].innerHTML) {
-                elem.removeChild(ul_elements[i]);
-                return;
-            }
-        }
-    }
-
-    function addList(element_arr) {
-        for (var i = 0; i < element_arr.length; i++) {
-            addElement(element_arr[i]);
-        }
-    }
-
     /*
         Should later iterate over every found list with function given by students.py.
         Then add them via addElement().

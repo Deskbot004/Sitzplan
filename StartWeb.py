@@ -35,11 +35,20 @@ def hello5():
     return render_template("about.html")
 
 
+@app.route('/classroom_list')
+def my_classrooms():
+    return render_template("classroom_list.html")
+
 # ________________________________________________________________________________________________________
 # Functions
 @app.route('/getstudentlists', methods=["GET"])
 def testfn():
     return students.get_all_student_lists()
+
+
+@app.route('/getclassroomlists', methods=["GET"])
+def testfn2():
+    return classrooms.get_all_classroom_lists()
 
 
 @app.route("/classroom_info", methods=["POST"])

@@ -19,6 +19,7 @@ Functions:
     get_classroom(string) -> string
     print_room(string)
     room_valid(room) -> boolean
+    get_all_classroom_lists() -> array
 '''
 
 path = os.path.abspath(os.getcwd())
@@ -242,3 +243,19 @@ def room_valid(room):
     print("not implemented yet")
     time.sleep(3)
     return
+
+
+def get_all_classroom_lists():
+    """
+    Simple function to find all classroom lists in /data.
+    All found lists are then returned as an array.
+
+    :return: Array containing all found lists as String
+    """
+    file_arr = []
+
+    for file in os.listdir(room_path):
+        if file.endswith(".txt"):
+            file_arr.append(file[:-4])
+
+    return sorted(file_arr)
