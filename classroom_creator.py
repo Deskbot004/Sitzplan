@@ -9,15 +9,17 @@ def hello():
     return render_template("classroom.html")
 
 
-@app.route("/ProcessUserInfo<string:userinfo>", methods=["POST"])
-def ProcessUserInfo(userinfo):
-    userinfo = json.loads(userinfo)
-    print()
-    print(userinfo)
-    print()
-    return "/"
+@app.route("/classroom_info", methods=["POST"])
+def classroom_info():
+    if request.method == "POST":
+        print(request.form)
+        return "", 204
 
 
 if __name__ == "__main__":
-        app.run(debug=True)
+        app.run(
+            host="127.0.0.1",
+            port=5000,
+            debug=True
+        )
 
