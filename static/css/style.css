@@ -52,7 +52,7 @@ p {
 	background: #FFFFFF;
 	display: flex;
 	flex-wrap: wrap;
-	column-count: 3;
+	column-count: 4;
 }
 
 @media screen and (max-width: 749px) {
@@ -98,7 +98,7 @@ p {
 
 /* Center */
 .center {
-	flex: 85%;
+	flex: 70%;
 	display: flex;
 	flex-direction: column;
 	background-color: #FFFFFF;
@@ -444,4 +444,21 @@ ul {
 @keyframes fadeIn {
   from {opacity: 0;}
   to {opacity:1 ;}
+}
+
+.right {
+	flex: 15%;
+	display: flex;
+	flex-direction: column;
+	background-color: #CCCCCC;
+	font-family: var(--font1);
+}
+
+.elem {
+
+}
+
+.elem:hover {
+	background-color: yellow;
+	cursor: pointer;
 }
