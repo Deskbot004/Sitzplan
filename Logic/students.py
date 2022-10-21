@@ -13,6 +13,7 @@ Functions:
     edit_students()
     delete_students()
     get_student_list(string) -> dictionary
+    get_all_student_list() -> array
 '''
 
 path = os.path.abspath(os.getcwd())
@@ -225,3 +226,19 @@ def get_student_list(name_class):
         student_dict = json.load(read_file)
         read_file.close()
     return student_dict
+
+
+def get_all_student_lists():
+    """
+    Simple function to find all student lists in /data.
+    All found lists are then returned as an array.
+
+    :return: Array containing all found lists as String
+    """
+    file_arr = []
+
+    for file in os.listdir(class_path):
+        if file.endswith(".json"):
+            file_arr.append(file[:-5])
+
+    return file_arr
