@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
     <div class="headerContainer">
 
 		<h2>Start menu</h2>
@@ -23,26 +25,5 @@
             <h2>Hier könnte ihre Werbung stehen! (Main Menu)</h2>
         </div>
     </div>
-<script>
-    function switchToClassroom() {
-        window.location = "classrooms";
-    }
-
-    function switchToHome() {
-        window.location = "home";
-    }
-
-    function switchToSeating() {
-        window.location = "seating";
-    }
-
-    function switchToStudents() {
-        window.location = "students";
-    }
-
-    function switchToAbout() {
-        window.location = "about";
-    }
-</script>
 </body>
 </html>

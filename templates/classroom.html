@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <title>Title</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -218,26 +219,6 @@
             url: "{{ url_for("classroom_info") }}",
             data: {"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]},
         })
-    }
-
-    function switchToClassroom() {
-        window.location = "classrooms";
-    }
-
-    function switchToHome() {
-        window.location = "home";
-    }
-
-    function switchToSeating() {
-        window.location = "seating";
-    }
-
-    function switchToStudents() {
-        window.location = "students";
-    }
-
-    function switchToAbout() {
-        window.location = "about";
     }
 
     function switchToClassroomList() {

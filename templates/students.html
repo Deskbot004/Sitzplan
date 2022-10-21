@@ -5,6 +5,7 @@
     <title>Title</title>
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
     <div class="headerContainer">
 
 		<h2>Students</h2>
@@ -39,26 +40,6 @@
         </div>
     </div>
 <script>
-    function switchToClassroom() {
-        window.location = "classrooms";
-    }
-
-    function switchToHome() {
-        window.location = "home";
-    }
-
-    function switchToSeating() {
-        window.location = "seating";
-    }
-
-    function switchToStudents() {
-        window.location = "students";
-    }
-
-    function switchToAbout() {
-        window.location = "about";
-    }
-
     /* Adds given String as Element to the shown list */
     function addElement(text) {
         if (existsElement(text)) return;
