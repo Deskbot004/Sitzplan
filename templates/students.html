@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <div class="headerContainer">
 
@@ -83,6 +84,11 @@
         Then add them via addElement().
     */
     function getLists() {
+        $.ajax({
+            type: "GET",
+            url: "{{ url_for("get_student_lists") }}",
+            data: {"classroom" : userinfo},
+        })
         return;
     }
 
