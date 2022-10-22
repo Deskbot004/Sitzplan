@@ -4,6 +4,7 @@ function addElement(text) {
     var node = document.createElement('li');
     node.appendChild(document.createTextNode(text));
     node.className += 'elem';
+    node.onclick = function(event){selectElement(event);};
     document.querySelector('ul').appendChild(node);
 }
 
@@ -35,4 +36,8 @@ function addList(element_arr) {
     for (var i = 0; i < element_arr.length; i++) {
         addElement(element_arr[i]);
     }
+}
+
+function selectElement(event) {
+	getInformation(event.target.innerHTML);
 }

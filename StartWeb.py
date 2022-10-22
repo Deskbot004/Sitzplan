@@ -39,11 +39,21 @@ def hello5():
 def my_classrooms():
     return render_template("classroom_list.html")
 
+
+@app.route('/students_list')
+def my_students():
+    return render_template("students_list.html")
+
 # ________________________________________________________________________________________________________
 # Functions
-@app.route('/getstudentlists', methods=["GET"])
+@app.route('/getstudentlists', methods=["POST","GET"])
 def testfn():
-    return students.get_all_student_lists()
+    if request.method == "POST":
+        print(request.form["result"])
+        print(students.get_student_list(request.form["result"]))
+        return students.get_student_list(request.form["result"])
+    elif request.method == "GET":
+        return students.get_all_student_lists()
 
 
 @app.route('/getclassroomlists', methods=["GET"])
