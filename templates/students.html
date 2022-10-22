@@ -53,6 +53,7 @@
 
     function getInformation(text){
         var info = $.post("/getstudentlists", {"result": text}, function(data) {alert(data[1]);});
+        switchToSList();
     }
 
     window.onload = getLists();

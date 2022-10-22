@@ -25,6 +25,7 @@
         <div class="center" col="2">
             <h2>List of students:</h2>
             <ul id="var_list">
+                <li>{{ data }}</li>
             </ul>
         </div>
         <div class="right" col="3">
@@ -40,6 +41,8 @@
         </div>
     </div>
 <script>
+    var = data;
+
     /*
         Should later iterate over every found list with function given by students.py.
         Then add them via addElement().
@@ -52,10 +55,12 @@
     }
 
     function getInformation(text){
-        var info = $.post("/getstudentlists", {"result": text}, function(data) {alert(data[1]);});
+        //var info = $.post("/getstudentlists", {"result": text}, function(data) {alert(data[1]);});
+        return 1;
     }
 
-    window.onload = getLists();
+    window.onload() = alert(data);
+
 </script>
 </body>
 </html>

@@ -51,7 +51,8 @@ def testfn():
     if request.method == "POST":
         print(request.form["result"])
         print(students.get_student_list(request.form["result"]))
-        return students.get_student_list(request.form["result"])
+        #return students.get_student_list(request.form["result"])
+        return render_template("students_list.html")
     elif request.method == "GET":
         return students.get_all_student_lists()
 
