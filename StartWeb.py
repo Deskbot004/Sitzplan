@@ -62,8 +62,8 @@ def testfn():
 def testfn2():
     if request.method == "POST":
         print(request.form["result"])
-        print(classrooms.get_classroom(request.form["result"]))
-        return classrooms.get_classroom(request.form["result"])
+        print(classrooms.get_classroom_untrimmed(request.form["result"]))
+        return classrooms.get_classroom_untrimmed(request.form["result"])
     elif request.method == "GET":
         return classrooms.get_all_classroom_lists()
 

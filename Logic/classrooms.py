@@ -203,7 +203,23 @@ def delete_classroom():
 
 def get_classroom(name_room):
     """
-    This function returns a room from an existing .txt file.
+    This function returns a trimmed room from an existing .txt file.
+
+    :param name_room: Name of the room as a string
+    :return: String containing the room information
+    """
+
+    room = ""
+    if os.path.exists(room_path + name_room + ".txt"):
+        read_file = open(room_path + name_room + ".txt", "r")
+        room = read_file.read()
+        read_file.close()
+    return room
+
+
+def get_classroom_untrimmed(name_room):
+    """
+    This function returns a untrimmed room from an existing file.
 
     :param name_room: Name of the room as a string
     :return: String containing the room information
