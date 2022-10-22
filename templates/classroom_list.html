@@ -26,14 +26,12 @@
             </ul>
         </div>
         <div class="right" col="3">
-            <h2>Test functions (can be deleted)</h2>
+            <h2>Functions</h2>
             <form>
-                <label for="filename">New List:</label><br>
-                <input type="text" id="filename" name="filename" value="Class">
+                <label for="filename">New Room:</label><br>
+                <input type="text" id="filename" name="filename" value="classroom">
             </form>
-            <button style="width:50%" onclick="AddNewList()">Create</button>
-            <button style="width:50%" onclick="addElement('entry')">Add entry :)</button>
-            <button style="width:50%" onclick="deleteElement('entry')">Deletes entry :(</button>
+            <button style="width:50%" onclick="createInformation()">Create</button>
             <button style="width:50%" onclick="getLists()">Refresh</button>
         </div>
     </div>
@@ -47,6 +45,10 @@
             function(data) {
                 addList(data);
             });
+    }
+
+    function createInformation() {
+        sendInformation(document.getElementById('filename').value);
     }
 
     function sendInformation(text){
