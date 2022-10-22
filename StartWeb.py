@@ -3,6 +3,7 @@ from logic import students, classrooms, preferences
 
 app = Flask(__name__)
 
+#app.config["SERVER_NAME"] = "randomseatings.de:5000"
 
 # Websites
 @app.route('/')
@@ -78,7 +79,6 @@ def classroom_info():
 
 if __name__ == "__main__":
     app.run(
-        host="127.0.0.1",
+        host="0.0.0.0",
         port=5000,
-        debug=True
     )
