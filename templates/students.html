@@ -52,8 +52,7 @@
     }
 
     function getInformation(text){
-        var info = $.post("/getstudentlists", {"result": text}, function(data) {alert(data[1]);});
-        switchToSList();
+        var info = $.post("/getstudentlists", {"result": text}, function(data) {document.cookie=data;});
     }
 
     window.onload = getLists();
