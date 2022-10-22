@@ -210,8 +210,8 @@ def get_classroom(name_room):
     """
 
     room = ""
-    if os.path.exists(room_path + name_room + ".txt"):
-        read_file = open(room_path + name_room + ".txt", "r")
+    if os.path.exists(room_path + name_room):
+        read_file = open(room_path + name_room, "r")
         room = read_file.read()
         read_file.close()
     return room

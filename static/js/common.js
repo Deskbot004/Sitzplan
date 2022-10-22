@@ -1,5 +1,5 @@
 function switchToClassroom() {
-    window.location = "classrooms";
+    window.location = "classroom_list";
 }
 
 function switchToHome() {

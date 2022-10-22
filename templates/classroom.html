@@ -22,6 +22,7 @@
             <li><a href="#about" onclick="switchToAbout()">About</a></li>
         </div>
     <div class="center" col="2">
+        <h2 id="head_text">Classroom </h2>
             <div class="flex-container">
                 <div class=" menu desktop-6-cols phone-12-cols">
                     <div class="grid-container grid-parent">
@@ -47,7 +48,7 @@
                             <span class="popuptext" id="Invalid">Invalid classroom!</span>
                             </button>
                         </li>
-                        <li><button onclick="switchToClassroomList()">My Classrooms</button></li>
+                        <li><button onclick="switchToClassroom()">My Classrooms</button></li>
                     </ul>
                     <p id="demo"></p>
                 </div>
@@ -221,12 +222,9 @@
         })
     };
 
-    function switchToClassroomList() {
-        window.location = "classroom_list";
-    };
-
     // Fills the grid with a loaded classroom
     function fillGrid(room) {
+        if(room.length <= 0) return;
         var room = room.replace(/;/g, "");
 
         for (num = 0; num < room.length; num++) {
@@ -250,6 +248,21 @@
     // var test_room_str = "1111111111;3333333333;0000000333;0000000000;0000000000;0000000000;0000000000;0000000000;0000000000;0000000000;"
     // fillGrid(test_room_str);
 
+    var data = localStorage.getItem('selected');
+
+    function getInformation(text){
+        var info = $.post("/getclassroomlists", {"result": text}, function(data) {fillGrid(data);});
+    }
+
+
+    function start(){
+        getInformation(data);
+        document.getElementById('head_text').innerHTML += data;
+        document.getElementById('filename').value = data;
+    }
+
+
+    window.onload = start();
 </script>
 </body>
 </html>

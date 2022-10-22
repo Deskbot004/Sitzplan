@@ -58,9 +58,14 @@ def testfn():
         return students.get_all_student_lists()
 
 
-@app.route('/getclassroomlists', methods=["GET"])
+@app.route('/getclassroomlists', methods=["POST", "GET"])
 def testfn2():
-    return classrooms.get_all_classroom_lists()
+    if request.method == "POST":
+        print(request.form["result"])
+        print(classrooms.get_classroom(request.form["result"]))
+        return classrooms.get_classroom(request.form["result"])
+    elif request.method == "GET":
+        return classrooms.get_all_classroom_lists()
 
 
 @app.route('/getpreflists', methods=["GET"])

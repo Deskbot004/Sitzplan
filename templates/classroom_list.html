@@ -49,6 +49,11 @@
             });
     }
 
+    function sendInformation(text){
+        localStorage.setItem('selected', text);
+        window.location = "classrooms";
+    }
+
     window.onload = getLists();
 </script>
 </body>
