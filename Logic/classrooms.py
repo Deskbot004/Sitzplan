@@ -103,6 +103,7 @@ def save_classroom(class_name, class_information, class_information_trimmed):
     :param class_information_trimmed: Information about the classroom trimmed for the algorithm
     :return: void
     """
+
     file = open(room_path + class_name + ".txt", "w")
     file.write(class_information_trimmed)
     file.close()
