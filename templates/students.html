@@ -51,15 +51,12 @@
             });
     }
 
-    function getInformation(text){
-        var info = $.post("/getstudentlists", {"result": text}, function(data) {document.cookie=data;});
+    function sendInformation(text){
+        localStorage.setItem('selected', text);
+        window.location = "students_list";
     }
 
     window.onload = getLists();
-
-    function switchToSList() {
-        window.location = "students_list";
-    }
 </script>
 </body>
 </html>

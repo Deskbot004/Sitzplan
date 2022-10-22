@@ -38,6 +38,12 @@ function addList(element_arr) {
     }
 }
 
+function addDict(element_dict) {
+	for (var elem of Object.keys(element_dict)) {
+		addElement(element_dict[elem])
+	}
+}
+
 function selectElement(event) {
-	getInformation(event.target.innerHTML);
+	sendInformation(event.target.innerHTML);
 }
