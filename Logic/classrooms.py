@@ -269,10 +269,17 @@ def get_all_classroom_lists():
 
     :return: Array containing all found lists as String
     """
-    file_arr = []
+    file_dict = {}
+    entry = 1
 
     for file in os.listdir(room_path):
         if file.endswith(".txt"):
-            file_arr.append(file[:-4])
+            file_dict[entry] = file[:-4]
+            entry = entry + 1
 
-    return sorted(file_arr)
+    # Sort by value
+    file_dict = {int(k): v for k, v in file_dict.items()}
+    file_dict = dict(sorted(file_dict.items()))
+    file_dict = {str(k): v for k, v in file_dict.items()}
+
+    return file_dict
