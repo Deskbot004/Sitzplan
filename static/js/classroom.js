@@ -14,6 +14,8 @@
 		sendClassroomToFlask()
 		renaming(string, string) -> Boolean
 		existsElement(string)
+		getInformation(string)
+		deleteInformation()
 */
 
 
@@ -266,10 +268,8 @@ function renaming(old_name, new_name) {
         popup.innerHTML = popup.innerHTML.replace("free", new_name);
         popup.classList.toggle("show");
         return 0;
-    }  else {
-	    var popup = document.getElementById("saved");
-	    popup.classList.toggle("show");
     }
+
     localStorage.removeItem("exists");
 	document.getElementById('head_text').innerHTML = document.getElementById('head_text').innerHTML.replace(old_name, new_name);
 	$.post("/delclassroom", { "result": old_name }, function(old_data) {});
@@ -298,4 +298,24 @@ function existsElement(text) {
 		}
 	};
 	return 0;
+};
+
+
+/*
+    Fill grid with information if a classroom is loaded from the server.
+
+    @param text: string of the classroom name
+    @return: void
+*/
+function getInformation(text){
+    $.post("/getclassroomlists", {"result": text}, function(data) {fillGrid(classroom, grid, data);});
+};
+
+/*
+    Deletes the current classroom from the server.
+
+    @return: void
+*/
+function deleteInformation() {
+    $.post("/delclassroom", { "result": data }, function(data) {alert("Classroom deleted");switchToClassroom();});
 };

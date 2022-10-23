@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="{{ url_for('static', filename='js/common.js') }}"></script>
     <script src="{{ url_for('static', filename='js/listings.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/selected.js') }}"></script>
     <div class="headerContainer">
 
 		<h2>Students</h2>
@@ -35,24 +36,16 @@
                 <input type="text" id="filename" name="filename" value="Class">
             </form>
             <button style="width:50%" onclick="AddNewList()">Create</button>
-            <button style="width:50%" onclick="addElement('entry')">Add entry :)</button>
-            <button style="width:50%" onclick="deleteElement('entry')">Deletes entry :(</button>
             <button style="width:50%" onclick="getInformation(data)">Refresh</button>
         </div>
     </div>
 <script>
     var data = localStorage.getItem('selected');
+    window.onload = start();
 
     function getInformation(text){
         var info = $.post("/getstudentlists", {"result": text}, function(data) {addDict(data);});
     }
-
-    function start() {
-        getInformation(data);
-        document.getElementById('head_text').innerHTML += data;
-    }
-
-    window.onload = start();
 </script>
 </body>
 </html>
