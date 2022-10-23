@@ -283,3 +283,15 @@ def get_all_classroom_lists():
     file_dict = {str(k): v for k, v in file_dict.items()}
 
     return file_dict
+
+
+def delete_classroom_web(name):
+    """
+    Deletes an existing classroom from webpage.
+
+    :param name: Name of the room to be deleted
+    :return: void
+    """
+    os.remove(room_path + name + ".txt")
+
+

@@ -49,6 +49,7 @@
                             </button>
                         </li>
                         <li><button onclick="switchToClassroom()">My Classrooms</button></li>
+                        <li><button style="width:50%" onclick="deleteInformation()">Delete this room</button></li>
                     </ul>
                     <p id="demo"></p>
                 </div>
@@ -261,6 +262,11 @@
         getInformation(data);
         document.getElementById('head_text').innerHTML += data;
         document.getElementById('filename').value = data;
+    }
+
+    function deleteInformation() {
+        var test = $.post("/delclassroom", { "result": data }, function(data) {alert("Classroom deleted");});
+        switchToClassroom();
     }
 
     console.log(classroom)
