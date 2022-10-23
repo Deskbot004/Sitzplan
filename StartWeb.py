@@ -82,6 +82,14 @@ def classroom_info():
         return "", 204
 
 
+@app.route("/delclassroom", methods=["POST"])
+def delclassroom():
+    if request.method == "POST":
+        print(request.form["result"])
+        classrooms.delete_classroom_web(request.form["result"])
+        return "", 204
+
+
 if __name__ == "__main__":
     app.run(
         host="0.0.0.0",

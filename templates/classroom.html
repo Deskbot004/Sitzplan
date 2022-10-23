@@ -285,8 +285,7 @@
     }
 
     function deleteInformation() {
-        var test = $.post("/delclassroom", { "result": data }, function(data) {alert("Classroom deleted");});
-        switchToClassroom();
+        var test = $.post("/delclassroom", { "result": data }, function(data) {alert("Classroom deleted");switchToClassroom();});
     }
 
     console.log(classroom)
