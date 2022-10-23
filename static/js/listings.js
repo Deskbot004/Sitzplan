@@ -76,7 +76,7 @@ function deleteElement(text) {
 function addList(element_arr) {
     for (var i = 0; i < element_arr.length; i++) {
         addElement(element_arr[i]);
-    }
+    };
 }
 
 /*
@@ -87,10 +87,16 @@ function addList(element_arr) {
 */
 function addDict(element_dict) {
 	for (var elem of Object.keys(element_dict)) {
-		addElement(element_dict[elem])
-	}
+		addElement(element_dict[elem]);
+	};
 }
 
+/*
+	Executes sendInformation for the selected Element.
+
+	@param event: The selected element itself
+	@return: void
+*/
 function selectElement(event) {
 	sendInformation(event.target.innerHTML);
 }

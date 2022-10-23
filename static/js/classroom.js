@@ -12,6 +12,7 @@
 		addColor()
 		addColorClick()
 		sendClassroomToFlask()
+		renaming(string, string)
 
 		can maybe be made generic for lists
 		start()
@@ -236,19 +237,78 @@ function sendClassroomToFlask() {
             return
         default: break;
     }
+
+
     var name = document.getElementById("filename").value;
     var layout_array = arrayToText(classroom);
-    var popup = document.getElementById("saved");
-    popup.classList.toggle("show");
 
-	document.getElementById('head_text').innerHTML = document.getElementById('head_text').innerHTML.replace(data, name);
-	$.post("/delclassroom", { "result": data }, function(data) {});
+	if (name != data) {
+		if(!renaming(data, name)) return;
+	}
+
+	var popup = document.getElementById("saved");
+	popup.classList.toggle("show");
+
+	data = name;
 
     $.post("/classroom_info",
             {"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]},
             function(data) {});
 
 };
+
+/*
+	Function that renames a classroom if the name does not already exist.
+
+	@param old_name: Old name of the classroom as String
+	@param new_name: New name of the classroom as String
+	@return: Boolean if successful or not
+*/
+function renaming(old_name, new_name) {
+	existsElement(new_name);
+	if (localStorage.getItem("exists")) {
+        var popup = document.getElementById("exists");
+        popup.innerHTML = popup.innerHTML.replace("free", new_name);
+        popup.classList.toggle("show");
+        return 0;
+    }  else {
+	    var popup = document.getElementById("saved");
+	    popup.classList.toggle("show");
+    }
+    localStorage.removeItem("exists");
+	document.getElementById('head_text').innerHTML = document.getElementById('head_text').innerHTML.replace(old_name, new_name);
+	$.post("/delclassroom", { "result": old_name }, function(old_data) {});
+	return 1;
+}
+
+/*
+	Function to see if a classroom name already exists in data.
+
+	@param text: Name of the classroom
+	@return: void
+*/
+function existsElement(text) {
+	localStorage.setItem('exists', text);
+	$.get("/getclassroomlists", function(data) { existsElement_helper(data);});
+}
+
+
+/*
+	Helper function to existsElement(string).
+
+	@param text: Dictionary with all existing classroom names
+	@return: void
+*/
+function existsElement_helper(data_dict) {
+	var text = localStorage.getItem("exists");
+	localStorage.removeItem("exists");
+	for (var elem of Object.keys(data_dict)) {
+		if(data_dict[elem] == text) {
+			localStorage.setItem('exists', 1);
+		}
+	};
+	localStorage.setItem('exists', 0);
+}
 
 
 /*

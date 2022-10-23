@@ -32,7 +32,9 @@
                 <label for="filename">New Room:</label><br>
                 <input type="text" id="filename" name="filename" value="classroom">
             </form>
-            <button style="width:50%" onclick="createInformation()">Create</button>
+            <button style="width:50%" class="popup" onclick="createInformation()">Create
+                <span class="popuptext" id="exists">Classroom free already exists!</span>
+            </button>
             <button style="width:50%" onclick="getLists()">Refresh</button>
         </div>
     </div>
@@ -49,7 +51,15 @@
     }
 
     function createInformation() {
-        sendInformation(document.getElementById('filename').value);
+        var text = document.getElementById('filename').value;
+
+        if (existsElement(text)) {
+            var popup = document.getElementById("exists");
+            popup.innerHTML = popup.innerHTML.replace("free", text);
+            popup.classList.toggle("show");
+            return;
+        }
+        sendInformation(text);
     }
 
     function sendInformation(text){
