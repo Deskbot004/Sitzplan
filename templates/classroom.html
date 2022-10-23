@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/classroom.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <title>Title</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -70,6 +71,8 @@
     var classroom = new Array(10);                              // create empty array for classroom data
 
 
+    // call the start function upon opening the page
+    window.onload = start();
 
     // track if mouse button is held down
     window.mouseDown = false;
@@ -101,19 +104,21 @@
     }
 
     /*
-    Changes the color variable that is used to color the background of grid divs
-    @param color_arg: The new color as a string (e.g. "white")
-    @return: void
+        Changes the color variable that is used to color the background of grid divs.
+
+        @param color_arg: The new color as a string (e.g. "white")
+        @return: void
     */
     function changeColor(color_arg) {
         color = color_arg;
     };
 
     /*
-    Updates the classroom array with new color values
-    @param array_id: The array entry that is to be changed as a double-digit string
-    @param color: The new color as a string (e.g. "white")
-    return: void
+        Updates the classroom array with new color values.
+
+        @param array_id: The array entry that is to be changed as a double-digit string
+        @param color: The new color as a string (e.g. "white")
+        return: void
     */
     function changeArray(array_id, color) {
         var x_val = array_id[0]
@@ -136,8 +141,9 @@
     };
 
     /*
-    Changes the background color of a grid div upon downward press of the left mouse button
-    @return: void
+        Changes the background color of a grid div upon downward press of the left mouse button.
+
+        @return: void
     */
     function addColor() {
         if (window.mouseDown) {
@@ -148,8 +154,9 @@
     };
 
     /*
-    Changes the background color of a grid
-    @return: void
+        Changes the background color of a grid.
+
+        @return: void
     */
     function addColorClick() {
         this.style.backgroundColor = color;
@@ -158,8 +165,9 @@
     };
 
     /*
-    Converts the classroom array into a text string where the rows are separated by semicolons
-    @return: string of the classroom data
+        Converts the classroom array into a text string where the rows are separated by semicolons.
+
+        @return: string of the classroom data
     */
     function arrayToText() {
         var width = detectWidthToTrim();
@@ -185,8 +193,9 @@
     };
 
     /*
-    Detects if columns can be trimmed (are only filled with zeros) from the array representing the classroom data
-    @return: list with two entries describing the interval of columns that can't be trimmed
+        Detects if columns can be trimmed (are only filled with zeros) from the array representing the classroom data.
+
+        @return: list with two entries describing the interval of columns that can't be trimmed
     */
     function detectWidthToTrim() {
         var start_width = 99;
@@ -195,23 +204,24 @@
         var entry = 0;
 
         for (let x = 0; x < grid_height; x++) {
-	        found_num = 0;
-	        for (let y = 0; y < grid_length; y++) {
+            found_num = 0;
+            for (let y = 0; y < grid_length; y++) {
                 entry = classroom[x][y];
                 if (entry != 0 && found_num == 0) {
                     found_num = 1;
                     if (y < start_width) start_width = y;
                 } else if (entry != 0) {
                     if (y > end_width) end_width = y;
-      	        }
+                }
             }
         }
         return [start_width, end_width];
     };
 
     /*
-    Detects if rows can be trimmed (are only filled with zeros) from the array representing the classroom data
-    @return: list with two entries describing the interval of columns that can't be trimmed
+        Detects if rows can be trimmed (are only filled with zeros) from the array representing the classroom data.
+
+        @return: list with two entries describing the interval of columns that can't be trimmed
     */
     function detectHeightToTrim() {
         var start_height = 99;
@@ -219,8 +229,8 @@
         var found_num = 0;
 
         for (let x = 0; x < grid_height; x++) {
-	        found_num = 0;
-	        for (let y = 0; y < grid_length; y++) {
+            found_num = 0;
+            for (let y = 0; y < grid_length; y++) {
                 if (classroom[x][y] != 0) found_num = 1;
             }
             if (found_num == 1) {
@@ -233,15 +243,16 @@
     };
 
     /*
-    Checks for a valid classroom (at least one teacher and one student desk in the room)
-    @return: double-digit string describing whether student and teacher desks are present
+        Checks for a valid classroom (at least one teacher and one student desk in the room).
+
+        @return: double-digit string describing whether student and teacher desks are present
     */
     function check_validity() {
         var student_found = 0;
         var teacher_found = 0;
         for (let x = 0; x < grid_height; x++) {
-	        found_num = 0;
-	        for (let y = 0; y < grid_length; y++) {
+            found_num = 0;
+            for (let y = 0; y < grid_length; y++) {
                 if (classroom[x][y] == 1) student_found = 1;
                 if (classroom[x][y] == 3) teacher_found = 1;
             }
@@ -250,8 +261,9 @@
     };
 
     /*
-    Sends the string representing the classroom data to the server
-    @return: void
+        Sends the string representing the classroom data to the server.
+
+        @return: void
     */
     function sendClassroomToFlask() {
         switch (check_validity()) {
@@ -282,9 +294,10 @@
     };
 
     /*
-    Fills the grid with a loaded classroom
-    @param room: string of the loaded classroom
-    @return: void
+        Fills the grid with a loaded classroom.
+
+        @param room: string of the loaded classroom
+        @return: void
     */
     function fillGrid(room) {
         if(room.length <= 0) return;
@@ -314,34 +327,36 @@
     };
 
     /*
-    Fill grid with information if a classroom is loaded from the server
-    @param text: string of the classroom name
-    @return: void
+        Fill grid with information if a classroom is loaded from the server.
+
+        @param text: string of the classroom name
+        @return: void
     */
     function getInformation(text){
         var info = $.post("/getclassroomlists", {"result": text}, function(data) {fillGrid(data);});
     }
 
     /*
-    Is called intially to set various data
-    @eturn: void
+        Is called intially to set various data.
+
+        @eturn: void
     */
     function start(){
         getInformation(data);
         document.getElementById('head_text').innerHTML += data;
         document.getElementById('filename').value = data;
+        //document.localStorage.removeItem('selected');
     }
 
     /*
-    Deletes the current classroom from the server
-    @return: void
+        Deletes the current classroom from the server.
+
+        @return: void
     */
     function deleteInformation() {
         var test = $.post("/delclassroom", { "result": data }, function(data) {alert("Classroom deleted");switchToClassroom();});
     }
 
-    // call the start function upon opening the page
-    window.onload = start();
 </script>
 </body>
 </html>

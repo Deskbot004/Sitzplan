@@ -101,6 +101,7 @@ def delete_classroom_web(name):
     :return: void
     """
     os.remove(room_path + name + ".txt")
+    os.remove(room_path + name)
 
 
 '''
