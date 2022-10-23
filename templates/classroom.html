@@ -45,7 +45,10 @@
                         </form></li>
                         <li>
                             <button class="popup" onclick="sendClassroomToFlask()">Save Classroom
-                            <span class="popuptext" id="Invalid">Invalid classroom!</span>
+                            <span class="popuptext" id="saved">Classroom saved!</span>
+                            <span class="popuptext" id="no_student">Your classroom needs at least one student desk!</span>
+                            <span class="popuptext" id="no_teacher">Your classroom needs at least one teacher desk!</span>
+                            <span class="popuptext" id="no_student_or_teacher">Your classroom needs at least one student and one teacher desk!</span>
                             </button>
                         </li>
                         <li><button onclick="switchToClassroom()">My Classrooms</button></li>
@@ -213,8 +216,25 @@
     };
 
     function sendClassroomToFlask() {
+        switch (check_validity()) {
+            case "00":
+                var popup = document.getElementById("no_student_or_teacher");
+                popup.classList.toggle("show");
+                return
+            case "01":
+                var popup = document.getElementById("no_student");
+                popup.classList.toggle("show");
+                return
+            case "10":
+                var popup = document.getElementById("no_teacher");
+                popup.classList.toggle("show");
+                return
+            default: break;
+        }
         var name = document.getElementById("filename").value;
         var layout_array = arrayToText();
+        var popup = document.getElementById("saved");
+        popup.classList.toggle("show");
 
         $.ajax({
             type: "POST",
