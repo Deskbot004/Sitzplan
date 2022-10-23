@@ -241,9 +241,13 @@ function sendClassroomToFlask() {
     var popup = document.getElementById("saved");
     popup.classList.toggle("show");
 
+	document.getElementById('head_text').innerHTML = document.getElementById('head_text').innerHTML.replace(data, name);
+	$.post("/delclassroom", { "result": data }, function(data) {});
+
     $.post("/classroom_info",
             {"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]},
             function(data) {});
+
 };
 
 

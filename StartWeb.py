@@ -61,8 +61,6 @@ def testfn():
 @app.route('/getclassroomlists', methods=["POST", "GET"])
 def testfn2():
     if request.method == "POST":
-        print(request.form["result"])
-        print(classrooms.get_classroom_untrimmed(request.form["result"]))
         return classrooms.get_classroom_untrimmed(request.form["result"])
     elif request.method == "GET":
         return classrooms.get_all_classroom_lists()
@@ -78,14 +76,12 @@ def classroom_info():
     if request.method == "POST":
         classroom_dict = request.form
         classrooms.save_classroom(classroom_dict["name"], classroom_dict["layout_untrimmed"], classroom_dict["layout"])
-        print(classroom_dict)
         return "", 204
 
 
 @app.route("/delclassroom", methods=["POST"])
 def delclassroom():
     if request.method == "POST":
-        print(request.form["result"])
         classrooms.delete_classroom_web(request.form["result"])
         return "", 204
 
