@@ -336,8 +336,7 @@
     @return: void
     */
     function deleteInformation() {
-        var test = $.post("/delclassroom", { "result": data }, function(data) {alert("Classroom deleted");});
-        switchToClassroom();
+        var test = $.post("/delclassroom", { "result": data }, function(data) {alert("Classroom deleted");switchToClassroom();});
     }
 
     // call the start function upon opening the page
