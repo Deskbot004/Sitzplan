@@ -12,12 +12,8 @@
 		addColor()
 		addColorClick()
 		sendClassroomToFlask()
-		renaming(string, string)
-
-		can maybe be made generic for lists
-		start()
-		deleteInformation()
-		getInformation(string)
+		renaming(string, string) -> Boolean
+		existsElement(string)
 */
 
 
@@ -131,8 +127,8 @@ function check_validity(classroom) {
     @return: void
 */
 function changeArray(classroom, array_id, color) {
-    var x_val = array_id[0]
-    var y_val = array_id[1]
+    var x_val = array_id[0];
+    var y_val = array_id[1];
     switch(color) {
         case "white":
             classroom[x_val][y_val] = 0;
@@ -265,8 +261,7 @@ function sendClassroomToFlask() {
 	@return: Boolean if successful or not
 */
 function renaming(old_name, new_name) {
-	existsElement(new_name);
-	if (localStorage.getItem("exists")) {
+	if (existsElement(new_name)) {
         var popup = document.getElementById("exists");
         popup.innerHTML = popup.innerHTML.replace("free", new_name);
         popup.classList.toggle("show");
@@ -279,7 +274,7 @@ function renaming(old_name, new_name) {
 	document.getElementById('head_text').innerHTML = document.getElementById('head_text').innerHTML.replace(old_name, new_name);
 	$.post("/delclassroom", { "result": old_name }, function(old_data) {});
 	return 1;
-}
+};
 
 /*
 	Function to see if a classroom name already exists in data.
@@ -288,55 +283,19 @@ function renaming(old_name, new_name) {
 	@return: void
 */
 function existsElement(text) {
-	localStorage.setItem('exists', text);
-	$.get("/getclassroomlists", function(data) { existsElement_helper(data);});
-}
+	var data_dict = {}
 
+	$.ajax({
+		type: "GET",
+		url: "/getclassroomlists",
+		async: false,
+		success: function(data) { data_dict = data;}
+	});
 
-/*
-	Helper function to existsElement(string).
-
-	@param text: Dictionary with all existing classroom names
-	@return: void
-*/
-function existsElement_helper(data_dict) {
-	var text = localStorage.getItem("exists");
-	localStorage.removeItem("exists");
 	for (var elem of Object.keys(data_dict)) {
 		if(data_dict[elem] == text) {
-			localStorage.setItem('exists', 1);
+			return 1;
 		}
 	};
-	localStorage.setItem('exists', 0);
-}
-
-
-/*
-	Is called initially to set various data.
-
-	@return: void
-*/
-function start(){
-    getInformation(data);
-    document.getElementById('head_text').innerHTML += data;
-    document.getElementById('filename').value = data;
-}
-
-/*
-    Deletes the current classroom from the server.
-
-    @return: void
-*/
-function deleteInformation() {
-    var test = $.post("/delclassroom", { "result": data }, function(data) {alert("Classroom deleted");switchToClassroom();});
-}
-
-/*
-    Fill grid with information if a classroom is loaded from the server.
-
-    @param text: string of the classroom name
-    @return: void
-*/
-function getInformation(text){
-    var info = $.post("/getclassroomlists", {"result": text}, function(data) {fillGrid(classroom, grid, data);});
-}
+	return 0;
+};

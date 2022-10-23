@@ -16,9 +16,9 @@ def hello6():
     return render_template("startsite.html")
 
 
-@app.route('/classrooms')
-def hello2():
-    return render_template("classroom.html")
+@app.route('/classroom')
+def my_classrooms():
+    return render_template("classroom_list.html")
 
 
 @app.route('/seating')
@@ -28,7 +28,7 @@ def hello3():
 
 @app.route('/students')
 def hello4():
-    return render_template("students.html")
+    return render_template("students_list.html")
 
 
 @app.route('/about')
@@ -36,14 +36,14 @@ def hello5():
     return render_template("about.html")
 
 
-@app.route('/classroom_list')
-def my_classrooms():
-    return render_template("classroom_list.html")
+@app.route('/classroom_edit')
+def hello2():
+    return render_template("classroom_editor.html")
 
 
-@app.route('/students_list')
+@app.route('/students_class')
 def my_students():
-    return render_template("students_list.html")
+    return render_template("students_class.html")
 
 # ________________________________________________________________________________________________________
 # Functions

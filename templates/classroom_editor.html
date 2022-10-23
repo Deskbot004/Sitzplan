@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/selected.js') }}"></script>
     <script src="{{ url_for('static', filename='js/classroom.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <title>Title</title>
@@ -24,7 +25,7 @@
             <li><a href="#about" onclick="switchToAbout()">About</a></li></ul>
         </div>
     <div class="center" col="2">
-        <h2 id="head_text">Classroom </h2>
+        <h2 id="head_text">Classroom free</h2>
             <div class="flex-container">
                 <div class=" menu desktop-6-cols phone-12-cols">
                     <div class="grid-container grid-parent">
@@ -67,7 +68,7 @@
     const divs = document.querySelectorAll('.grid-item');       // get divs that make up the grid
     var data = localStorage.getItem('selected');                // get information from classroom_list
     var color = 'white';                                        // set standard color to white
-    var grid = Array.from(divs)                                 // create grid from divs
+    var grid = Array.from(divs);                                // create grid from divs
     var classroom = new Array(10);                              // create empty array for classroom data
 
     // call the start function upon opening the page
@@ -77,10 +78,10 @@
     window.mouseDown = false;
     document.onmousedown = function() {
         window.mouseDown = true;
-    }
+    };
     document.onmouseup = function() {
         window.mouseDown = false;
-    }
+    };
 
     // fill classroom with row arrays
     for (var i = 0; i < classroom.length; i++) {

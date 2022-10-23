@@ -4,7 +4,7 @@
 */
 
 function switchToClassroom() {
-    window.location = "classroom_list";
+    window.location = "classroom";
 }
 
 function switchToHome() {
