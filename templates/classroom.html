@@ -36,7 +36,7 @@
                 <div class=" menu desktop-6-cols phone-12-cols">
                     <ul>
                         <li><button onclick="changeColor('white')">Clear</button></li>
-                        <li><button onclick="changeColor('lightblue')">Desk</button></li>
+                        <li><button onclick="changeColor('lightblue')">Student Desk</button></li>
                         <li><button onclick="changeColor('orange')">Unusable Desk</button></li>
                         <li><button onclick="changeColor('pink')">Teacher Desk</button></li>
                         <li><form>
@@ -60,6 +60,16 @@
         </div>
     </div>
 <script>
+    const grid_length = 10;                                     // set grid length
+    const grid_height = 10;                                     // set grid height
+    const divs = document.querySelectorAll('.grid-item');       // get divs that make up the grid
+    var data = localStorage.getItem('selected');                // get information from classroom_list
+    var color = 'white';                                        // set standard color to white
+    var grid = Array.from(divs)                                 // create grid from divs
+    var classroom = new Array(10);                              // create empty array for classroom data
+
+
+
     // track if mouse button is held down
     window.mouseDown = false;
     document.onmousedown = function() {
@@ -69,22 +79,12 @@
         window.mouseDown = false;
     }
 
-    // create empty array
-    var classroom = new Array(10);
-    const grid_length = 10;
-    const grid_height = 10;
+    // fill classroom with row arrays
     for (var i = 0; i < classroom.length; i++) {
         classroom[i] = new Array(10).fill(0);
     }
 
-
-    const divs = document.querySelectorAll('.grid-item');
-    var color = 'white';
-
-    var x = 1;
-    var y = 2;
-
-    grid = Array.from(divs)
+    // add mouse events to grid divs
     grid.forEach(div => {
         div.addEventListener('mouseover', addColor);
         div.addEventListener('mousedown', addColorClick);
@@ -99,11 +99,21 @@
         }
     }
 
-    console.log("test");
+    /*
+    Changes the color variable that is used to color the background of grid divs
+    @param color_arg: The new color as a string (e.g. "white")
+    @return: void
+    */
     function changeColor(color_arg) {
         color = color_arg;
     };
 
+    /*
+    Updates the classroom array with new color values
+    @param array_id: The array entry that is to be changed as a double-digit string
+    @param color: The new color as a string (e.g. "white")
+    return: void
+    */
     function changeArray(array_id, color) {
         var x_val = array_id[0]
         var y_val = array_id[1]
@@ -124,6 +134,10 @@
         }
     };
 
+    /*
+    Changes the background color of a grid div upon downward press of the left mouse button
+    @return: void
+    */
     function addColor() {
         if (window.mouseDown) {
             this.style.backgroundColor = color;
@@ -132,12 +146,20 @@
         }
     };
 
+    /*
+    Changes the background color of a grid
+    @return: void
+    */
     function addColorClick() {
         this.style.backgroundColor = color;
         var div_id = this.getAttribute("id");
         changeArray(div_id, color);
     };
 
+    /*
+    Converts the classroom array into a text string where the rows are separated by semicolons
+    @return: string of the classroom data
+    */
     function arrayToText() {
         var width = detectWidthToTrim();
         var height = detectHeightToTrim();
@@ -161,6 +183,10 @@
         return text_array;
     };
 
+    /*
+    Detects if columns can be trimmed (are only filled with zeros) from the array representing the classroom data
+    @return: list with two entries describing the interval of columns that can't be trimmed
+    */
     function detectWidthToTrim() {
         var start_width = 99;
         var end_width = 0;
@@ -182,6 +208,10 @@
         return [start_width, end_width];
     };
 
+    /*
+    Detects if rows can be trimmed (are only filled with zeros) from the array representing the classroom data
+    @return: list with two entries describing the interval of columns that can't be trimmed
+    */
     function detectHeightToTrim() {
         var start_height = 99;
         var end_height = 0;
@@ -201,7 +231,10 @@
         return [start_height, end_height];
     };
 
-    // checks for a valid classroom (at least one teacher and one student desk in the room)
+    /*
+    Checks for a valid classroom (at least one teacher and one student desk in the room)
+    @return: double-digit string describing whether student and teacher desks are present
+    */
     function check_validity() {
         var student_found = 0;
         var teacher_found = 0;
@@ -215,6 +248,10 @@
         return student_found.toString() + teacher_found.toString();
     };
 
+    /*
+    Sends the string representing the classroom data to the server
+    @return: void
+    */
     function sendClassroomToFlask() {
         switch (check_validity()) {
             case "00":
@@ -243,7 +280,11 @@
         })
     };
 
-    // Fills the grid with a loaded classroom
+    /*
+    Fills the grid with a loaded classroom
+    @param room: string of the loaded classroom
+    @return: void
+    */
     function fillGrid(room) {
         if(room.length <= 0) return;
         var room = room.replace(/;/g, "");
@@ -271,26 +312,35 @@
         }
     };
 
-    var data = localStorage.getItem('selected');
-
+    /*
+    Fill grid with information if a classroom is loaded from the server
+    @param text: string of the classroom name
+    @return: void
+    */
     function getInformation(text){
         var info = $.post("/getclassroomlists", {"result": text}, function(data) {fillGrid(data);});
     }
 
-
+    /*
+    Is called intially to set various data
+    @eturn: void
+    */
     function start(){
         getInformation(data);
         document.getElementById('head_text').innerHTML += data;
         document.getElementById('filename').value = data;
     }
 
+    /*
+    Deletes the current classroom from the server
+    @return: void
+    */
     function deleteInformation() {
         var test = $.post("/delclassroom", { "result": data }, function(data) {alert("Classroom deleted");});
         switchToClassroom();
     }
 
-    console.log(classroom)
-
+    // call the start function upon opening the page
     window.onload = start();
 </script>
 </body>
