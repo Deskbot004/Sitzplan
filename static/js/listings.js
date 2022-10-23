@@ -1,11 +1,17 @@
-/* Adds given String as Element to the shown list */
+/*
+	Adds given String as Element to the shown list
+
+
+
+
+*/
 function addElement(text) {
     if (existsElement(text)) return;
     var node = document.createElement('li');
     node.appendChild(document.createTextNode(text));
     node.className += 'elem';
     node.onclick = function(event){selectElement(event);};
-    document.querySelector('ul').appendChild(node);
+    document.querySelector('#var_list').appendChild(node);
 }
 
 function existsElement(text) {
