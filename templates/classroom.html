@@ -231,22 +231,24 @@
             switch(room[num]) {
                 case "0":
                     grid[num].style.backgroundColor = "white";
+                    changeArray(grid[num].getAttribute("id"), "white");
                     break;
                 case "1":
                     grid[num].style.backgroundColor = "lightblue";
+                    changeArray(grid[num].getAttribute("id"), "lightblue");
                     break;
                 case "2":
                     grid[num].style.backgroundColor = "orange";
+                    changeArray(grid[num].getAttribute("id"), "orange");
                     break;
                 case "3":
                     grid[num].style.backgroundColor = "pink";
+                    changeArray(grid[num].getAttribute("id"), "pink");
                     break;
                 default: break;
             }
         }
     };
-    // var test_room_str = "1111111111;3333333333;0000000333;0000000000;0000000000;0000000000;0000000000;0000000000;0000000000;0000000000;"
-    // fillGrid(test_room_str);
 
     var data = localStorage.getItem('selected');
 
@@ -261,6 +263,7 @@
         document.getElementById('filename').value = data;
     }
 
+    console.log(classroom)
 
     window.onload = start();
 </script>
