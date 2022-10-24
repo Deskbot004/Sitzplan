@@ -2,7 +2,93 @@
   --cursorForLink: pointer;
   --font1: Verdana, "Lucida Sans";
   --font2: Arial, serif;
+
+  /*---Colors---*/
+  --color-bg: #ffffff; /*white*/
+  --color-sidebarBG: #eeeeee; /*very light gray*/
+  --color-sidebarListElements: #e3e1e1; /*light gray*/
+  --color-separator: #cfcfcf; /*gray*/
+  --color-accent1: #0099cc; /*teal*/
+  --color-accent1Dark: #007799; /*dark-teal*/
+  --color-accent2: #ffcc00; /*yellow*/
+  --color-accent2Dark: #eebb00; /*dark-yellow*/
+  --color-text: #555555; /*dark gray*/
 }
+
+/*-----------Sidebar-----------*/
+aside {
+    width: 20%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    font-family: var(--font1);
+    background: var(--color-sidebarBG);
+    box-shadow: 1px 1px 10px var(--color-accent1);
+}
+
+aside .title{
+    color: var(--color-accent1);
+    text-align: left;
+    display: block;
+    margin-top: 0.5em;
+    margin-left: 0.5em;
+    font-family: var(--font1);
+    text-decoration: none;
+}
+
+nav {
+    box-sizing: border-box;
+    padding: 0.2em 0;
+    margin-top: 1em;
+
+
+    border-style: solid none none none;
+    border-color: var(--color-accent2);
+    border-width: 4px;
+}
+
+nav ul{
+    width: 100%;
+    list-style-type: none;
+    background-color: var(--color-separator);
+
+    margin-top: 1em;
+}
+
+nav li {
+    margin-top: -2px;
+    border-style: solid none;
+    border-color: var(--color-separator);
+}
+
+nav a {
+    line-height: 2em;
+    font-size: 18px;
+    box-sizing: border-box;
+    background-color: var(--color-sidebarListElements);
+}
+
+nav a:hover {
+    color: var(--color-accent2Dark);
+    background-color: var(--color-accent1Dark);
+}
+
+/*TODO: Colors of active and add active to sidebarCurrent */
+/*
+nav a:active {
+    color: white;
+    background-color: gray;
+}
+*/
+
+.sidebarCurrent{
+    color: var(--color-accent2);
+    background-color: var(--color-accent1);
+}
+
+/*Old Stuff*/
 
 img {
 	max-width: 65%;
@@ -35,7 +121,7 @@ p {
 	text-align: center;
 }
 
-.headerContainer {  
+.headerContainer {
 	background: #FFFFFF;
 	display: flex;
 	flex-wrap: wrap;
@@ -48,7 +134,7 @@ p {
 }
 
 
-.container {  
+.container {
 	background: #FFFFFF;
 	display: flex;
 	flex-wrap: wrap;
@@ -56,7 +142,7 @@ p {
 }
 
 @media screen and (max-width: 749px) {
-  .container {   
+  .container {
     flex-direction: column;
   }
 }
@@ -109,7 +195,7 @@ p {
 .button2{
 		font-size: 32px;
 }
-	
+
 .divider{
 	width:180px;
 	height:auto;
@@ -183,7 +269,7 @@ p {
 	background-color: grey;
 	color: white;
 }
-
+/* hier
 a.logout:hover {
 	background-color: lightred;
 	color: black;
@@ -193,7 +279,7 @@ a.active:hover {
 	background-color: #ddd;
 	color: black;
 }
-
+*/
 .header {
 	font-size: 36pt;
 	font-weight: bold;
@@ -205,13 +291,13 @@ a.active:hover {
 	justify-content: center;
 	text-align: center;
 }
-	
+
 .body {
 	font-size: 24pt;
 	color: black;
 	padding: 15px;
 }
-	
+
 .button {
 	font-size: 24pt;
 	margin: auto;
@@ -334,10 +420,12 @@ li a {
 }
 
 /* Change the link color on hover */
+/*hier
 li a:hover {
   background-color: #555;
   color: white;
 }
+*/
 .flex-container {
         display: -webkit-flex;
         display: flex;
@@ -457,8 +545,8 @@ ul {
 .elem {
 
 }
-
+/*hier
 .elem:hover {
 	background-color: yellow;
 	cursor: pointer;
-}
+}*/

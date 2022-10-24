@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from Logic import classrooms
+from logic import classrooms
 
 app = Flask(__name__)
 

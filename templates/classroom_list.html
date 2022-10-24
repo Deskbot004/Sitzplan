@@ -12,7 +12,22 @@
 	</div>
 </head>
 <body>
+
+<!------- SIDEBAR ------->
+<aside>
+    <div class="title">Start Menu</div>
+    <nav><ul>
+        <li><a href="#home" onclick="switchToHome()">Home</a></li>
+        <li><a href="#seating" onclick="switchToSeating()">Create seating</a></li>
+        <li><a href="#student" onclick="switchToStudents()">Student lists</a></li>
+        <li><a href="#room" onclick="switchToClassroom()" class="sidebarCurrent">Classrooms</a></li>
+        <li><a href="#about" onclick="switchToAbout()">About</a></li>
+    </ul></nav>
+</aside>
+
+
     <div class="container">
+        <!--
         <div class="left" col ="1">
             <ul>
             <li><a href="#home" onclick="switchToHome()">Home</a></li>
@@ -21,6 +36,7 @@
             <li><a href="#room" onclick="switchToClassroom()">Classrooms</a></li>
             <li><a href="#about" onclick="switchToAbout()">About</a></li></ul>
         </div>
+        -->
         <div class="center" col="2">
             <h2>List of classrooms:</h2>
             <ul id="var_list">

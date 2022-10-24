@@ -15,7 +15,21 @@
 	</div>
 </head>
 <body ondragstart="return false;" ondrop="return false;">
+<!------- SIDEBAR ------->
+<aside>
+    <div class="title">Start Menu</div>
+    <nav><ul>
+        <li><a href="#home" onclick="switchToHome()">Home</a></li>
+        <li><a href="#seating" onclick="switchToSeating()">Create seating</a></li>
+        <li><a href="#student" onclick="switchToStudents()">Student lists</a></li>
+        <li><a href="#room" onclick="switchToClassroom()"  class="sidebarCurrent">Classrooms</a></li>
+        <li><a href="#about" onclick="switchToAbout()">About</a></li>
+    </ul></nav>
+</aside>
+
+<!------- MAIN BODY ------->
     <div class="container">
+        <!--
         <div class="left" col ="1">
             <ul>
             <li><a href="#home" onclick="switchToHome()">Home</a></li>
@@ -24,6 +38,7 @@
             <li><a href="#room" onclick="switchToClassroom()">Classrooms</a></li>
             <li><a href="#about" onclick="switchToAbout()">About</a></li></ul>
         </div>
+        -->
     <div class="center" col="2">
         <h2 id="head_text">Classroom free</h2>
             <div class="flex-container">
