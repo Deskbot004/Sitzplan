@@ -257,7 +257,9 @@ function sendClassroomToFlask() {
 
     $.post("/classroom_info",
             {"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]},
-            function(data) {});
+            function(data) {}
+
+            );
 
 };
 
@@ -289,21 +291,25 @@ function renaming(old_name, new_name) {
 	@return: void
 */
 function existsElement(text) {
-	var data_dict = {}
+	var data_dict = {};
+	var name_exists;
 
 	$.ajax({
 		type: "GET",
 		url: "/getclassroomlists",
-		async: false,
-		success: function(data) { data_dict = data;}
+		//async: false,
+		success: name_exists = function(data) {
+		    data_dict = data;
+		    for (var elem of Object.keys(data_dict)) {
+                if(data_dict[elem] == text) {
+                    return 1;
+                }
+	        }
+	        return 0;
+		}
 	});
 
-	for (var elem of Object.keys(data_dict)) {
-		if(data_dict[elem] == text) {
-			return 1;
-		}
-	};
-	return 0;
+	return name_exists;
 };
 
 
