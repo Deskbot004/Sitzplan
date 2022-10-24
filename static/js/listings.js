@@ -28,7 +28,7 @@ function addElement(text) {
     node.className += 'elem';
     node.onclick = function(event){selectElement(event);};
     document.querySelector('#var_list').appendChild(node);
-}
+};
 
 /*
 	Checks the List named "var_list" if it contains an Element with
@@ -47,7 +47,7 @@ function existsElement(text) {
         }
     }
     return detected;
-}
+};
 
 /*
 	Deletes the list entry containing the given string as its innerHTML
@@ -65,7 +65,7 @@ function deleteElement(text) {
             return;
         }
     }
-}
+};
 
 /*
 	Executes addElement() for each entry in the given array.
@@ -77,7 +77,7 @@ function addList(element_arr) {
     for (var i = 0; i < element_arr.length; i++) {
         addElement(element_arr[i]);
     };
-}
+};
 
 /*
 	Executes addElement() for each entry in the given dictionary.
@@ -89,7 +89,7 @@ function addDict(element_dict) {
 	for (var elem of Object.keys(element_dict)) {
 		addElement(element_dict[elem]);
 	};
-}
+};
 
 /*
 	Executes sendInformation for the selected Element.
@@ -99,4 +99,49 @@ function addDict(element_dict) {
 */
 function selectElement(event) {
 	sendInformation(event.target.innerHTML);
+};
+
+/*
+	Takes the information from form called 'filename' and
+	executes sendInformation(string) if the information is
+	not in 'var_list' yet.
+
+	@return: void
+*/
+function createInformation() {
+        var text = document.getElementById('filename').value;
+
+        if (existsElement(text)) {
+            var popup = document.getElementById("exists");
+            popup.innerHTML = popup.innerHTML.replace("free", text);
+            popup.classList.toggle("show");
+            return;
+        }
+        sendInformation(text);
+};
+
+/*
+	Adds every item relevant for the identity as
+	a dictionary to 'var_list'.
+
+	@return: void
+*/
+function getLists() {
+    var list = "/get" + identity + "lists";
+    $.get(list,
+        function(data) {
+            addDict(data);
+        });
+};
+
+
+/*
+	Retains the selected Information and relocates
+	to the next relevant site depending on identity.
+
+	@return: void
+*/
+function sendInformation(text){
+    localStorage.setItem('selected', text);
+    window.location = "/from_" + identity;
 }

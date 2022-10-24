@@ -36,12 +36,12 @@ def hello5():
     return render_template("about.html")
 
 
-@app.route('/classroom_edit')
+@app.route('/from_classroom')
 def hello2():
     return render_template("classroom_editor.html")
 
 
-@app.route('/students_class')
+@app.route('/from_student')
 def my_students():
     return render_template("students_class.html")
 

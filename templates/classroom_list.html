@@ -35,39 +35,10 @@
             <button style="width:50%" class="popup" onclick="createInformation()">Create
                 <span class="popuptext" id="exists">Classroom free already exists!</span>
             </button>
-            <button style="width:50%" onclick="getLists()">Refresh</button>
         </div>
     </div>
 <script>
     var identity = "classroom";
-    /*
-        Should later iterate over every found list with function given by students.py.
-        Then add them via addElement().
-    */
-    function getLists() {
-        var test = $.get("/getclassroomlists",
-            function(data) {
-                addDict(data);
-            });
-    }
-
-    function createInformation() {
-        var text = document.getElementById('filename').value;
-
-        if (existsElement(text)) {
-            var popup = document.getElementById("exists");
-            popup.innerHTML = popup.innerHTML.replace("free", text);
-            popup.classList.toggle("show");
-            return;
-        }
-        sendInformation(text);
-    }
-
-    function sendInformation(text){
-        localStorage.setItem('selected', text);
-        window.location = "classroom_edit";
-    }
-
     window.onload = getLists();
 </script>
 </body>

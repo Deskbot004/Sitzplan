@@ -31,33 +31,16 @@
         <div class="right" col="3">
             <h2>Add new List</h2>
             <form>
-                <label for="filename">New List:</label><br>
+                <label for="filename">New Class:</label><br>
                 <input type="text" id="filename" name="filename" value="Class">
             </form>
-            <button style="width:50%" onclick="AddNewList()">Create</button>
-            <button style="width:50%" onclick="addElement('entry')">Add entry :)</button>
-            <button style="width:50%" onclick="deleteElement('entry')">Deletes entry :(</button>
-            <button style="width:50%" onclick="getLists()">Refresh</button>
+            <button style="width:50%" class="popup" onclick="createInformation()">Create
+                <span class="popuptext" id="exists">Class free already exists!</span>
+            </button>
         </div>
     </div>
 <script>
     var identity = "student";
-    /*
-        Should later iterate over every found list with function given by students.py.
-        Then add them via addElement().
-    */
-    function getLists() {
-        var list = $.get("/getstudentlists",
-            function(data) {
-                addDict(data);
-            });
-    }
-
-    function sendInformation(text){
-        localStorage.setItem('selected', text);
-        window.location = "students_class";
-    }
-
     window.onload = getLists();
 </script>
 </body>
