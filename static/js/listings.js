@@ -114,6 +114,12 @@ function selectElement(event) {
 function createInformation() {
         var text = document.getElementById('filename').value;
 
+        if (!checkForIllegalCharacters(text)) {
+            var popup = document.getElementById("illegal");
+            popup.classList.toggle("show");
+            return
+        }
+
         if (existsElement(text)) {
             var popup = document.getElementById("exists");
             popup.innerHTML = popup.innerHTML.replace("free", text);
