@@ -22,3 +22,12 @@ function switchToStudents() {
 function switchToAbout() {
     window.location = "about";
 }
+
+/*
+    Checks whether a text string contains only letters and numbers
+    @param str: string to be checked
+    @return: Boolean
+*/
+function checkForIllegalCharacters(str) {
+    return /^[A-Za-z0-9]*$/.test(str);
+}

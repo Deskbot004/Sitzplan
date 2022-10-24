@@ -220,6 +220,8 @@ function addColorClick() {
     @return: void
 */
 function sendClassroomToFlask() {
+    console.log("HI");
+    alert("HI");
     switch (check_validity(classroom)) {
         case "00":
             var popup = document.getElementById("no_student_or_teacher");
@@ -230,15 +232,24 @@ function sendClassroomToFlask() {
             popup.classList.toggle("show");
             return
         case "10":
+            console.log("HI");
+            alert("HI");
             var popup = document.getElementById("no_teacher");
             popup.classList.toggle("show");
             return
         default: break;
     }
 
-
+    /*
     var name = document.getElementById("filename").value;
     var layout_array = arrayToText(classroom);
+    console.log(!checkForIllegalCharacters(name));
+    alert(checkForIllegalCharacters(name));
+    if (!checkForIllegalCharacters(name)) {
+        var popup = document.getElementById("illegal");
+        popup.classList.toggle("show");
+        return
+    }
 
 	if (name != data) {
 		if(!renaming(data, name)) return;
@@ -252,7 +263,7 @@ function sendClassroomToFlask() {
     $.post("/classroom_info",
             {"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]},
             function(data) {});
-
+*/
 };
 
 /*
@@ -319,11 +330,3 @@ function getInformation(text){
 function deleteInformation() {
 	$.post("/delclassroom", { "result": data }, function(data) {switchToClassroom();});
 };
-
-function ask_delete() {
-	var ask_text = "Are you sure that you want to delete free?";
-	ask_text = ask_text.replace("free", data);
-	if(confirm(ask_text)) {
-		deleteInformation();
-	}
-}
