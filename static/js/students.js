@@ -70,8 +70,26 @@ function addStudent() {
     }
 }
 
+function renameStudent() {
+	var new_name = document.getElementById("new_studentname").value;
+	if (new_name == old_name) return;
+	if(!addElement(new_name)) {
+        var popup = document.getElementById("exists_new_student");
+        popup.classList.toggle("show");
+    }
+    deleteElement(old_name);
+    addElement(new_name);
+    closeDialog();
+}
+
 // overwrites names of students from clickable list objects.
-function selectElement(event) {return;}
+function selectElement(event) {
+	old_name = event.target.innerHTML;
+	document.getElementById("dialog").showModal();
+	var dialog_text = document.getElementById("dialog_text");
+	dialog_text.innerHTML = dialog_text.innerHTML.replace("free", old_name);
+	document.getElementById("new_studentname").value = old_name;
+}
 
 function toPref() {
 	localStorage.setItem('selected', data);
@@ -83,3 +101,10 @@ function toPref() {
 // rename class
 // class deletion before creation is possible
 // saving a class should either update or create pref_list
+
+
+function closeDialog() {
+	document.getElementById("dialog").close();
+	var dialog_text = document.getElementById("dialog_text");
+	dialog_text.innerHTML = dialog_text.innerHTML.replace(old_name, "free");
+}
