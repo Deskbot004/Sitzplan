@@ -73,6 +73,13 @@ function addStudent() {
 // overwrites names of students from clickable list objects.
 function selectElement(event) {return;}
 
+function toPref() {
+	localStorage.setItem('selected', data);
+    window.location = "/from_pref";
+}
+
+
 // delete Student / rename Student: Maybe alert Popup? <-- selectElement(event)
 // rename class
 // class deletion before creation is possible
+// saving a class should either update or create pref_list
