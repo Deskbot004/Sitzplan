@@ -53,7 +53,7 @@ def hello2():
 
 @app.route('/from_student')
 def my_students():
-    return render_template("students_class.html")
+    return render_template("students_editor.html")
 
 # ________________________________________________________________________________________________________
 # Functions
