@@ -58,6 +58,14 @@ def testfn():
         return students.get_all_student_lists()
 
 
+@app.route('/student_info', methods=["POST"])
+def student_info():
+    if request.method == "POST":
+        students_dict = request.form
+        students.save_students_web(students_dict["name"], students_dict["students"])
+        return "", 204
+
+
 @app.route('/getclassroomlists', methods=["POST", "GET"])
 def testfn2():
     if request.method == "POST":

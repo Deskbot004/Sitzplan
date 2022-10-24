@@ -249,3 +249,23 @@ def get_all_student_lists():
     file_dict = {str(k): v for k, v in file_dict.items()}
 
     return file_dict
+
+
+def save_students_web(name, student_str):
+    """
+
+    :param name:
+    :param student_str:
+    :return:
+    """
+    student_str = student_str.split("|")[:-1]
+    student_dict = {}
+    num = 1
+
+    for student in student_str:
+        student_dict[num] = student
+        num = num + 1
+
+    file = open(class_path + name + ".json", "w")
+    json.dump(student_str, file)
+    file.close()

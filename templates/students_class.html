@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Student class</title>
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="{{ url_for('static', filename='js/common.js') }}"></script>
     <script src="{{ url_for('static', filename='js/listings.js') }}"></script>
     <script src="{{ url_for('static', filename='js/selected.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/students.js') }}"></script>
     <div class="headerContainer">
 
 		<h2>Students</h2>
@@ -30,28 +31,31 @@
             </ul>
         </div>
         <div class="right" col="3">
-            <h2>Add new List</h2>
+            <h2>Functions</h2>
             <form>
-                <label for="filename">New Student:</label><br>
-                <input type="text" id="filename" name="filename" value="Student">
+                <label for="filename">File name:</label><br>
+                <input type="text" id="filename" name="filename" value="Class">
             </form>
-            <button style="width:50%" onclick="AddElement('entry')">Create</button>
-            <button style="width:50%" onclick="getInformation(data)">Refresh</button>
+            <button class="popup" style="width:50%" onclick="saveClass()">Save class
+                <span class="popuptext" id="saved">Class saved!</span>
+                <span class="popuptext" id="exists_class">Class free already exists!</span>
+                <span class="popuptext" id="illegal">Your class name should only contain letters and numbers!</span>
+                <span class="popuptext" id="empty">Your class should not be empty!</span>
+            </button>
+
+            <form>
+                <label for="filename">Student name:</label><br>
+                <input type="text" id="studentname" name="filename" value="Student">
+            </form>
+            <button class="popup" style="width:50%" onclick="addStudent()">Add student
+                <span class="popuptext" id="exists_student">This student already exists!</span>
+            </button>
         </div>
     </div>
 <script>
+    identity = "student";
     var data = localStorage.getItem('selected');
     window.onload = start();
-
-    function getInformation(text){
-        var info = $.post("/getstudentlists", {"result": text}, function(data) {addDict(data);});
-    }
-
-    // save Information
-
-    // add student
-
-    // delete Student / rename Student: Maybe alert Popup?
 </script>
 </body>
 </html>
