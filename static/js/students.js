@@ -70,6 +70,9 @@ function addStudent() {
     }
 }
 
-// delete Student / rename Student: Maybe alert Popup?
+// overwrites names of students from clickable list objects.
+function selectElement(event) {return;}
+
+// delete Student / rename Student: Maybe alert Popup? <-- selectElement(event)
 // rename class
 // class deletion before creation is possible
