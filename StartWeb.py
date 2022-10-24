@@ -93,7 +93,7 @@ def testfn3():
     if request.method == "POST":
         print(request.form["result"])
         print(preferences.preferences_read(request.form["result"]))
-        #return preferences.preferences_read(request.form["result"])
+        return preferences.preferences_read(request.form["result"])
     elif request.method == "GET":
         return preferences.get_all_pref_lists()
 

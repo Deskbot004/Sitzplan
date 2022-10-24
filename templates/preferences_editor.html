@@ -27,6 +27,8 @@
         <div class="center" col="2">
             <h2 id="head_text">List of students:</h2>
             <ul id="var_list">
+                <li>Student name <input type="text" id="entryX" value="student preferences"> <p>Here a Tri-state switch for position</p></li>
+                <li>Student name 2 <input type="text" id="entryX+1" value="student preferences 2"> <p>Here a Tri-state switch for position</p></li>
             </ul>
         </div>
         <div class="right" col="3">
@@ -49,7 +51,7 @@
 
     //insert code to mix studentlist with preflist
     function getInformation(text){
-        var info = $.post("/getpreflists", {"result": text}, function(data) {});
+        var info = $.post("/getpreflists", {"result": text}, function(data) {//code});
     }
 
     // overwrites entries from clickable list objects.
