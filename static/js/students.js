@@ -4,6 +4,10 @@ function getInformation(text){
     var info = $.post("/getstudentlists", {"result": text}, function(data) {addDict(data);});
 }
 
+function deleteInformation() {
+	$.post("/delstudents", { "result": data }, function(data) {switchToStudents();});
+};
+
 function saveClass() {
     //check name
     var name = document.getElementById("filename").value;
@@ -67,3 +71,5 @@ function addStudent() {
 }
 
 // delete Student / rename Student: Maybe alert Popup?
+// rename class
+// class deletion before creation is possible

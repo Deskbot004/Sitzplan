@@ -1,25 +1,92 @@
-import time, os, json, platform
-from logic import preferences
+import  os, json
 
 '''
 This Module handles all interaction with students and their respective lists.
 To access a student list as a dictionary call the get_student_list(name_class) function.
 Student lists are saved as .json files in data/classes.
 
-TODO: update save_students(), edit_students(), delete_students()
-
 Functions:
-    save_students()
-    edit_students()
-    delete_students()
     get_student_list(string) -> dictionary
     get_all_student_list() -> array
+    save_students(string, string)
+    delete_students(string)
 '''
 
 path = os.path.abspath(os.getcwd())
 class_path = path + "/data/classes/"
 
 
+def get_student_list(name_class):
+    """
+    This function reads a student list as a dictionary from a .json file and returns it.
+
+    :param name_class: Name of the student list which should be accessed as String
+    :return: Dictionary of the student list
+    """
+
+    student_dict = {}
+    if os.path.exists(class_path + name_class + ".json"):
+        read_file = open(class_path + name_class + ".json", "r")
+        student_dict = json.load(read_file)
+        read_file.close()
+    return student_dict
+
+
+def get_all_student_lists():
+    """
+    Simple function to find all student lists in /data.
+    All found lists are then returned as an array.
+
+    :return: Array containing all found lists as String
+    """
+    file_dict = {}
+    entry = 1
+
+    for file in os.listdir(class_path):
+        if file.endswith(".json"):
+            file_dict[entry] = file[:-5]
+            entry = entry + 1
+
+    # Sort by value
+    file_dict = {int(k): v for k, v in file_dict.items()}
+    file_dict = dict(sorted(file_dict.items()))
+    file_dict = {str(k): v for k, v in file_dict.items()}
+
+    return file_dict
+
+
+def save_students(name, student_str):
+    """
+    Method to save a dictionary as .json from string.
+
+    :param name: Name of the class
+    :param student_str: The students of the class seperated by "|"
+    :return: void
+    """
+    student_str = student_str.split("|")[:-1]
+    student_dict = {}
+    num = 1
+
+    for student in student_str:
+        student_dict[num] = student
+        num = num + 1
+
+    file = open(class_path + name + ".json", "w")
+    json.dump(student_str, file)
+    file.close()
+
+
+def delete_students(name):
+    """
+    Method to delete a .json file containing a class.
+
+    :param name: String containing the name of the class to be deleted
+    :return: void
+    """
+    os.remove(class_path + name + ".json")
+
+
+'''
 def save_students():
     """
     This function reads the input of an user to create a dictionary with "number:name" pairs of students.
@@ -210,62 +277,5 @@ def delete_students():
     print("Done! Returning to main menu.")
     time.sleep(3)
     return
+'''
 
-
-def get_student_list(name_class):
-    """
-    This function reads a student list as a dictionary from a .json file and returns it.
-
-    :param name_class: Name of the student list which should be accessed as String
-    :return: Dictionary of the student list
-    """
-
-    student_dict = {}
-    if os.path.exists(class_path + name_class + ".json"):
-        read_file = open(class_path + name_class + ".json", "r")
-        student_dict = json.load(read_file)
-        read_file.close()
-    return student_dict
-
-
-def get_all_student_lists():
-    """
-    Simple function to find all student lists in /data.
-    All found lists are then returned as an array.
-
-    :return: Array containing all found lists as String
-    """
-    file_dict = {}
-    entry = 1
-
-    for file in os.listdir(class_path):
-        if file.endswith(".json"):
-            file_dict[entry] = file[:-5]
-            entry = entry + 1
-
-    # Sort by value
-    file_dict = {int(k): v for k, v in file_dict.items()}
-    file_dict = dict(sorted(file_dict.items()))
-    file_dict = {str(k): v for k, v in file_dict.items()}
-
-    return file_dict
-
-
-def save_students_web(name, student_str):
-    """
-
-    :param name:
-    :param student_str:
-    :return:
-    """
-    student_str = student_str.split("|")[:-1]
-    student_dict = {}
-    num = 1
-
-    for student in student_str:
-        student_dict[num] = student
-        num = num + 1
-
-    file = open(class_path + name + ".json", "w")
-    json.dump(student_str, file)
-    file.close()

@@ -50,8 +50,6 @@ def my_students():
 @app.route('/getstudentlists', methods=["POST","GET"])
 def testfn():
     if request.method == "POST":
-        print(request.form["result"])
-        print(students.get_student_list(request.form["result"]))
         return students.get_student_list(request.form["result"])
         #return render_template("students_list.html")
     elif request.method == "GET":
@@ -62,7 +60,14 @@ def testfn():
 def student_info():
     if request.method == "POST":
         students_dict = request.form
-        students.save_students_web(students_dict["name"], students_dict["students"])
+        students.save_students(students_dict["name"], students_dict["students"])
+        return "", 204
+
+
+@app.route("/delstudents", methods=["POST"])
+def delstudents():
+    if request.method == "POST":
+        students.delete_students(request.form["result"])
         return "", 204
 
 
