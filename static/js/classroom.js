@@ -317,19 +317,13 @@ function getInformation(text){
     @return: void
 */
 function deleteInformation() {
-	close_delete();
-	alert(data);
 	$.post("/delclassroom", { "result": data }, function(data) {switchToClassroom();});
 };
 
 function ask_delete() {
-	var dialog = document.getElementById("delete_dialog");
-	var dialog_text = document.getElementById("dialog_text");
-
-	dialog_text.innerHTML = dialog_text.innerHTML.replace("free", data);
-	dialog.showModal();
-}
-
-function close_delete() {
-	document.getElementById("delete_dialog").close();
+	var ask_text = "Are you sure that you want to delete free?";
+	ask_text = ask_text.replace("free", data);
+	if(confirm(ask_text)) {
+		deleteInformation();
+	}
 }
