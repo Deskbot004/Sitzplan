@@ -10,6 +10,9 @@
 		addList(array)
 		addDict(dictionary)
 		selectElement(event)
+		createInformation()
+		getLists()
+		sendInformation()
 */
 
 

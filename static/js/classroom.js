@@ -317,5 +317,19 @@ function getInformation(text){
     @return: void
 */
 function deleteInformation() {
-    $.post("/delclassroom", { "result": data }, function(data) {alert("Classroom deleted");switchToClassroom();});
+	close_delete();
+	alert(data);
+	$.post("/delclassroom", { "result": data }, function(data) {switchToClassroom();});
 };
+
+function ask_delete() {
+	var dialog = document.getElementById("delete_dialog");
+	var dialog_text = document.getElementById("dialog_text");
+
+	dialog_text.innerHTML = dialog_text.innerHTML.replace("free", data);
+	dialog.showModal();
+}
+
+function close_delete() {
+	document.getElementById("delete_dialog").close();
+}

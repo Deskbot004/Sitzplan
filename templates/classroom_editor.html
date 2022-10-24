@@ -6,13 +6,24 @@
     <script src="{{ url_for('static', filename='js/selected.js') }}"></script>
     <script src="{{ url_for('static', filename='js/classroom.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
-    <title>Title</title>
+    <title>Classroom editor</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <div class="headerContainer">
 
 		<h2>Classroom</h2>
 
 	</div>
+
+    <dialog id="delete_dialog">
+        <form>
+        <section>
+          <p><label id= "dialog_text" style="font-size: 64px">Are you sure that you want to delete free?</label>
+        </section>
+          <button style="color: green;width:50%" onclick="deleteInformation()">YES</button>
+          <div></div>
+          <button style="color: red;width:50%" onclick="close_delete()">NO</button>
+        </form>
+    </dialog>
 </head>
 <body ondragstart="return false;" ondrop="return false;">
     <div class="container">
@@ -56,7 +67,7 @@
                             </button>
                         </li>
                         <li><button onclick="switchToClassroom()">My Classrooms</button></li>
-                        <li><button style="width:50%" onclick="deleteInformation()">Delete this room</button></li>
+                        <li><button style="width:50%" onclick="ask_delete()">Delete this room</button></li>
                     </ul>
                 </div>
             </div>
