@@ -220,8 +220,6 @@ function addColorClick() {
     @return: void
 */
 function sendClassroomToFlask() {
-    console.log("HI");
-    alert("HI");
     switch (check_validity(classroom)) {
         case "00":
             var popup = document.getElementById("no_student_or_teacher");
@@ -232,19 +230,16 @@ function sendClassroomToFlask() {
             popup.classList.toggle("show");
             return
         case "10":
-            console.log("HI");
-            alert("HI");
             var popup = document.getElementById("no_teacher");
             popup.classList.toggle("show");
             return
         default: break;
     }
 
-    /*
+
     var name = document.getElementById("filename").value;
     var layout_array = arrayToText(classroom);
-    console.log(!checkForIllegalCharacters(name));
-    alert(checkForIllegalCharacters(name));
+
     if (!checkForIllegalCharacters(name)) {
         var popup = document.getElementById("illegal");
         popup.classList.toggle("show");
@@ -263,7 +258,7 @@ function sendClassroomToFlask() {
     $.post("/classroom_info",
             {"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]},
             function(data) {});
-*/
+
 };
 
 /*
