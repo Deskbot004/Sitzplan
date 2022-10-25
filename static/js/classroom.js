@@ -254,15 +254,22 @@ async function sendClassroomToFlask() {
 	var popup = document.getElementById("saved");
 	popup.classList.toggle("show");
 
-	data = name;
-
-    $.post("/classroom_info", {"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]})
-        .done(function(data) {})
-        .fail(function(xhr, status, error) {
-            console.log("ERROR");
-        });
+    data_return = dataSendToServer(name, layout_array);
+    data_return.done(function(data) {
+        console.log("Data has been sent to server!");
+    });
+    data_return.fail(function(xhr, status, error) {
+        console.log("ERROR " + error.toString());
+    });
+    data = name;
 };
 
+
+/*
+*/
+function dataSendToServer(name, layout_array) {
+    return $.post("/classroom_info", {"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]});
+}
 /*
 	Function that renames a classroom if the name does not already exist.
 
