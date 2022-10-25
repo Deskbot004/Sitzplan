@@ -246,8 +246,8 @@ async function sendClassroomToFlask() {
         return
     }
 
-    rename_value = await renaming(data, name);
 	if (name != data) {
+	    rename_value = await renaming(data, name);
 		if(!rename_value) return;
 	}
 
@@ -266,6 +266,8 @@ async function sendClassroomToFlask() {
 
 
 /*
+    Request that sends data to server
+    @return:
 */
 function dataSendToServer(name, layout_array) {
     return $.post("/classroom_info", {"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]});
@@ -304,8 +306,14 @@ async function renaming(old_name, new_name) {
     localStorage.removeItem("exists");
     document.getElementById('head_text').innerHTML = document.getElementById('head_text').innerHTML.replace(old_name, new_name);
     if (old_name_exists) {
-        $.post("/delclassroom", { "result": old_name }, function(old_data) {});
-    }
+        var delete_return = deleteRequest(old_name);
+        delete_return.done(function(data) {
+            console.log("DELETED RENAMED ROOM");
+        });
+        delete_return.fail(function(xhr, status, error) {
+            console.log("ERROR " + error.toString());
+        });
+        }
 
     return 1;
 };
@@ -331,7 +339,7 @@ function renameRequest() {
     @return: void
 */
 function getInformation(text){
-    $.post("/getclassroomlists", {"result": text}, function(data) {fillGrid(classroom, grid, data);});
+    return $.post("/getclassroomlists", {"result": text}, function(data) {fillGrid(classroom, grid, data);});
 };
 
 /*
@@ -340,5 +348,18 @@ function getInformation(text){
     @return: void
 */
 function deleteInformation() {
-	$.post("/delclassroom", { "result": data }, function(data) {switchToClassroom();});
+    var delete_return = deleteRequest(data);
+    delete_return.done(function(data) {
+        switchToClassroom();
+    });
+    delete_return.fail(function(xhr, status, error) {
+        console.log("ERROR " + error.toString());
+    });
+}
+
+/*
+    Sends request to esrver with classroom name to delete
+*/
+function deleteRequest(del_name) {
+	return $.post("/delclassroom", { "result": del_name });
 };
