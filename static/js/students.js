@@ -78,7 +78,7 @@ function saveClass() {
     var popup = document.getElementById("saved");
     popup.classList.toggle("show");
 	var student_str = create_str();
-	
+
     data = name;
 
 	var result = {"name" : name, "students": student_str};
