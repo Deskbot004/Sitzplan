@@ -219,7 +219,7 @@ function addColorClick() {
 
     @return: void
 */
-function sendClassroomToFlask() {
+async function sendClassroomToFlask() {
     switch (check_validity(classroom)) {
         case "00":
             var popup = document.getElementById("no_student_or_teacher");
@@ -246,8 +246,9 @@ function sendClassroomToFlask() {
         return
     }
 
+    rename_value = await renaming(data, name);
 	if (name != data) {
-		if(!renaming(data, name)) return;
+		if(!rename_value) return;
 	}
 
 	var popup = document.getElementById("saved");
@@ -255,12 +256,11 @@ function sendClassroomToFlask() {
 
 	data = name;
 
-    $.post("/classroom_info",
-            {"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]},
-            function(data) {}
-
-            );
-
+    $.post("/classroom_info", {"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]})
+        .done(function(data) {})
+        .fail(function(xhr, status, error) {
+            console.log("ERROR");
+        });
 };
 
 /*
@@ -270,8 +270,24 @@ function sendClassroomToFlask() {
 	@param new_name: New name of the classroom as String
 	@return: Boolean if successful or not
 */
-function renaming(old_name, new_name) {
-	if (existsElement(new_name)) {
+async function renaming(old_name, new_name) {
+    var rename_return = 0;
+    var data_dict = await renameRequest();
+    var new_name_exists = 0;
+    for (var elem of Object.keys(data_dict)) {
+        if(data_dict[elem] == new_name) {
+            new_name_exists = 1;
+        }
+    }
+
+    var old_name_exists = 0;
+    for (var elem of Object.keys(data_dict)) {
+        if(data_dict[elem] == old_name) {
+            old_name_exists = 1;
+        }
+    }
+
+    if (new_name_exists) {
         var popup = document.getElementById("exists");
         popup.innerHTML = popup.innerHTML.replace("free", new_name);
         popup.classList.toggle("show");
@@ -279,9 +295,12 @@ function renaming(old_name, new_name) {
     }
 
     localStorage.removeItem("exists");
-	document.getElementById('head_text').innerHTML = document.getElementById('head_text').innerHTML.replace(old_name, new_name);
-	$.post("/delclassroom", { "result": old_name }, function(old_data) {});
-	return 1;
+    document.getElementById('head_text').innerHTML = document.getElementById('head_text').innerHTML.replace(old_name, new_name);
+    if (old_name_exists) {
+        $.post("/delclassroom", { "result": old_name }, function(old_data) {});
+    }
+
+    return 1;
 };
 
 /*
@@ -290,28 +309,13 @@ function renaming(old_name, new_name) {
 	@param text: Name of the classroom
 	@return: void
 */
-function existsElement(text) {
-	var data_dict = {};
-	var name_exists;
-
-	$.ajax({
+function renameRequest() {
+    return $.ajax({
 		type: "GET",
-		url: "/getclassroomlists",
-		//async: false,
-		success: name_exists = function(data) {
-		    data_dict = data;
-		    for (var elem of Object.keys(data_dict)) {
-                if(data_dict[elem] == text) {
-                    return 1;
-                }
-	        }
-	        return 0;
-		}
+		url: "/getclassroomlists"
 	});
 
-	return name_exists;
-};
-
+}
 
 /*
     Fill grid with information if a classroom is loaded from the server.
