@@ -338,9 +338,21 @@ function renameRequest() {
     @param text: string of the classroom name
     @return: void
 */
-function getInformation(text){
-    return $.post("/getclassroomlists", {"result": text}, function(data) {fillGrid(classroom, grid, data);});
+function requestInformation(text){
+    return $.post("/getclassroomlists", {"result": text});
 };
+
+function getInformation(text){
+	var req_room = requestInformation(text);
+	req_room.done(function(room) {
+		fillGrid(classroom, grid, room);
+	});
+	req_room.fail(function() {
+		console.log("No file named "+ text + " found, loading template.")
+		room = "0000000000;0000000000;0000000000;0000110000;0000330000;0000000000;0000000000;0000000000;0000000000;0000000000;";
+		fillGrid(classroom, grid, room);
+	});
+}
 
 /*
     Deletes the current classroom from the server.
@@ -358,7 +370,7 @@ function deleteInformation() {
 }
 
 /*
-    Sends request to esrver with classroom name to delete
+    Sends request to server with classroom name to delete
 */
 function deleteRequest(del_name) {
 	return $.post("/delclassroom", { "result": del_name });

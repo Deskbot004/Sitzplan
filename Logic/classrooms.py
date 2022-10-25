@@ -7,13 +7,12 @@ Rooms are saved as .txt files in data/rooms.
 
 
 Functions:
-    save_classroom(string, string, string)
-    get_classroom(string) -> string
-    get_classroom_untrimmed(string) -> string
-    get_all_classroom_lists() -> array
-    delete_classroom_web(string)
+    save_classroom(string, string, string) -> state
+    get_classroom(string) -> string, state
+    get_classroom_untrimmed(string) -> string, state
+    get_all_classroom_lists() -> array, state
+    delete_classroom_web(string) -> state
 '''
-
 path = os.path.abspath(os.getcwd())
 room_path = path + "/data/rooms/"
 
@@ -25,16 +24,20 @@ def save_classroom(class_name, class_information, class_information_trimmed):
     :param class_name: Name of the room to be saved
     :param class_information: Information about the classroom untrimmed for the editor
     :param class_information_trimmed: Information about the classroom trimmed for the algorithm
-    :return: void
+    :return: State of the function
     """
+    try:
+        file = open(room_path + class_name + ".txt", "w")
+        file.write(class_information_trimmed)
+        file.close()
 
-    file = open(room_path + class_name + ".txt", "w")
-    file.write(class_information_trimmed)
-    file.close()
-
-    file = open(room_path + class_name, "w")
-    file.write(class_information)
-    file.close()
+        file = open(room_path + class_name, "w")
+        file.write(class_information)
+        file.close()
+        return "SUCCESS"
+    except Exception as err:
+        print(f"Classroom saving failed... with Error {err}")
+        return "FAIL"
 
 
 # needed for algorithm later
@@ -43,15 +46,18 @@ def get_classroom(name_room):
     This function returns a trimmed room from an existing .txt file.
 
     :param name_room: Name of the room as a string
-    :return: String containing the room information
+    :return: String containing the room information, State of the function
     """
 
-    room = ""
-    if os.path.exists(room_path + name_room + ".txt"):
-        read_file = open(room_path + name_room + ".txt", "r")
-        room = read_file.read()
-        read_file.close()
-    return room
+    try:
+        if os.path.exists(room_path + name_room + ".txt"):
+            read_file = open(room_path + name_room + ".txt", "r")
+            room = read_file.read()
+            read_file.close()
+            return room, "SUCCESS"
+    except Exception as err:
+        print(f"Classroom getting failed... with Error {err}")
+        return "", "FAIL"
 
 
 def get_classroom_untrimmed(name_room):
@@ -59,15 +65,18 @@ def get_classroom_untrimmed(name_room):
     This function returns a untrimmed room from an existing file.
 
     :param name_room: Name of the room as a string
-    :return: String containing the room information
+    :return: String containing the room information, State of the function
     """
 
-    room = ""
-    if os.path.exists(room_path + name_room):
-        read_file = open(room_path + name_room, "r")
-        room = read_file.read()
-        read_file.close()
-    return room
+    try:
+        if os.path.exists(room_path + name_room):
+            read_file = open(room_path + name_room, "r")
+            room = read_file.read()
+            read_file.close()
+            return room, "SUCCESS"
+    except Exception as err:
+        print(f"Classroom getting failed... with Error {err}")
+        return "", "FAIL"
 
 
 def get_all_classroom_lists():
@@ -75,33 +84,41 @@ def get_all_classroom_lists():
     Simple function to find all classroom lists in /data.
     All found lists are then returned as an array.
 
-    :return: Array containing all found lists as String
+    :return: Array containing all found lists as String, State of the function
     """
     file_dict = {}
     entry = 1
+    try:
+        for file in os.listdir(room_path):
+            if file.endswith(".txt"):
+                file_dict[entry] = file[:-4]
+                entry = entry + 1
 
-    for file in os.listdir(room_path):
-        if file.endswith(".txt"):
-            file_dict[entry] = file[:-4]
-            entry = entry + 1
+        # Sort by value
+        file_dict = {int(k): v for k, v in file_dict.items()}
+        file_dict = dict(sorted(file_dict.items()))
+        file_dict = {str(k): v for k, v in file_dict.items()}
 
-    # Sort by value
-    file_dict = {int(k): v for k, v in file_dict.items()}
-    file_dict = dict(sorted(file_dict.items()))
-    file_dict = {str(k): v for k, v in file_dict.items()}
-
-    return file_dict
+        return file_dict, "SUCCESS"
+    except Exception as err:
+        print(f"Classroom list getting failed... with Error {err}")
+        return {}, "FAIL"
 
 
-def delete_classroom_web(name):
+def delete_classroom(name):
     """
-    Deletes an existing classroom from webpage.
+    Deletes an existing classroom
 
     :param name: Name of the room to be deleted
-    :return: void
+    :return: State of the function
     """
-    os.remove(room_path + name + ".txt")
-    os.remove(room_path + name)
+    try:
+        os.remove(room_path + name + ".txt")
+        os.remove(room_path + name)
+        return "SUCCESS"
+    except Exception as err:
+        print(f"Classroom deleting failed... with Error {err}")
+        return "FAIL"
 
 
 '''

@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 from logic import students, classrooms, preferences
+import os
 
 app = Flask(__name__)
 
@@ -80,14 +81,6 @@ def delstudents():
         return "", 204
 
 
-@app.route('/getclassroomlists', methods=["POST", "GET"])
-def testfn2():
-    if request.method == "POST":
-        return classrooms.get_classroom_untrimmed(request.form["result"])
-    elif request.method == "GET":
-        return classrooms.get_all_classroom_lists()
-
-
 @app.route('/getpreflists', methods=["GET", "POST"])
 def testfn3():
     if request.method == "POST":
@@ -100,17 +93,47 @@ def testfn3():
 
 @app.route("/classroom_info", methods=["POST"])
 def classroom_info():
-    if request.method == "POST":
-        classroom_dict = request.form
-        classrooms.save_classroom(classroom_dict["name"], classroom_dict["layout_untrimmed"], classroom_dict["layout"])
-        return "", 204
+    try:
+        if request.method == "POST":
+            classroom_dict = request.form
+            call = classrooms.save_classroom(classroom_dict["name"], classroom_dict["layout_untrimmed"], classroom_dict["layout"])
+            if call == "SUCCESS":
+                return "", 204
+            else:
+                return "", 400
+    except Exception as err:
+        print(f"Accessing classrooms.py for save failed with {err}")
+        return "", 404
 
 
 @app.route("/delclassroom", methods=["POST"])
 def delclassroom():
-    if request.method == "POST":
-        classrooms.delete_classroom_web(request.form["result"])
-        return "", 204
+    try:
+        if request.method == "POST":
+            call = classrooms.delete_classroom(request.form["result"])
+            if call == "SUCCESS":
+                return "", 204
+            else:
+                return "", 400
+    except Exception as err:
+        print(f"Accessing classrooms.py for delete failed with {err}")
+        return "", 404
+
+
+@app.route('/getclassroomlists', methods=["POST", "GET"])
+def getclassroomlists():
+    try:
+        if request.method == "POST":
+            call = classrooms.get_classroom_untrimmed(request.form["result"])
+        elif request.method == "GET":
+            call = classrooms.get_all_classroom_lists()
+        if call[1] == "SUCCESS":
+            return call[0], 200
+        else:
+            return "", 400
+    except Exception as err:
+        print(f"Accessing classrooms.py for read failed with {err}")
+        return "", 404
 
 
 if __name__ == "__main__":
