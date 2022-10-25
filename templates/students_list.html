@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Student lists</title>
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="{{ url_for('static', filename='js/common.js') }}"></script>
@@ -41,7 +41,7 @@
         </div>
     </div>
 <script>
-    var identity = "student";
+    var identity = "student";       // identity to use correct functions in listings.js
     window.onload = getLists();
 </script>
 </body>

@@ -4,7 +4,7 @@
 
 
 	Functions:
-		addElement(string)
+		addElement(string) -> Boolean
 		existsElement(string) -> Boolean
 		deleteElement(string)
 		addList(array)
@@ -22,15 +22,16 @@
 	The element gets the class "elem" and the function selectElement(e).
 
 	@param text: String containing the innerHTML of the new Element
-	@return: void
+	@return: Boolean if adding was successful
 */
 function addElement(text) {
-    if (existsElement(text)) return;
+    if (existsElement(text)) return 0;
     var node = document.createElement('li');
     node.appendChild(document.createTextNode(text));
     node.className += 'elem';
     node.onclick = function(event){selectElement(event);};
     document.querySelector('#var_list').appendChild(node);
+    return 1;
 };
 
 /*

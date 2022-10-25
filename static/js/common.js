@@ -23,6 +23,10 @@ function switchToAbout() {
     window.location = "about";
 }
 
+function switchToPreferences() {
+    window.location = "preferences";
+}
+
 /*
     Checks whether a text string contains only letters and numbers
     @param str: string to be checked

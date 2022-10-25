@@ -36,6 +36,16 @@ def hello5():
     return render_template("about.html")
 
 
+@app.route('/preferences')
+def hello7():
+    return render_template("preferences_list.html")
+
+
+@app.route('/from_pref')
+def hello9():
+    return render_template("preferences_editor.html")
+
+
 @app.route('/from_classroom')
 def hello2():
     return render_template("classroom_editor.html")
@@ -43,19 +53,31 @@ def hello2():
 
 @app.route('/from_student')
 def my_students():
-    return render_template("students_class.html")
+    return render_template("students_editor.html")
 
 # ________________________________________________________________________________________________________
 # Functions
 @app.route('/getstudentlists', methods=["POST","GET"])
 def testfn():
     if request.method == "POST":
-        print(request.form["result"])
-        print(students.get_student_list(request.form["result"]))
         return students.get_student_list(request.form["result"])
-        #return render_template("students_list.html")
     elif request.method == "GET":
         return students.get_all_student_lists()
+
+
+@app.route('/student_info', methods=["POST"])
+def student_info():
+    if request.method == "POST":
+        students_dict = request.form
+        students.save_students(students_dict["name"], students_dict["students"])
+        return "", 204
+
+
+@app.route("/delstudents", methods=["POST"])
+def delstudents():
+    if request.method == "POST":
+        students.delete_students(request.form["result"])
+        return "", 204
 
 
 @app.route('/getclassroomlists', methods=["POST", "GET"])
@@ -66,9 +88,14 @@ def testfn2():
         return classrooms.get_all_classroom_lists()
 
 
-@app.route('/getpreflists', methods=["GET"])
+@app.route('/getpreflists', methods=["GET", "POST"])
 def testfn3():
-    return preferences.get_all_pref_lists()
+    if request.method == "POST":
+        print(request.form["result"])
+        print(preferences.preferences_read(request.form["result"]))
+        return preferences.preferences_read(request.form["result"])
+    elif request.method == "GET":
+        return preferences.get_all_pref_lists()
 
 
 @app.route("/classroom_info", methods=["POST"])

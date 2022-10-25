@@ -41,17 +41,7 @@
         </div>
     </div>
 <script>
-    /*
-        Should later iterate over every found list with function given by students.py.
-        Then add them via addElement().
-    */
-    function getLists() {
-        var test = $.get("/getpreflists",
-            function(data) {
-                addList(data);
-            });
-    }
-
+    var identity = "pref";
     window.onload = getLists();
 </script>
 </body>

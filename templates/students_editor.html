@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student class</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/listings.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/selected.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/students.js') }}"></script>
+    <div class="headerContainer">
+
+		<h2>Students</h2>
+
+	</div>
+
+    <dialog id="dialog">
+      <form>
+        <section>
+          <p><label id="dialog_text" style="font-size: 64px">What should happen to free?</label>
+        </section>
+          <form>
+            <label for="filename">Student name:</label><br>
+            <input type="text" id="new_studentname" name="filename" value="Student">
+          </form>
+          <button class="popup" style="width:50%" onclick="renameStudent()">Rename student
+            <span class="popuptext" id="exists_new_student">This student already exists!</span>
+          </button>
+          <div class="divider"></div>
+          <button class="button2" style="color: red;"
+                  onclick="deleteElement(old_name);closeDialog()">Delete
+          </button>
+          <div class="divider"></div>
+          <button class="button2" style="color: grey;" onclick="closeDialog()">Cancel</button>
+      </form>
+    </dialog>
+</head>
+<body>
+    <div class="container">
+        <div class="left" col ="1">
+            <ul>
+            <li><a href="#home" onclick="switchToHome()">Home</a></li>
+            <li><a href="#seating" onclick="switchToSeating()">Create seating</a></li>
+            <li><a href="#student" onclick="switchToStudents()">Student lists</a></li>
+            <li><a href="#room" onclick="switchToClassroom()">Classrooms</a></li>
+            <li><a href="#about" onclick="switchToAbout()">About</a></li></ul>
+        </div>
+        <div class="center" col="2">
+            <h2 id="head_text">List of students in free</h2>
+            <ul id="var_list">
+            </ul>
+        </div>
+        <div class="right" col="3">
+            <h2>Functions</h2>
+            <form>
+                <label for="filename">File name:</label><br>
+                <input type="text" id="filename" name="filename" value="Class">
+            </form>
+            <button class="popup" style="width:50%" onclick="saveClass()">Save class
+                <span class="popuptext" id="saved">Class saved!</span>
+                <span class="popuptext" id="exists_class">Class free already exists!</span>
+                <span class="popuptext" id="illegal">Your class name should only contain letters and numbers!</span>
+                <span class="popuptext" id="empty">Your class should not be empty!</span>
+            </button>
+
+            <form>
+                <label for="filename">Student name:</label><br>
+                <input type="text" id="studentname" name="filename" value="Student">
+            </form>
+            <button class="popup" style="width:50%" onclick="addStudent()">Add student
+                <span class="popuptext" id="exists_student">This student already exists!</span>
+            </button>
+            <button style="width:50%" onclick="toPref()">Edit preference list of this class</button>
+            <button style="width:50%" onclick="ask_delete()">Delete this class</button>
+        </div>
+    </div>
+<script>
+    identity = "student";                                   // identity to use correct functions in listings.js
+    var data = localStorage.getItem('selected');            // get information from students_list
+    var old_name = "";                                      // remember old name for dialog interaction
+    window.onload = start();
+</script>
+</body>
+</html>

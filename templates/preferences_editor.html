@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <script src="{{ url_for('static', filename='js/common.js') }}"></script>
     <script src="{{ url_for('static', filename='js/listings.js') }}"></script>
     <script src="{{ url_for('static', filename='js/selected.js') }}"></script>
     <div class="headerContainer">
 
-		<h2>Students</h2>
+		<h2>Preferences</h2>
 
 	</div>
 </head>
@@ -25,33 +25,37 @@
             <li><a href="#about" onclick="switchToAbout()">About</a></li></ul>
         </div>
         <div class="center" col="2">
-            <h2 id="head_text">List of students in free</h2>
+            <h2 id="head_text">List of students:</h2>
             <ul id="var_list">
+                <li>Student name <input type="text" id="entryX" value="student preferences"> <p>Here a Tri-state switch for position</p></li>
+                <li>Student name 2 <input type="text" id="entryX+1" value="student preferences 2"> <p>Here a Tri-state switch for position</p></li>
             </ul>
         </div>
         <div class="right" col="3">
-            <h2>Add new List</h2>
+            <h2>Test functions (can be deleted)</h2>
             <form>
-                <label for="filename">New Student:</label><br>
-                <input type="text" id="filename" name="filename" value="Student">
+                <label for="filename">New List:</label><br>
+                <input type="text" id="filename" name="filename" value="Class">
             </form>
-            <button style="width:50%" onclick="AddElement('entry')">Create</button>
-            <button style="width:50%" onclick="getInformation(data)">Refresh</button>
+            <button style="width:50%" onclick="AddNewList()">Create</button>
+            <button style="width:50%" onclick="addElement('entry')">Add entry :)</button>
+            <button style="width:50%" onclick="deleteElement('entry')">Deletes entry :(</button>
+            <button style="width:50%" onclick="getLists()">Refresh</button>
         </div>
     </div>
 <script>
+    var identity = "pref";
     var data = localStorage.getItem('selected');
     window.onload = start();
 
+
+    //insert code to mix studentlist with preflist
     function getInformation(text){
-        var info = $.post("/getstudentlists", {"result": text}, function(data) {addDict(data);});
+        var info = $.post("/getpreflists", {"result": text}, function(data) {//code});
     }
 
-    // save Information
-
-    // add student
-
-    // delete Student / rename Student: Maybe alert Popup?
+    // overwrites entries from clickable list objects.
+    function selectElement(event) {return;}
 </script>
 </body>
 </html>
