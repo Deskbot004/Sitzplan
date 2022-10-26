@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request
 from logic import students, classrooms, preferences
-import os
 
 app = Flask(__name__)
 
@@ -13,32 +12,32 @@ def start():
 
 
 @app.route('/home')
-def home():
+def switch_home():
     return render_template("startsite.html")
 
 
 @app.route('/classroom')
-def classroom():
+def switch_classroom():
     return render_template("classroom_list.html")
 
 
 @app.route('/seating')
-def seating():
+def switch_seating():
     return render_template("seating.html")
 
 
 @app.route('/students')
-def students():
+def switch_students():
     return render_template("students_list.html")
 
 
 @app.route('/about')
-def about():
+def switch_about():
     return render_template("about.html")
 
 
 @app.route('/preferences')
-def preferences():
+def switch_preferences():
     return render_template("preferences_list.html")
 
 
