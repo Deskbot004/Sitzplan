@@ -49,16 +49,15 @@
                         </form></li>
                         <li>
                             <button class="popup" onclick="sendClassroom()">Save Classroom
-                                <span class="popuptext" id="saved">Classroom saved!</span>
-                                <span class="popuptext" id="no_student">Your classroom needs at least one student desk!</span>
-                                <span class="popuptext" id="no_teacher">Your classroom needs at least one teacher desk!</span>
-                                <span class="popuptext" id="no_student_or_teacher">Your classroom needs at least one student and one teacher desk!</span>
-                                <span class="popuptext" id="exists">This classroom already exists!</span>
-                                <span class="popuptext" id="illegal">Your classroom name should only contain letters and numbers!</span>
+                                <span class="popuptext" id="popup_save">Free space</span>
                             </button>
                         </li>
                         <li><button onclick="switchToClassroom()">My Classrooms</button></li>
-                        <li><button style="width:50%" onclick="ask_delete()">Delete this room</button></li>
+                        <li>
+                            <button class="popup" onclick="ask_delete()">Delete this room
+                                <span class="popuptext" id="popup_del">Free space</span>
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </div>

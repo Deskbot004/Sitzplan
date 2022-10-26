@@ -208,7 +208,14 @@ function fillGrid(classroom, grid, room) {
     @param color_arg: The new color as a string (e.g. "white")
     @return: void
 */
-function changeColor(color_arg) { color = color_arg; };
+function changeColor(color_arg) {
+	try {
+		color = color_arg;
+	} catch(err) {
+		alert("Changing color went wrong!");
+		console.log("Function changeColor failed with " + err);
+	}
+};
 
 
 /*
@@ -217,11 +224,16 @@ function changeColor(color_arg) { color = color_arg; };
     @return: void
 */
 function addColor() {
-    if (window.mouseDown) {
-        this.style.backgroundColor = color;
-        var div_id = this.getAttribute("id");
-        changeArray(classroom, div_id, color);
-    }
+	try {
+	    if (window.mouseDown) {
+	        this.style.backgroundColor = color;
+	        var div_id = this.getAttribute("id");
+	        changeArray(classroom, div_id, color);
+	    }
+	} catch(err) {
+		alert("Adding color went wrong!");
+		console.log("Function addColor failed with " + err);
+	}
 };
 
 /*
@@ -230,9 +242,14 @@ function addColor() {
     @return: void
 */
 function addColorClick() {
-    this.style.backgroundColor = color;
-    var div_id = this.getAttribute("id");
-    changeArray(classroom, div_id, color);
+	try {
+        this.style.backgroundColor = color;
+        var div_id = this.getAttribute("id");
+        changeArray(classroom, div_id, color);
+    } catch(err) {
+		alert("Adding color went wrong!");
+		console.log("Function addColorClick failed with " + err);
+    }
 };
 
 
@@ -242,15 +259,20 @@ function addColorClick() {
     @return: void
 */
 function getInformation(text){
-	var req_room = requestInformation(text);
-	req_room.done(function(room) {
-		fillGrid(classroom, grid, room);
-	});
-	req_room.fail(function() {
-		console.log("No file named "+ text + " found, loading template.")
-		room = "0000000000;0000000000;0000000000;0000110000;0000330000;0000000000;0000000000;0000000000;0000000000;0000000000;";
-		fillGrid(classroom, grid, room);
-	});
+	try {
+		var req_room = requestInformation(text);
+		req_room.done(function(room) {
+			fillGrid(classroom, grid, room);
+		});
+		req_room.fail(function() {
+			console.log("No file named "+ text + " found, loading template.")
+			room = "0000000000;0000000000;0000000000;0000110000;0000330000;0000000000;0000000000;0000000000;0000000000;0000000000;";
+			fillGrid(classroom, grid, room);
+		});
+	} catch(err) {
+		alert("Getting Information went wrong!");
+		console.log("Function getInformation failed with " + err);
+	}
 };
 
 /*
@@ -259,13 +281,20 @@ function getInformation(text){
     @return: void
 */
 function deleteInformation() {
-    var delete_return = deleteRequest(data);
-    delete_return.done(function(data) {
-        switchToClassroom();
-    });
-    delete_return.fail(function(xhr, status, error) {
-        console.log("ERROR " + error.toString());
-    });
+	try {
+	    var delete_return = deleteRequest(data);
+	    delete_return.done(function(data) {
+	        switchToClassroom();
+	    });
+	    delete_return.fail(function(xhr, status, error) {
+	        console.log("ERROR " + error.toString());
+	        throw "ERROR";
+	    });
+	} catch(err) {
+		var popup = document.getElementById("popup_del");
+		popup.innerHTML = "Deleting Information went wrong!";
+		console.log("Function deleteInformation failed with " + err);
+	}
 };
 
 
@@ -282,48 +311,60 @@ function deleteInformation() {
     @return: void
 */
 async function sendClassroom() {
-    switch (check_validity(classroom)) {
-        case "00":
-            var popup = document.getElementById("no_student_or_teacher");
-            popup.classList.toggle("show");
-            return;
-        case "01":
-            var popup = document.getElementById("no_student");
-            popup.classList.toggle("show");
-            return;
-        case "10":
-            var popup = document.getElementById("no_teacher");
-            popup.classList.toggle("show");
-            return;
-        default: break;
-    }
+	try {
+	    switch (check_validity(classroom)) {
+	        case "00":
+	            throw "no_student_or_teacher";
+	        case "01":
+	            throw "no_student";
+	        case "10":
+	            throw "no_teacher";
+	        default: break;
+	    }
 
+	    var name = document.getElementById("filename").value;
+	    var layout_array = arrayToText(classroom);
 
-    var name = document.getElementById("filename").value;
-    var layout_array = arrayToText(classroom);
+	    if (!checkForIllegalCharacters(name)) throw "illegal";
 
-    if (!checkForIllegalCharacters(name)) {
-        var popup = document.getElementById("illegal");
-        popup.classList.toggle("show");
-        return;
-    }
+		if (name != data) {
+		    rename_value = await renaming(data, name);
+			if(!rename_value) throw "exists";
+		}
 
-	if (name != data) {
-	    rename_value = await renaming(data, name);
-		if(!rename_value) return;
+	    data_return = classroomToServer(name, layout_array);
+	    data_return.done(function(data) {
+	        console.log("Data has been sent to server!");
+	    });
+	    data_return.fail(function(xhr, status, error) {
+	        console.log("ERROR " + error.toString());
+	    });
+
+	    data = name;
+	    throw "saved";
+	} catch(err) {
+		switch(err) {
+			case 'no_student_or_teacher':
+				err_text = "Your classroom needs at least one student and one teacher desk!"; break;
+			case 'no_student':
+				err_text = "Your classroom needs at least one student desk!"; break;
+			case 'no_teacher':
+				err_text = "Your classroom needs at least one teacher desk!"; break;
+			case 'illegal':
+				err_text = "Your classroom name should only contain letters and numbers!"; break;
+			case 'exists':
+				err_text = "Classroom " + name + " already exists!"; break;
+			case 'saved':
+				err_text = "Classroom saved!"; break;
+			default:
+				err_text = "Saving classroom went wrong!"; break;
+		}
+
+		var popup = document.getElementById("popup_save");
+		popup.innerHTML = err_text;
+		popup.classList.toggle("show");
+		console.log(err_text);
 	}
-
-	var popup = document.getElementById("saved");
-	popup.classList.toggle("show");
-
-    data_return = classroomToServer(name, layout_array);
-    data_return.done(function(data) {
-        console.log("Data has been sent to server!");
-    });
-    data_return.fail(function(xhr, status, error) {
-        console.log("ERROR " + error.toString());
-    });
-    data = name;
 };
 
 /*
@@ -334,42 +375,40 @@ async function sendClassroom() {
 	@return: Boolean if successful or not
 */
 async function renaming(old_name, new_name) {
-    var rename_return = 0;
-    var data_dict = await renameRequest();
-    var new_name_exists = 0;
-    for (var elem of Object.keys(data_dict)) {
-        if(data_dict[elem] == new_name) {
-            new_name_exists = 1;
-        }
-    }
+	try {
+	    var data_dict = await renameRequest();
+	    var new_name_exists = 0;
+	    for (var elem of Object.keys(data_dict)) {
+	        if(data_dict[elem] == new_name) {
+	            new_name_exists = 1;
+	        }
+	    }
 
-    var old_name_exists = 0;
-    for (var elem of Object.keys(data_dict)) {
-        if(data_dict[elem] == old_name) {
-            old_name_exists = 1;
-        }
-    }
+	    var old_name_exists = 0;
+	    for (var elem of Object.keys(data_dict)) {
+	        if(data_dict[elem] == old_name) {
+	            old_name_exists = 1;
+	        }
+	    }
 
-    if (new_name_exists) {
-        var popup = document.getElementById("exists");
-        popup.innerHTML = popup.innerHTML.replace("free", new_name);
-        popup.classList.toggle("show");
-        return 0;
-    }
+	    if (new_name_exists) return 0;
 
-    localStorage.removeItem("exists");
-    document.getElementById('head_text').innerHTML = document.getElementById('head_text').innerHTML.replace(old_name, new_name);
-    if (old_name_exists) {
-        var delete_return = deleteRequest(old_name);
-        delete_return.done(function(data) {
-            console.log("DELETED RENAMED ROOM");
-        });
-        delete_return.fail(function(xhr, status, error) {
-            console.log("ERROR " + error.toString());
-        });
-        }
+	    localStorage.removeItem("exists");
+	    document.getElementById('head_text').innerHTML = document.getElementById('head_text').innerHTML.replace(old_name, new_name);
+	    if (old_name_exists) {
+	        var delete_return = deleteRequest(old_name);
+	        delete_return.done(function(data) {
+	            console.log("DELETED RENAMED ROOM");
+	        });
+	        delete_return.fail(function(xhr, status, error) {
+	            console.log("ERROR " + error.toString());
+	        });
+	    }
 
-    return 1;
+	    return 1;
+	} catch (err) {
+
+	}
 };
 
 
