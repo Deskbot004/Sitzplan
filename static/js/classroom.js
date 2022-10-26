@@ -212,7 +212,7 @@ function changeColor(color_arg) {
 	try {
 		color = color_arg;
 	} catch(err) {
-		alert("Changing color went wrong!");
+		alert("Changing color went wrong! The draw color was not swapped!");
 		console.log("Function changeColor failed with " + err);
 	}
 };
@@ -231,7 +231,7 @@ function addColor() {
 	        changeArray(classroom, div_id, color);
 	    }
 	} catch(err) {
-		alert("Adding color went wrong!");
+		alert("Adding color went wrong! The color was not correctly applied!");
 		console.log("Function addColor failed with " + err);
 	}
 };
@@ -247,7 +247,7 @@ function addColorClick() {
         var div_id = this.getAttribute("id");
         changeArray(classroom, div_id, color);
     } catch(err) {
-		alert("Adding color went wrong!");
+		alert("Adding color went wrong! The color was not correctly applied!");
 		console.log("Function addColorClick failed with " + err);
     }
 };
@@ -270,7 +270,7 @@ function getInformation(text){
 			fillGrid(classroom, grid, room);
 		});
 	} catch(err) {
-		alert("Getting Information went wrong!");
+		alert("Getting Information went wrong! The room was not properly loaded!");
 		console.log("Function getInformation failed with " + err);
 	}
 };
@@ -292,7 +292,7 @@ function deleteInformation() {
 	    });
 	} catch(err) {
 		var popup = document.getElementById("popup_del");
-		popup.innerHTML = "Deleting Information went wrong!";
+		popup.innerHTML = "Deleting Information went wrong! The room was not deleted!";
 		console.log("Function deleteInformation failed with " + err);
 	}
 };
@@ -357,7 +357,7 @@ async function sendClassroom() {
 			case 'saved':
 				err_text = "Classroom saved!"; break;
 			default:
-				err_text = "Saving classroom went wrong!"; break;
+				err_text = "Saving classroom went wrong! The Room has not been saved!"; break;
 		}
 
 		var popup = document.getElementById("popup_save");
@@ -377,24 +377,15 @@ async function sendClassroom() {
 async function renaming(old_name, new_name) {
 	try {
 	    var data_dict = await renameRequest();
-	    var new_name_exists = 0;
-	    for (var elem of Object.keys(data_dict)) {
-	        if(data_dict[elem] == new_name) {
-	            new_name_exists = 1;
-	        }
-	    }
-
 	    var old_name_exists = 0;
+
 	    for (var elem of Object.keys(data_dict)) {
-	        if(data_dict[elem] == old_name) {
-	            old_name_exists = 1;
-	        }
+	        if(data_dict[elem] == new_name) return 0;
+	        if(data_dict[elem] == old_name) old_name_exists = 1;
 	    }
 
-	    if (new_name_exists) return 0;
-
-	    localStorage.removeItem("exists");
 	    document.getElementById('head_text').innerHTML = document.getElementById('head_text').innerHTML.replace(old_name, new_name);
+
 	    if (old_name_exists) {
 	        var delete_return = deleteRequest(old_name);
 	        delete_return.done(function(data) {
@@ -407,7 +398,8 @@ async function renaming(old_name, new_name) {
 
 	    return 1;
 	} catch (err) {
-
+		alert("Renaming classroom went wrong! An existing old room was not deleted!");
+		console.log("Function renaming failed with " + err);
 	}
 };
 
