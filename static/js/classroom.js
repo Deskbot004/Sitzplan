@@ -1,7 +1,7 @@
 /*
 	This js contains functions called by classroom.html.
 
-	Simple Functions on html:
+	Simple functions on html:
 		arrayToText(array) -> string
 		detectWidthToTrim(array) -> array
 		detectHeightToTrim(array) -> array
@@ -20,14 +20,14 @@
 	Requests:
 		classroomToServer(string, array) -> request
 		renameRequest() -> request
-		requestInformation(text) -> request
+		requestInformation(string) -> request
 		deleteRequest(string) -> request
 */
 
 
 
 
-//_________________________________Simple Functions on html____________________________________________
+//_________________________________Simple functions on html____________________________________________
 
 
 
@@ -265,7 +265,7 @@ function getInformation(text){
 			fillGrid(classroom, grid, room);
 		});
 		req_room.fail(function() {
-			console.log("No file named "+ text + " found, loading template.")
+			console.log("No file named "+ text + " found, loading template.");
 			room = "0000000000;0000000000;0000000000;0000110000;0000330000;0000000000;0000000000;0000000000;0000000000;0000000000;";
 			fillGrid(classroom, grid, room);
 		});
@@ -287,13 +287,19 @@ function deleteInformation() {
 	        switchToClassroom();
 	    });
 	    delete_return.fail(function(xhr, status, error) {
-	        console.log("ERROR " + error.toString());
-	        throw "ERROR";
+	        error_case = "ERROR " + error.toString();
 	    });
 	} catch(err) {
 		var popup = document.getElementById("popup_del");
 		popup.innerHTML = "Deleting Information went wrong! The room was not deleted!";
-		console.log("Function deleteInformation failed with " + err);
+		switch(typeof err) {
+			case "string":
+				console.log("Function deleteInformation failed with " + err);break;
+			case "object":
+				console.log("Delete request failed with "+ error_case);break;
+			default:
+				console.log("Undetected Error type: " + typeof err);break;
+		}
 	}
 };
 
@@ -333,13 +339,15 @@ async function sendClassroom() {
 		}
 
 	    data_return = classroomToServer(name, layout_array);
+
 	    data_return.done(function(data) {
 	        console.log("Data has been sent to server!");
 	    });
 	    data_return.fail(function(xhr, status, error) {
-	        console.log("ERROR " + error.toString());
+	        error_case = "ERROR " + error.toString();
 	    });
 
+	    await data_return;
 	    data = name;
 	    throw "saved";
 	} catch(err) {
@@ -360,10 +368,18 @@ async function sendClassroom() {
 				err_text = "Saving classroom went wrong! The Room has not been saved!"; break;
 		}
 
+		switch(typeof err) {
+			case "string":
+				console.log("Function sendClassroom failed with " + err);break;
+			case "object":
+				console.log("Save request failed with "+ error_case);break;
+			default:
+				console.log("Undetected Error type: " + typeof err);break;
+		}
+
 		var popup = document.getElementById("popup_save");
 		popup.innerHTML = err_text;
 		popup.classList.toggle("show");
-		console.log(err_text);
 	}
 };
 
@@ -392,14 +408,21 @@ async function renaming(old_name, new_name) {
 	            console.log("DELETED RENAMED ROOM");
 	        });
 	        delete_return.fail(function(xhr, status, error) {
-	            console.log("ERROR " + error.toString());
+	            error_case "ERROR " + error.toString();
 	        });
 	    }
 
 	    return 1;
 	} catch (err) {
 		alert("Renaming classroom went wrong! An existing old room was not deleted!");
-		console.log("Function renaming failed with " + err);
+		switch(typeof err) {
+			case "string":
+				console.log("Function renaming failed with " + err);break;
+			case "object":
+				console.log("Delete request failed with "+ error_case);break;
+			default:
+				console.log("Undetected Error type: " + typeof err);break;
+		}
 	}
 };
 

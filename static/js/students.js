@@ -2,7 +2,7 @@
 	This js contains functions called by students_editor.html.
 
 
-	Functions:
+	Simple functions on html:
 		getInformation(string)
 		deleteInformation()
 		saveClass()
@@ -13,6 +13,11 @@
 		selectElement(event)
 		toPref()
 		closeDialog()
+	Functions from user interaction:
+
+	Asynchronous Functions:
+
+	Requests:
 
 	// rename class
 	// class deletion before creation is possible
@@ -25,11 +30,23 @@
 	Function to fill 'var_list' with all items from the requested dictionary.
 
 	@param text: Name of the student dict as string
-	@return: void
+	@return: Request
 */
-function getInformation(text){
-    var info = $.post("/getstudentlists", {"result": text}, function(data) {addDict(data);});
-}
+function requestInformation(text){
+    return $.post("/getstudentlists", {"result": text});
+};
+
+function getInformation(text) {
+	try {
+		var req_students = requestInformation(text);
+		req_students.done( function(students_info) {
+			addDict(student_info);
+		});
+		req_students.fail( function())
+	} catch(err) {
+
+	}
+};
 
 
 /*
@@ -38,7 +55,7 @@ function getInformation(text){
 	@return: void
 */
 function deleteInformation() {
-	$.post("/delstudents", { "result": data }, function(data) {switchToStudents();});
+	return $.post("/delstudents", { "result": data }, function(data) {switchToStudents();});
 };
 
 
