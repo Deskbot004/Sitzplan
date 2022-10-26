@@ -69,7 +69,7 @@ function getInformation(text) {
 	try {
 		var req_students = requestInformation(text);
 		req_students.done( function(students_info) {
-			addDict(student_info);
+			addDict(students_info);
 		});
 		req_students.fail( function(){
 			console.log("No file named " + text + " found, loading template.");
