@@ -134,14 +134,14 @@ function createInformation() {
         var err_text = "";
         switch (err) {
             case "illegal":
-                err_text = "Your classroom name should only contain letters and numbers!";
+                err_text = "The name should only contain letters and numbers!";
                 break;
             case "already_exists":
-                err_text = "The classroom " + text + " already exists!";
+                err_text = "The entry " + text + " already exists!";
                 break;
             default: break;
         }
-        
+
         var popup = document.getElementById("popup_check")
         popup.innerHTML = err_text;
         popup.classList.toggle("show");
