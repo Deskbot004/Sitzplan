@@ -8,89 +8,103 @@ app = Flask(__name__)
 
 # Websites
 @app.route('/')
-def hello():
+def start():
     return render_template("startsite.html")
 
 
 @app.route('/home')
-def hello6():
+def home():
     return render_template("startsite.html")
 
 
 @app.route('/classroom')
-def my_classrooms():
+def classroom():
     return render_template("classroom_list.html")
 
 
 @app.route('/seating')
-def hello3():
+def seating():
     return render_template("seating.html")
 
 
 @app.route('/students')
-def hello4():
+def students():
     return render_template("students_list.html")
 
 
 @app.route('/about')
-def hello5():
+def about():
     return render_template("about.html")
 
 
 @app.route('/preferences')
-def hello7():
+def preferences():
     return render_template("preferences_list.html")
 
 
 @app.route('/from_pref')
-def hello9():
+def from_pref():
     return render_template("preferences_editor.html")
 
 
 @app.route('/from_classroom')
-def hello2():
+def from_classroom():
     return render_template("classroom_editor.html")
 
 
 @app.route('/from_student')
-def my_students():
+def from_students():
     return render_template("students_editor.html")
 
 # ________________________________________________________________________________________________________
-# Functions
+# Functions students
 @app.route('/getstudentlists', methods=["POST","GET"])
-def testfn():
-    if request.method == "POST":
-        return students.get_student_list(request.form["result"])
-    elif request.method == "GET":
-        return students.get_all_student_lists()
+def get_students_lists():
+    try:
+        if request.method == "POST":
+            call = students.get_student_list(request.form["result"])
+        elif request.method == "GET":
+            call = students.get_all_student_lists()
+        if call[1] == "SUCCESS":
+            return call[0], 200
+        else:
+            return "", 400
+    except Exception as err:
+        print(f"Accessing students.py for delete failed with {err}")
+        return "", 404
 
 
 @app.route('/student_info', methods=["POST"])
 def student_info():
-    if request.method == "POST":
-        students_dict = request.form
-        students.save_students(students_dict["name"], students_dict["students"])
-        return "", 204
+    try:
+        if request.method == "POST":
+            students_dict = request.form
+            call = students.save_students(students_dict["name"], students_dict["students"])
+            if call == "SUCCESS":
+                return "", 204
+            else:
+                return "", 400
+    except Exception as err:
+        print(f"Accessing students.py for delete failed with {err}")
+        return "", 404
 
 
 @app.route("/delstudents", methods=["POST"])
-def delstudents():
-    if request.method == "POST":
-        students.delete_students(request.form["result"])
-        return "", 204
+def del_students():
+    try:
+        if request.method == "POST":
+            call = students.delete_students(request.form["result"])
+            if call == "SUCCESS":
+                return "", 204
+            else:
+                return "", 400
+    except Exception as err:
+        print(f"Accessing students.py for delete failed with {err}")
+        return "", 404
 
 
-@app.route('/getpreflists', methods=["GET", "POST"])
-def testfn3():
-    if request.method == "POST":
-        print(request.form["result"])
-        print(preferences.preferences_read(request.form["result"]))
-        return preferences.preferences_read(request.form["result"])
-    elif request.method == "GET":
-        return preferences.get_all_pref_lists()
-
-
+# ________________________________________________________________________________________________________
+# Functions classroom
 @app.route("/classroom_info", methods=["POST"])
 def classroom_info():
     try:
@@ -107,7 +121,7 @@ def classroom_info():
 
 
 @app.route("/delclassroom", methods=["POST"])
-def delclassroom():
+def del_classroom():
     try:
         if request.method == "POST":
             call = classrooms.delete_classroom(request.form["result"])
@@ -121,7 +135,7 @@ def delclassroom():
 
 
 @app.route('/getclassroomlists', methods=["POST", "GET"])
-def getclassroomlists():
+def get_classroom_lists():
     try:
         if request.method == "POST":
             call = classrooms.get_classroom_untrimmed(request.form["result"])
@@ -134,6 +148,18 @@ def getclassroomlists():
     except Exception as err:
         print(f"Accessing classrooms.py for read failed with {err}")
         return "", 404
+
+
+# ________________________________________________________________________________________________________
+# Functions preferences
+@app.route('/getpreflists', methods=["GET", "POST"])
+def get_pref_lists():
+    if request.method == "POST":
+        print(request.form["result"])
+        print(preferences.preferences_read(request.form["result"]))
+        return preferences.preferences_read(request.form["result"])
+    elif request.method == "GET":
+        return preferences.get_all_pref_lists()
 
 
 if __name__ == "__main__":

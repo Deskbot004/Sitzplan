@@ -50,11 +50,10 @@ def get_classroom(name_room):
     """
 
     try:
-        if os.path.exists(room_path + name_room + ".txt"):
-            read_file = open(room_path + name_room + ".txt", "r")
-            room = read_file.read()
-            read_file.close()
-            return room, "SUCCESS"
+        read_file = open(room_path + name_room + ".txt", "r")
+        room = read_file.read()
+        read_file.close()
+        return room, "SUCCESS"
     except Exception as err:
         print(f"Classroom getting failed... with Error {err}")
         return "", "FAIL"
@@ -69,11 +68,10 @@ def get_classroom_untrimmed(name_room):
     """
 
     try:
-        if os.path.exists(room_path + name_room):
-            read_file = open(room_path + name_room, "r")
-            room = read_file.read()
-            read_file.close()
-            return room, "SUCCESS"
+        read_file = open(room_path + name_room, "r")
+        room = read_file.read()
+        read_file.close()
+        return room, "SUCCESS"
     except Exception as err:
         print(f"Classroom getting failed... with Error {err}")
         return "", "FAIL"

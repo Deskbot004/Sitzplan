@@ -6,10 +6,10 @@ To access a student list as a dictionary call the get_student_list(name_class) f
 Student lists are saved as .json files in data/classes.
 
 Functions:
-    get_student_list(string) -> dictionary
-    get_all_student_list() -> array
-    save_students(string, string)
-    delete_students(string)
+    get_student_list(string) -> dictionary, state
+    get_all_student_list() -> array, state
+    save_students(string, string) -> state
+    delete_students(string) -> state
 '''
 
 path = os.path.abspath(os.getcwd())
@@ -21,15 +21,17 @@ def get_student_list(name_class):
     This function reads a student list as a dictionary from a .json file and returns it.
 
     :param name_class: Name of the student list which should be accessed as String
-    :return: Dictionary of the student list
+    :return: Dictionary of the student list, State of the function
     """
 
-    student_dict = {}
-    if os.path.exists(class_path + name_class + ".json"):
+    try:
         read_file = open(class_path + name_class + ".json", "r")
         student_dict = json.load(read_file)
         read_file.close()
-    return student_dict
+        return student_dict, "SUCCESS"
+    except Exception as err:
+        print(f"Student getting failed... with Error {err}")
+        return {}, "FAIL"
 
 
 def get_all_student_lists():
@@ -37,22 +39,27 @@ def get_all_student_lists():
     Simple function to find all student lists in /data.
     All found lists are then returned as an array.
 
-    :return: Array containing all found lists as String
+    :return: Array containing all found lists, State of the function
     """
-    file_dict = {}
-    entry = 1
 
-    for file in os.listdir(class_path):
-        if file.endswith(".json"):
-            file_dict[entry] = file[:-5]
-            entry = entry + 1
+    try:
+        file_dict = {}
+        entry = 1
 
-    # Sort by value
-    file_dict = {int(k): v for k, v in file_dict.items()}
-    file_dict = dict(sorted(file_dict.items()))
-    file_dict = {str(k): v for k, v in file_dict.items()}
+        for file in os.listdir(class_path):
+            if file.endswith(".json"):
+                file_dict[entry] = file[:-5]
+                entry = entry + 1
 
-    return file_dict
+        # Sort by value
+        file_dict = {int(k): v for k, v in file_dict.items()}
+        file_dict = dict(sorted(file_dict.items()))
+        file_dict = {str(k): v for k, v in file_dict.items()}
+
+        return file_dict, "SUCCESS"
+    except Exception as err:
+        print(f"Student list getting failed... with Error {err}")
+        return {}, "FAIL"
 
 
 def save_students(name, student_str):
@@ -61,19 +68,25 @@ def save_students(name, student_str):
 
     :param name: Name of the class
     :param student_str: The students of the class seperated by "|"
-    :return: void
+    :return: State of the function
     """
-    student_str = student_str.split("|")[:-1]
-    student_dict = {}
-    num = 1
 
-    for student in student_str:
-        student_dict[num] = student
-        num = num + 1
+    try:
+        student_str = student_str.split("|")[:-1]
+        student_dict = {}
+        num = 1
 
-    file = open(class_path + name + ".json", "w")
-    json.dump(student_str, file)
-    file.close()
+        for student in student_str:
+            student_dict[num] = student
+            num = num + 1
+
+        file = open(class_path + name + ".json", "w")
+        json.dump(student_str, file)
+        file.close()
+        return "SUCCESS"
+    except Exception as err:
+        print(f"Student saving failed... with Error {err}")
+        return "FAIL"
 
 
 def delete_students(name):
@@ -81,9 +94,15 @@ def delete_students(name):
     Method to delete a .json file containing a class.
 
     :param name: String containing the name of the class to be deleted
-    :return: void
+    :return: State of the function
     """
-    os.remove(class_path + name + ".json")
+
+    try:
+        os.remove(class_path + name + ".json")
+        return "SUCCESS"
+    except Exception as err:
+        print(f"Student deleting failed... with Error {err}")
+        return "FAIL"
 
 
 '''
