@@ -26,6 +26,52 @@
 */
 
 
+
+
+//_________________________________Simple functions on html______________________________________________
+
+
+
+
+//_________________________________Functions from user interaction_______________________________________
+
+
+
+
+/*
+    Loads the information of a given classroom list
+
+    @return: void
+*/
+function getInformation(text) {
+	try {
+		var req_students = requestInformation(text);
+		req_students.done( function(students_info) {
+			addDict(student_info);
+		});
+		req_students.fail( function(){
+			console.log("No file named " + text + " found, loading template.");
+			addDict({1: "Max Mustermann"});
+		});
+	} catch(err) {
+		alert("Getting Information went wrong! The student list was not properly loaded!");
+		console.log("Function getInformation failed with " + err);
+	}
+};
+
+
+
+
+//_________________________________Asynchronous Functions________________________________________________
+
+
+
+
+//_________________________________Requests______________________________________________________________
+
+
+
+
 /*
 	Function to fill 'var_list' with all items from the requested dictionary.
 
@@ -36,17 +82,7 @@ function requestInformation(text){
     return $.post("/getstudentlists", {"result": text});
 };
 
-function getInformation(text) {
-	try {
-		var req_students = requestInformation(text);
-		req_students.done( function(students_info) {
-			addDict(student_info);
-		});
-		req_students.fail( function())
-	} catch(err) {
 
-	}
-};
 
 
 /*
