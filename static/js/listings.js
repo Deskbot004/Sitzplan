@@ -10,9 +10,13 @@
 		addList(array)
 		addDict(dictionary)
 		selectElement(event)
-		createInformation()
-		getLists()
 		sendInformation()
+
+	Functions from user interaction:
+	    createInformation()
+
+	Requests:
+	    getLists()
 */
 
 
@@ -113,21 +117,36 @@ function selectElement(event) {
 	@return: void
 */
 function createInformation() {
+    try {
         var text = document.getElementById('filename').value;
 
         if (!checkForIllegalCharacters(text)) {
-            var popup = document.getElementById("illegal");
-            popup.classList.toggle("show");
-            return
+            throw "illegal";
         }
 
         if (existsElement(text)) {
+            throw "already_exists";
             var popup = document.getElementById("exists");
-            popup.innerHTML = popup.innerHTML.replace("free", text);
             popup.classList.toggle("show");
-            return
         }
         sendInformation(text);
+    } catch(err) {
+        var err_text = "";
+        switch (err) {
+            case "illegal":
+                err_text = "Your classroom name should only contain letters and numbers!";
+                break;
+            case "already_exists":
+                err_text = "The classroom " + text + " already exists!";
+                break;
+            default: break;
+        }
+        
+        var popup = document.getElementById("popup_check")
+        popup.innerHTML = err_text;
+        popup.classList.toggle("show");
+        console.log("Function createInformation() failed with " + err);
+    }
 };
 
 /*
