@@ -2,7 +2,7 @@
 	This js contains all generic functions for the interactions of "var_list".
 	Which is mainly used to show information read by data as a list.
 
-
+TODO
 	Functions:
 		addElement(string) -> Boolean
 		existsElement(string) -> Boolean
@@ -11,10 +11,8 @@
 		addDict(dictionary)
 		selectElement(event)
 		sendInformation()
-
 	Functions from user interaction:
 	    createInformation()
-
 	Requests:
 	    getLists()
 */
@@ -106,7 +104,12 @@ function addDict(element_dict) {
 	@return: void
 */
 function selectElement(event) {
-	sendInformation(event.target.innerHTML);
+	try {
+		sendInformation(event.target.innerHTML);
+	} catch (err) {
+		alert("Selecting element went wrong! The element was not selected!");
+		console.log("Function selectElement failed with " + err);
+	}
 };
 
 /*
@@ -150,6 +153,7 @@ function createInformation() {
 };
 
 /*
+TODO
 	Adds every item relevant for the identity as
 	a dictionary to 'var_list'.
 

@@ -13,8 +13,9 @@
 		addColor()
 		addColorClick()
 		getInformation(string)
-		deleteInformation()
+	//everything below nearly identical to students.js????
 	Asynchronous Functions:
+		deleteInformation()
 	    sendClassroom()
 	    renaming(string, string) -> Boolean
 	Requests:
@@ -283,13 +284,38 @@ function getInformation(text){
 };
 
 
+
+
+//_________________________________Asynchronous Functions_________________________________________________
+
+
+
+
 /*
     Deletes the current classroom from the server.
 
     @return: void
 */
-function deleteInformation() {
+async function deleteInformation() {
 	try {
+		var error_case = "undefined";
+		var rename_request = renameRequest();
+		rename_request.done(function(data) {
+	        console.log("Data has been collected from server!");
+	    });
+		rename_request.fail(function(xhr, status, error) {
+	        error_case = "ERROR " + error.toString();
+	    });
+		var data_dict = await rename_request;
+
+		var found = 0;
+		for (var elem of Object.keys(data_dict)) {
+	        if(data_dict[elem] == data) found = 1;
+	    }
+
+		if (!found) throw "not_created";
+		if (!ask_delete()) throw "canceled";
+
 	    var delete_return = deleteRequest(data);
 	    delete_return.done(function(data) {
 	        switchToClassroom();
@@ -297,26 +323,33 @@ function deleteInformation() {
 	    delete_return.fail(function(xhr, status, error) {
 	        error_case = "ERROR " + error.toString();
 	    });
+	    await delete_return;
 	} catch(err) {
+		switch(err) {
+			case 'not_created':
+				err_text = "The classroom was never saved!"; break;
+			case 'canceled':
+				err_text = "Deleting was canceled!"; break;
+			default:
+				err_text = "Deleting Information went wrong! The room was not deleted!"; break;
+		}
+
 		var popup = document.getElementById("popup_del");
-		popup.innerHTML = "Deleting Information went wrong! The room was not deleted!";
+		popup.innerHTML = err_text;
+		popup.classList.toggle("show");
+
 		switch(typeof err) {
 			case "string":
 				console.log("Function deleteInformation failed with " + err);break;
 			case "object":
-				console.log("Delete request failed with "+ error_case);break;
+				console.log("Delete request failed with "+ error_case);
+				console.log(err);
+				break;
 			default:
 				console.log("Undetected Error type: " + typeof err);break;
 		}
 	}
 };
-
-
-
-
-//_________________________________Asynchronous Functions_________________________________________________
-
-
 
 
 /*
@@ -378,9 +411,11 @@ async function sendClassroom() {
 
 		switch(typeof err) {
 			case "string":
-				console.log("Function sendClassroom failed with " + err);break;
+				if(err != "saved") console.log("Function sendClassroom failed with " + err);break;
 			case "object":
-				console.log("Save request failed with "+ error_case);break;
+				console.log("Save request failed with "+ error_case);
+				console.log(err);
+				break;
 			default:
 				console.log("Undetected Error type: " + typeof err);break;
 		}
@@ -401,7 +436,12 @@ async function sendClassroom() {
 */
 async function renaming(old_name, new_name) {
 	try {
-	    var data_dict = await renameRequest();
+		var rename_request = renameRequest();
+		rename_request.fail(function(xhr, status, error) {
+	            error_case = "ERROR " + error.toString();
+	    });
+
+	    var data_dict = await rename_request;
 	    var old_name_exists = 0;
 
 	    for (var elem of Object.keys(data_dict)) {
@@ -417,7 +457,7 @@ async function renaming(old_name, new_name) {
 	            console.log("DELETED RENAMED ROOM");
 	        });
 	        delete_return.fail(function(xhr, status, error) {
-	            error_case "ERROR " + error.toString();
+	            error_case = "ERROR " + error.toString();
 	        });
 	    }
 
@@ -428,7 +468,9 @@ async function renaming(old_name, new_name) {
 			case "string":
 				console.log("Function renaming failed with " + err);break;
 			case "object":
-				console.log("Delete request failed with "+ error_case);break;
+				console.log("Delete request failed with "+ error_case);
+				console.log(err);
+				break;
 			default:
 				console.log("Undetected Error type: " + typeof err);break;
 		}
@@ -458,7 +500,7 @@ function classroomToServer(name, layout_array) {
 /*
 	Requests the list of all classrooms.
 
-	@param text: Name of the classroom
+	@param text: List of the classrooms
 	@return: Request
 */
 function renameRequest() {

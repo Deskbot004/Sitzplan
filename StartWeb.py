@@ -67,7 +67,7 @@ def get_students_lists():
         if call[1] == "SUCCESS":
             return call[0], 200
         else:
-            return "", 400
+            return "", 404
     except Exception as err:
         print(f"Accessing students.py for delete failed with {err}")
         return "", 404
@@ -82,7 +82,7 @@ def student_info():
             if call == "SUCCESS":
                 return "", 204
             else:
-                return "", 400
+                return "", 404
     except Exception as err:
         print(f"Accessing students.py for delete failed with {err}")
         return "", 404
@@ -96,7 +96,7 @@ def del_students():
             if call == "SUCCESS":
                 return "", 204
             else:
-                return "", 400
+                return "", 404
     except Exception as err:
         print(f"Accessing students.py for delete failed with {err}")
         return "", 404
@@ -113,7 +113,7 @@ def classroom_info():
             if call == "SUCCESS":
                 return "", 204
             else:
-                return "", 400
+                return "", 404
     except Exception as err:
         print(f"Accessing classrooms.py for save failed with {err}")
         return "", 404
@@ -127,7 +127,7 @@ def del_classroom():
             if call == "SUCCESS":
                 return "", 204
             else:
-                return "", 400
+                return "", 404
     except Exception as err:
         print(f"Accessing classrooms.py for delete failed with {err}")
         return "", 404
@@ -143,7 +143,7 @@ def get_classroom_lists():
         if call[1] == "SUCCESS":
             return call[0], 200
         else:
-            return "", 400
+            return "", 404
     except Exception as err:
         print(f"Accessing classrooms.py for read failed with {err}")
         return "", 404

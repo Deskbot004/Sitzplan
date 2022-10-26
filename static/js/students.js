@@ -3,21 +3,23 @@
 
 
 	Simple functions on html:
+		create_str()
+	Functions from user interaction:
 		getInformation(string)
-		deleteInformation()
-		saveClass()
-		?renaming(string, string)
-		create_str() -> string
 		addStudent()
 		renameStudent()
 		selectElement(event)
-		toPref()
 		closeDialog()
-	Functions from user interaction:
-
+	//everything below nearly identical to classroom.js????
 	Asynchronous Functions:
-
+		deleteInformation()
+		saveClass()
+		renaming(string, string)
 	Requests:
+		requestInformation(text) -> request
+		deleteInformation() -> request
+		renameRequest()
+
 
 	// rename class
 	// class deletion before creation is possible
@@ -29,6 +31,26 @@
 
 
 //_________________________________Simple functions on html______________________________________________
+
+
+
+
+/*
+	Function to transform the current 'var_list' to string.
+	Used to transfer the dictionary information back to the server.
+
+	@return: String containing the dictionary information
+*/
+function create_str() {
+    var list = document.getElementById('var_list');
+    var elements = list.getElementsByTagName("li");
+    var student_str = "";
+
+    for ( var i = 0, len = elements.length; i < len; i++) {
+        student_str += elements[i].innerHTML + "|";
+    }
+    return student_str;
+}
 
 
 
@@ -60,6 +82,94 @@ function getInformation(text) {
 };
 
 
+/*
+	Adds a Student from the on site input field.
+
+	@return: void
+*/
+function addStudent() {
+	try {
+	    if(!addElement(document.getElementById('studentname').value)) throw "exists"
+	} catch (err) {
+		switch (err) {
+			case "exists":
+				err_text = "This student already exists!"; break;
+			default:
+				err_text = "Adding student went wrong! The student was not added!"; break;
+		}
+		console.log("Function addStudent failed with " + err);
+		var popup = document.getElementById("popup_add");
+		popup.innerHTML = err_text;
+	    popup.classList.toggle("show");
+	}
+}
+
+
+/*
+	Renames a student from the opened dialog window.
+
+	@return: void
+*/
+function renameStudent() {
+	try {
+		var new_name = document.getElementById("new_studentname").value;
+		if (new_name == old_name) return;
+		if(!addElement(new_name)) throw "exists";
+	    deleteElement(old_name);
+	    closeDialog();
+	} catch(err) {
+		switch (err) {
+			case "exists":
+				err_text = "This student already exists!"; break;
+			default:
+				err_text = "Adding student went wrong! The student was not added!"; break;
+		}
+		console.log("Function renameStudent failed with " + err);
+		var popup = document.getElementById("popup_rename");
+		popup.innerHTML = err_text;
+	    popup.classList.toggle("show");
+	}
+}
+
+
+/*
+	Opens a dialog window, when a student is clicked.
+
+	@param event: The click event
+	@return: void
+*/
+function selectElement(event) {
+	try {
+		old_name = event.target.innerHTML;
+		document.getElementById("dialog").showModal();
+		var dialog_text = document.getElementById("dialog_text");
+		dialog_text.innerHTML = dialog_text.innerHTML.replace("free", old_name);
+		document.getElementById("new_studentname").value = old_name;
+	} catch (err) {
+		alert("Selecting element went wrong! The element was not selected!");
+		console.log("Function selectElement failed with " + err);
+	}
+}
+
+
+/*
+	Closes the dialog window and resets its title.
+
+	@return: void
+*/
+function closeDialog() {
+	try {
+		document.getElementById("dialog").close();
+		var dialog_text = document.getElementById("dialog_text");
+		dialog_text.innerHTML = dialog_text.innerHTML.replace(old_name, "free");
+	} catch (err) {
+		alert("Closing dialog went wrong! The dialog was not closed!");
+		console.log("Function closeDialog failed with " + err);
+	}
+}
+
+
+
 
 
 //_________________________________Asynchronous Functions________________________________________________
@@ -67,34 +177,68 @@ function getInformation(text) {
 
 
 
-//_________________________________Requests______________________________________________________________
-
-
-
-
 /*
-	Function to fill 'var_list' with all items from the requested dictionary.
+    Deletes the current classroom from the server.
 
-	@param text: Name of the student dict as string
-	@return: Request
+    @return: void
 */
-function requestInformation(text){
-    return $.post("/getstudentlists", {"result": text});
+async function deleteInformation() {
+	try {
+		var error_case = "undefined";
+		var rename_request = renameRequest();
+		rename_request.done(function(data) {
+	        console.log("Data has been collected from server!");
+	    });
+		rename_request.fail(function(xhr, status, error) {
+	        error_case = "ERROR " + error.toString();
+	    });
+		var data_dict = await rename_request;
+
+		var found = 0;
+		for (var elem of Object.keys(data_dict)) {
+	        if(data_dict[elem] == data) found = 1;
+	    }
+
+		if (!found) throw "not_created";
+		if (!ask_delete()) throw "canceled";
+
+	    var delete_return = deleteRequest(data);
+	    delete_return.done(function(data) {
+	        switchToStudents();
+	    });
+	    delete_return.fail(function(xhr, status, error) {
+	        error_case = "ERROR " + error.toString();
+	    });
+	    await delete_return;
+	} catch(err) {
+		switch(err) {
+			case 'not_created':
+				err_text = "The classroom was never saved!"; break;
+			case 'canceled':
+				err_text = "Deleting was canceled!"; break;
+			default:
+				err_text = "Deleting Information went wrong! The room was not deleted!"; break;
+		}
+
+		var popup = document.getElementById("popup_del");
+		popup.innerHTML = err_text;
+		popup.classList.toggle("show");
+
+		switch(typeof err) {
+			case "string":
+				console.log("Function deleteInformation failed with " + err);break;
+			case "object":
+				console.log("Delete request failed with "+ error_case);
+				console.log(err);
+				break;
+			default:
+				console.log("Undetected Error type: " + typeof err);break;
+		}
+	}
 };
 
 
-
-
-/*
-	Function to delete the currently student list from the server
-
-	@return: void
-*/
-function deleteInformation() {
-	return $.post("/delstudents", { "result": data }, function(data) {switchToStudents();});
-};
-
-
+//TODO UPDATE THIS SHIT
 /*
 	Function to save the current configuration of 'var_list' as a .json
 	in /data.
@@ -149,89 +293,40 @@ function saveClass() {
 function renaming(data, name) {}
 
 
-/*
-	Function to transform the current 'var_list' to string.
-	Used to transfer the dictionary information back to the server.
 
-	@return: String containing the dictionary information
-*/
-function create_str() {
-    var list = document.getElementById('var_list');
-    var elements = list.getElementsByTagName("li");
-    var student_str = "";
 
-    for ( var i = 0, len = elements.length; i < len; i++) {
-        student_str += elements[i].innerHTML + "|";
-    }
-    return student_str;
-}
+//_________________________________Requests______________________________________________________________
+
+
 
 
 /*
-	Adds a Student from the on site input field.
+	Request to get student list information.
 
-	@return: void
+	@param text: Name of the student dict as string
+	@return: Request
 */
-function addStudent() {
-    if(!addElement(document.getElementById('studentname').value)) {
-        var popup = document.getElementById("exists_student");
-        popup.classList.toggle("show");
-    }
-}
+function requestInformation(text){
+    return $.post("/getstudentlists", {"result": text});
+};
 
 
 /*
-	Renames a student from the opened dialog window.
+	Request to delete a student list.
 
-	@return: void
+	@return: Request
 */
-function renameStudent() {
-	var new_name = document.getElementById("new_studentname").value;
-	if (new_name == old_name) return;
-	if(!addElement(new_name)) {
-        var popup = document.getElementById("exists_new_student");
-        popup.classList.toggle("show");
-        return
-    }
-    deleteElement(old_name);
-    addElement(new_name);
-    closeDialog();
-}
+function deleteRequest() {
+	return $.post("/delstudents", {"result": data});
+};
 
 
 /*
-	Opens a dialog window, when a student is clicked.
+	Requests the list of all students
 
-	@param event: The click event
-	@return: void
+	@param text: List of the classes
+	@return: Request
 */
-function selectElement(event) {
-	old_name = event.target.innerHTML;
-	document.getElementById("dialog").showModal();
-	var dialog_text = document.getElementById("dialog_text");
-	dialog_text.innerHTML = dialog_text.innerHTML.replace("free", old_name);
-	document.getElementById("new_studentname").value = old_name;
-}
-
-
-/*
-	Switches the location to the editing of the preference list of the current class.
-
-	@return: void
-*/
-function toPref() {
-	localStorage.setItem('selected', data);
-    window.location = "/from_pref";
-}
-
-
-/*
-	Closes the dialog window and resets its title.
-
-	@return: void
-*/
-function closeDialog() {
-	document.getElementById("dialog").close();
-	var dialog_text = document.getElementById("dialog_text");
-	dialog_text.innerHTML = dialog_text.innerHTML.replace(old_name, "free");
-}
+function renameRequest() {
+    return $.get("/getstudentlists");
+};

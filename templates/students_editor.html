@@ -26,7 +26,7 @@
             <input type="text" id="new_studentname" name="filename" value="Student">
           </form>
           <button class="popup" style="width:50%" onclick="renameStudent()">Rename student
-            <span class="popuptext" id="exists_new_student">This student already exists!</span>
+            <span class="popuptext" id="popup_rename">This student already exists!</span>
           </button>
           <div class="divider"></div>
           <button class="button2" style="color: red;"
@@ -59,7 +59,7 @@
                 <input type="text" id="filename" name="filename" value="Class">
             </form>
             <button class="popup" style="width:50%" onclick="saveClass()">Save class
-                <span class="popuptext" id="saved">Class saved!</span>
+                <span class="popuptext" id="popup">Class saved!</span>
                 <span class="popuptext" id="exists_class">Class free already exists!</span>
                 <span class="popuptext" id="illegal">Your class name should only contain letters and numbers!</span>
                 <span class="popuptext" id="empty">Your class should not be empty!</span>
@@ -70,10 +70,11 @@
                 <input type="text" id="studentname" name="filename" value="Student">
             </form>
             <button class="popup" style="width:50%" onclick="addStudent()">Add student
-                <span class="popuptext" id="exists_student">This student already exists!</span>
+                <span class="popuptext" id="popup_add">Free space</span>
             </button>
-            <button style="width:50%" onclick="toPref()">Edit preference list of this class</button>
-            <button style="width:50%" onclick="ask_delete()">Delete this class</button>
+            <button class="popup" onclick="ask_delete()">Delete this room
+                <span class="popuptext" id="popup_del">Free space</span>
+            </button>
         </div>
     </div>
 <script>

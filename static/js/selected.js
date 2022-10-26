@@ -12,12 +12,10 @@ function start(){
 /*
 	Asks the user if he really wants to delete the data which was selected.
 
-	@return: void
+	@return: Boolean if the user wants to delete
 */
 function ask_delete() {
 	var ask_text = "Are you sure that you want to delete free?";
 	ask_text = ask_text.replace("free", data);
-	if(confirm(ask_text)) {
-		deleteInformation();
-	}
+	return confirm(ask_text);
 }
