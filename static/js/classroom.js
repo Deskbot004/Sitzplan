@@ -1,22 +1,34 @@
 /*
 	This js contains functions called by classroom.html.
 
-	Functions:
+	Simple Functions on html:
 		arrayToText(array) -> string
 		detectWidthToTrim(array) -> array
 		detectHeightToTrim(array) -> array
 		check_validity(array) -> Boolean
 		change_array(array, string, string)
 		fillGrid(array, array, string)
+	Functions from user interaction:
 		changeColor(string)
 		addColor()
 		addColorClick()
-		sendClassroomToFlask()
-		renaming(string, string) -> Boolean
-		existsElement(string)
 		getInformation(string)
 		deleteInformation()
+	Asynchronous Functions:
+	    sendClassroom()
+	    renaming(string, string) -> Boolean
+	Requests:
+		classroomToServer(string, array) -> request
+		renameRequest() -> request
+		requestInformation(text) -> request
+		deleteRequest(string) -> request
 */
+
+
+
+
+//_________________________________Simple Functions on html____________________________________________
+
 
 
 
@@ -24,7 +36,7 @@
     Converts the classroom array into a text string where the rows are separated by semicolons.
 
 	@param classroom: An array of the classroom information
-    @return: string of the classroom data
+    @return: String of the classroom data
 */
 function arrayToText(classroom) {
     var width = detectWidthToTrim(classroom);
@@ -53,7 +65,7 @@ function arrayToText(classroom) {
     Detects if columns can be trimmed (are only filled with zeros) from the array representing the classroom data.
 
 	@param classroom: An array of the classroom information
-    @return: list with two entries describing the interval of columns that can't be trimmed
+    @return: List with two entries describing the interval of columns that can't be trimmed
 */
 function detectWidthToTrim(classroom) {
     var start_width = 99;
@@ -80,7 +92,7 @@ function detectWidthToTrim(classroom) {
     Detects if rows can be trimmed (are only filled with zeros) from the array representing the classroom data.
 
 	@param classroom: An array of the classroom information
-    @return: list with two entries describing the interval of columns that can't be trimmed
+    @return: List with two entries describing the interval of columns that can't be trimmed
 */
 function detectHeightToTrim(classroom) {
     var start_height = 99;
@@ -105,7 +117,7 @@ function detectHeightToTrim(classroom) {
     Checks for a valid classroom (at least one teacher and one student desk in the room).
 
 	@param classroom: An array of the classroom information
-    @return: double-digit string describing whether student and teacher desks are present
+    @return: Double-digit string describing whether student and teacher desks are present
 */
 function check_validity(classroom) {
     var student_found = 0;
@@ -152,8 +164,8 @@ function changeArray(classroom, array_id, color) {
     Fills the grid with a loaded classroom.
 
 	@param classroom: An array of the classroom information
-	@param grid: the grid to be coloured
-    @param room: string of the loaded classroom
+	@param grid: The grid to be coloured
+    @param room: String of the loaded classroom
     @return: void
 */
 function fillGrid(classroom, grid, room) {
@@ -182,6 +194,14 @@ function fillGrid(classroom, grid, room) {
     }
 };
 
+
+
+
+//_________________________________Functions from user interaction_____________________________________________
+
+
+
+
 /*
     Changes the color variable that is used to color the background of grid divs.
 
@@ -189,6 +209,7 @@ function fillGrid(classroom, grid, room) {
     @return: void
 */
 function changeColor(color_arg) { color = color_arg; };
+
 
 /*
     Changes the background color of a grid div upon downward press of the left mouse button.
@@ -214,25 +235,66 @@ function addColorClick() {
     changeArray(classroom, div_id, color);
 };
 
+
+/*
+    Deletes the current classroom from the server.
+
+    @return: void
+*/
+function getInformation(text){
+	var req_room = requestInformation(text);
+	req_room.done(function(room) {
+		fillGrid(classroom, grid, room);
+	});
+	req_room.fail(function() {
+		console.log("No file named "+ text + " found, loading template.")
+		room = "0000000000;0000000000;0000000000;0000110000;0000330000;0000000000;0000000000;0000000000;0000000000;0000000000;";
+		fillGrid(classroom, grid, room);
+	});
+};
+
+/*
+    Deletes the current classroom from the server.
+
+    @return: void
+*/
+function deleteInformation() {
+    var delete_return = deleteRequest(data);
+    delete_return.done(function(data) {
+        switchToClassroom();
+    });
+    delete_return.fail(function(xhr, status, error) {
+        console.log("ERROR " + error.toString());
+    });
+};
+
+
+
+
+//_________________________________Asynchronous Functions_________________________________________________
+
+
+
+
 /*
     Sends the string representing the classroom data to the server.
 
     @return: void
 */
-async function sendClassroomToFlask() {
+async function sendClassroom() {
     switch (check_validity(classroom)) {
         case "00":
             var popup = document.getElementById("no_student_or_teacher");
             popup.classList.toggle("show");
-            return
+            return;
         case "01":
             var popup = document.getElementById("no_student");
             popup.classList.toggle("show");
-            return
+            return;
         case "10":
             var popup = document.getElementById("no_teacher");
             popup.classList.toggle("show");
-            return
+            return;
         default: break;
     }
 
@@ -243,7 +305,7 @@ async function sendClassroomToFlask() {
     if (!checkForIllegalCharacters(name)) {
         var popup = document.getElementById("illegal");
         popup.classList.toggle("show");
-        return
+        return;
     }
 
 	if (name != data) {
@@ -254,7 +316,7 @@ async function sendClassroomToFlask() {
 	var popup = document.getElementById("saved");
 	popup.classList.toggle("show");
 
-    data_return = dataSendToServer(name, layout_array);
+    data_return = classroomToServer(name, layout_array);
     data_return.done(function(data) {
         console.log("Data has been sent to server!");
     });
@@ -264,14 +326,6 @@ async function sendClassroomToFlask() {
     data = name;
 };
 
-
-/*
-    Request that sends data to server
-    @return:
-*/
-function dataSendToServer(name, layout_array) {
-    return $.post("/classroom_info", {"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]});
-}
 /*
 	Function that renames a classroom if the name does not already exist.
 
@@ -318,59 +372,53 @@ async function renaming(old_name, new_name) {
     return 1;
 };
 
+
+
+
+//_________________________________Requests____________________________________________________________
+
+
+
+
 /*
-	Function to see if a classroom name already exists in data.
+    Requests a classroom to be saved on the server.
+
+    @param name: Name of the classroom
+    @param layout_array: Array containing the room information
+    @return: Request
+*/
+function classroomToServer(name, layout_array) {
+    return $.post("/classroom_info", {"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]});
+};
+
+
+/*
+	Requests the list of all classrooms.
 
 	@param text: Name of the classroom
-	@return: void
+	@return: Request
 */
 function renameRequest() {
-    return $.ajax({
-		type: "GET",
-		url: "/getclassroomlists"
-	});
+    return $.get("/getclassroomlists");
+};
 
-}
 
 /*
-    Fill grid with information if a classroom is loaded from the server.
+    Requests the classroom information from server.
 
-    @param text: string of the classroom name
-    @return: void
+    @param text: String of the classroom name
+    @return: Request
 */
 function requestInformation(text){
     return $.post("/getclassroomlists", {"result": text});
 };
 
-function getInformation(text){
-	var req_room = requestInformation(text);
-	req_room.done(function(room) {
-		fillGrid(classroom, grid, room);
-	});
-	req_room.fail(function() {
-		console.log("No file named "+ text + " found, loading template.")
-		room = "0000000000;0000000000;0000000000;0000110000;0000330000;0000000000;0000000000;0000000000;0000000000;0000000000;";
-		fillGrid(classroom, grid, room);
-	});
-}
 
 /*
-    Deletes the current classroom from the server.
+    Requests the deletion of the specified classroom.
 
-    @return: void
-*/
-function deleteInformation() {
-    var delete_return = deleteRequest(data);
-    delete_return.done(function(data) {
-        switchToClassroom();
-    });
-    delete_return.fail(function(xhr, status, error) {
-        console.log("ERROR " + error.toString());
-    });
-}
-
-/*
-    Sends request to server with classroom name to delete
+    @param del_name: Classroom to be deleted
+    @return: Request
 */
 function deleteRequest(del_name) {
 	return $.post("/delclassroom", { "result": del_name });
