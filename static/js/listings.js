@@ -125,7 +125,7 @@ function createInformation() {
             var popup = document.getElementById("exists");
             popup.innerHTML = popup.innerHTML.replace("free", text);
             popup.classList.toggle("show");
-            return;
+            return
         }
         sendInformation(text);
 };
