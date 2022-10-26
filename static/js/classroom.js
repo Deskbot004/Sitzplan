@@ -61,6 +61,7 @@ function arrayToText(classroom) {
     return text_array;
 };
 
+
 /*
     Detects if columns can be trimmed (are only filled with zeros) from the array representing the classroom data.
 
@@ -88,6 +89,7 @@ function detectWidthToTrim(classroom) {
     return [start_width, end_width];
 };
 
+
 /*
     Detects if rows can be trimmed (are only filled with zeros) from the array representing the classroom data.
 
@@ -113,6 +115,7 @@ function detectHeightToTrim(classroom) {
     return [start_height, end_height];
 };
 
+
 /*
     Checks for a valid classroom (at least one teacher and one student desk in the room).
 
@@ -131,6 +134,7 @@ function check_validity(classroom) {
     }
     return student_found.toString() + teacher_found.toString();
 };
+
 
 /*
     Updates the classroom array with new color values.
@@ -159,6 +163,7 @@ function changeArray(classroom, array_id, color) {
         default:
     }
 };
+
 
 /*
     Fills the grid with a loaded classroom.
@@ -236,6 +241,7 @@ function addColor() {
 	}
 };
 
+
 /*
     Changes the background color of a grid.
 
@@ -254,7 +260,7 @@ function addColorClick() {
 
 
 /*
-    Deletes the current classroom from the server.
+    Loads the information of a given classroom
 
     @return: void
 */
@@ -272,8 +278,10 @@ function getInformation(text){
 	} catch(err) {
 		alert("Getting Information went wrong! The room was not properly loaded!");
 		console.log("Function getInformation failed with " + err);
+		popup.classList.toggle("show");
 	}
 };
+
 
 /*
     Deletes the current classroom from the server.
@@ -338,7 +346,7 @@ async function sendClassroom() {
 			if(!rename_value) throw "exists";
 		}
 
-	    data_return = classroomToServer(name, layout_array);
+	    var data_return = classroomToServer(name, layout_array);
 
 	    data_return.done(function(data) {
 	        console.log("Data has been sent to server!");
@@ -382,6 +390,7 @@ async function sendClassroom() {
 		popup.classList.toggle("show");
 	}
 };
+
 
 /*
 	Function that renames a classroom if the name does not already exist.
