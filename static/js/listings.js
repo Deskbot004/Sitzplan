@@ -2,7 +2,7 @@
 	This js contains all generic functions for the interactions of "var_list".
 	Which is mainly used to show information read by data as a list.
 
-TODO
+
 	Functions:
 		addElement(string) -> Boolean
 		existsElement(string) -> Boolean
@@ -153,18 +153,21 @@ function createInformation() {
 };
 
 /*
-TODO
+
 	Adds every item relevant for the identity as
 	a dictionary to 'var_list'.
 
 	@return: void
 */
 function getLists() {
-    var list = "/get" + identity + "lists";
-    $.get(list,
-        function(data) {
-            addDict(data);
-        });
+    var lists_req = listRequest();
+    lists_req.done(function(data) {
+        addDict(data);
+    });
+    lists_req.fail(function(xhr, status, error){
+        alert("Getting all lists failed! Please reload!");
+		console.log("Function getLists failed with ERROR " + error.toString());
+    });
 };
 
 
