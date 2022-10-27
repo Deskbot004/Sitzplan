@@ -9,12 +9,11 @@
 		deleteElement(string)
 		addList(array)
 		addDict(dictionary)
-		selectElement(event)
 		sendInformation()
+		getLists()
 	Functions from user interaction:
 	    createInformation()
-	Requests:
-	    getLists()
+	    selectElement(event)
 */
 
 
