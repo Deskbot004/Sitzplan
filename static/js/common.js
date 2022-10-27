@@ -16,7 +16,7 @@ function switchToSeating() {
 }
 
 function switchToStudents() {
-    window.location = "students";
+    window.location = "student";
 }
 
 function switchToAbout() {

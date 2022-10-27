@@ -10,15 +10,7 @@
 		renameStudent()
 		selectElement(event)
 		closeDialog()
-	//everything below nearly identical to classroom.js????
-	Asynchronous Functions:
-		deleteInformation()
-		saveClass()
-		renaming(string, string)
 
-
-	// rename class
-	// class deletion before creation is possible
 	// saving a class should either update or create pref_list
 	// Alphabetical Sorting of student list? Per Button? <- Traceback preflist
 */
@@ -165,125 +157,45 @@ function closeDialog() {
 }
 
 
-
-
-
-//_________________________________Asynchronous Functions________________________________________________
-
-
-
-
 /*
-    Deletes the current classroom from the server.
+	Function to test specific edge cases before sending the information to generic saveData().
 
-    @return: void
+	@return: void
 */
-async function deleteInformation() {
+function pre_saveData() {
 	try {
-		var error_case = "undefined";
-		var rename_request = renameRequest();
-		rename_request.done(function(data) {
-	        console.log("Data has been collected from server!");
-	    });
-		rename_request.fail(function(xhr, status, error) {
-	        error_case = "ERROR " + error.toString();
-	    });
-		var data_dict = await rename_request;
+		var error_case = "Not request fail";
 
-		var found = 0;
-		for (var elem of Object.keys(data_dict)) {
-	        if(data_dict[elem] == data) found = 1;
-	    }
+		if(document.getElementById('var_list').innerHTML.trim() == "") throw "empty";
 
-		if (!found) throw "not_created";
-		if (!ask_delete()) throw "canceled";
+	    var name = document.getElementById("filename").value;
+		var student_str = create_str();
 
-	    var delete_return = deleteRequest(data);
-	    delete_return.done(function(data) {
-	        switchToStudents();
-	    });
-	    delete_return.fail(function(xhr, status, error) {
-	        error_case = "ERROR " + error.toString();
-	    });
-	    await delete_return;
-	} catch(err) {
+	    saveData({"name" : name, "students": student_str});
+
+	    //TODO update preflists when everything went fine
+
+	} catch (err) {
 		switch(err) {
-			case 'not_created':
-				err_text = "The classroom was never saved!"; break;
-			case 'canceled':
-				err_text = "Deleting was canceled!"; break;
+			case 'empty':
+				err_text = "The class is empty!"; break;
 			default:
-				err_text = "Deleting Information went wrong! The room was not deleted!"; break;
+				err_text = "Saving class went wrong! The class has not been saved!"; break;
 		}
-
-		var popup = document.getElementById("popup_del");
-		popup.innerHTML = err_text;
-		popup.classList.toggle("show");
 
 		switch(typeof err) {
 			case "string":
-				console.log("Function deleteInformation failed with " + err);break;
+				if(err != "saved") console.log("Function pre_sendData failed with " + err);break;
 			case "object":
-				console.log("Delete request failed with "+ error_case);
+				console.log("Save request failed with "+ error_case);
 				console.log(err);
 				break;
 			default:
 				console.log("Undetected Error type: " + typeof err);break;
 		}
+
+		var popup = document.getElementById("popup_save");
+		popup.innerHTML = err_text;
+		popup.classList.toggle("show");
 	}
-};
-
-
-//TODO UPDATE THIS SHIT
-/*
-	Function to save the current configuration of 'var_list' as a .json
-	in /data.
-
-	@return: void
-*/
-function saveClass() {
-    //check name
-    var name = document.getElementById("filename").value;
-
-    if (!checkForIllegalCharacters(name)) {
-        var popup = document.getElementById("illegal");
-        popup.classList.toggle("show");
-        return;
-    }
-
-    //check if var_list empty
-    if(document.getElementById('var_list').innerHTML.trim() == "") {
-        var popup = document.getElementById("empty");
-        popup.classList.toggle("show");
-        return;
-    }
-
-
-    /*
-        check if renaming is needed
-    if (name != data) {
-        if(!renaming(data, name)) return;
-    }
-
-    */
-
-    //save class
-    var popup = document.getElementById("saved");
-    popup.classList.toggle("show");
-	var student_str = create_str();
-
-    data = name;
-
-	var result = {"name" : name, "students": student_str};
-
-    $.post("/student_info",
-            {"name" : name, "students": student_str},
-            function(data) {});
 }
-
-
-/*
-	A
-*/
-//maybe use from classroom?
-function renaming(data, name) {}
