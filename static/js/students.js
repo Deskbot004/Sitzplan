@@ -15,10 +15,6 @@
 		deleteInformation()
 		saveClass()
 		renaming(string, string)
-	Requests:
-		requestInformation(text) -> request
-		deleteInformation() -> request
-		renameRequest()
 
 
 	// rename class
@@ -291,42 +287,3 @@ function saveClass() {
 */
 //maybe use from classroom?
 function renaming(data, name) {}
-
-
-
-
-//_________________________________Requests______________________________________________________________
-
-
-
-
-/*
-	Request to get student list information.
-
-	@param text: Name of the student dict as string
-	@return: Request
-*/
-function requestInformation(text){
-    return $.post("/getstudentlists", {"result": text});
-};
-
-
-/*
-	Request to delete a student list.
-
-	@return: Request
-*/
-function deleteRequest() {
-	return $.post("/delstudents", {"result": data});
-};
-
-
-/*
-	Requests the list of all students
-
-	@param text: List of the classes
-	@return: Request
-*/
-function renameRequest() {
-    return $.get("/getstudentlists");
-};

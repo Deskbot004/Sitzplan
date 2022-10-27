@@ -88,7 +88,7 @@ def student_info():
         return "", 404
 
 
-@app.route("/delstudents", methods=["POST"])
+@app.route("/delstudent", methods=["POST"])
 def del_students():
     try:
         if request.method == "POST":

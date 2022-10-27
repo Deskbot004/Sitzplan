@@ -5,6 +5,7 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <script src="{{ url_for('static', filename='js/common.js') }}"></script>
     <script src="{{ url_for('static', filename='js/selected.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/requests.js') }}"></script>
     <script src="{{ url_for('static', filename='js/classroom.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <title>Classroom editor</title>
@@ -71,6 +72,7 @@
     var color = 'white';                                        // set standard color to white
     var grid = Array.from(divs);                                // create grid from divs
     var classroom = new Array(10);                              // create empty array for classroom data
+    var identity = "classroom";                                 // identity to use general functions
 
     // call the start function upon opening the page
     window.onload = start();

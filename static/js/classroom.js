@@ -18,11 +18,6 @@
 		deleteInformation()
 	    sendClassroom()
 	    renaming(string, string) -> Boolean
-	Requests:
-		classroomToServer(string, array) -> request
-		renameRequest() -> request
-		requestInformation(string) -> request
-		deleteRequest(string) -> request
 */
 
 
@@ -299,7 +294,7 @@ function getInformation(text){
 async function deleteInformation() {
 	try {
 		var error_case = "undefined";
-		var rename_request = renameRequest();
+		var rename_request = listRequest();
 		rename_request.done(function(data) {
 	        console.log("Data has been collected from server!");
 	    });
@@ -379,7 +374,7 @@ async function sendClassroom() {
 			if(!rename_value) throw "exists";
 		}
 
-	    var data_return = classroomToServer(name, layout_array);
+	    var data_return = dataToServer({"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]});
 
 	    data_return.done(function(data) {
 	        console.log("Data has been sent to server!");
@@ -436,7 +431,7 @@ async function sendClassroom() {
 */
 async function renaming(old_name, new_name) {
 	try {
-		var rename_request = renameRequest();
+		var rename_request = listRequest();
 		rename_request.fail(function(xhr, status, error) {
 	            error_case = "ERROR " + error.toString();
 	    });
@@ -477,54 +472,3 @@ async function renaming(old_name, new_name) {
 	}
 };
 
-
-
-
-//_________________________________Requests____________________________________________________________
-
-
-
-
-/*
-    Requests a classroom to be saved on the server.
-
-    @param name: Name of the classroom
-    @param layout_array: Array containing the room information
-    @return: Request
-*/
-function classroomToServer(name, layout_array) {
-    return $.post("/classroom_info", {"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]});
-};
-
-
-/*
-	Requests the list of all classrooms.
-
-	@param text: List of the classrooms
-	@return: Request
-*/
-function renameRequest() {
-    return $.get("/getclassroomlists");
-};
-
-
-/*
-    Requests the classroom information from server.
-
-    @param text: String of the classroom name
-    @return: Request
-*/
-function requestInformation(text){
-    return $.post("/getclassroomlists", {"result": text});
-};
-
-
-/*
-    Requests the deletion of the specified classroom.
-
-    @param del_name: Classroom to be deleted
-    @return: Request
-*/
-function deleteRequest(del_name) {
-	return $.post("/delclassroom", { "result": del_name });
-};
