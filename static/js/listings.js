@@ -9,12 +9,16 @@
 		deleteElement(string)
 		addList(array)
 		addDict(dictionary)
-		sendInformation()
 		getLists()
+		sendInformation()
 	Functions from user interaction:
 	    createInformation()
 	    selectElement(event)
 */
+
+
+//_________________________________Functions________________________________________________
+
 
 
 
@@ -35,6 +39,7 @@ function addElement(text) {
     return 1;
 };
 
+
 /*
 	Checks the List named "var_list" if it contains an Element with
 	the given text as its innerHTML.
@@ -54,6 +59,7 @@ function existsElement(text) {
     return detected;
 };
 
+
 /*
 	Deletes the list entry containing the given string as its innerHTML
 	from the list with the id "var_list".
@@ -72,6 +78,7 @@ function deleteElement(text) {
     }
 };
 
+
 /*
 	Executes addElement() for each entry in the given array.
 
@@ -83,6 +90,7 @@ function addList(element_arr) {
         addElement(element_arr[i]);
     };
 };
+
 
 /*
 	Executes addElement() for each entry in the given dictionary.
@@ -96,20 +104,44 @@ function addDict(element_dict) {
 	};
 };
 
-/*
-	Executes sendInformation for the selected Element.
 
-	@param event: The selected element itself
+/*
+
+	Adds every item relevant for the identity as
+	a dictionary to 'var_list'.
+
 	@return: void
 */
-function selectElement(event) {
-	try {
-		sendInformation(event.target.innerHTML);
-	} catch (err) {
-		alert("Selecting element went wrong! The element was not selected!");
-		console.log("Function selectElement failed with " + err);
-	}
+function getLists() {
+    var lists_req = listRequest();
+    lists_req.done(function(data) {
+        addDict(data);
+    });
+    lists_req.fail(function(xhr, status, error){
+        alert("Getting all lists failed! Please reload!");
+		console.log("Function getLists failed with ERROR " + error.toString());
+    });
 };
+
+
+/*
+	Retains the selected Information and relocates
+	to the next relevant site depending on identity.
+
+	@return: void
+*/
+function sendInformation(text){
+    localStorage.setItem('selected', text);
+    window.location = "/from_" + identity;
+}
+
+
+
+
+//_________________________________Functions from user interaction_______________________________________
+
+
+
 
 /*
 	Takes the information from form called 'filename' and
@@ -151,32 +183,18 @@ function createInformation() {
     }
 };
 
+
 /*
+	Executes sendInformation for the selected Element.
 
-	Adds every item relevant for the identity as
-	a dictionary to 'var_list'.
-
+	@param event: The selected element itself
 	@return: void
 */
-function getLists() {
-    var lists_req = listRequest();
-    lists_req.done(function(data) {
-        addDict(data);
-    });
-    lists_req.fail(function(xhr, status, error){
-        alert("Getting all lists failed! Please reload!");
-		console.log("Function getLists failed with ERROR " + error.toString());
-    });
+function selectElement(event) {
+	try {
+		sendInformation(event.target.innerHTML);
+	} catch (err) {
+		alert("Selecting element went wrong! The element was not selected!");
+		console.log("Function selectElement failed with " + err);
+	}
 };
-
-
-/*
-	Retains the selected Information and relocates
-	to the next relevant site depending on identity.
-
-	@return: void
-*/
-function sendInformation(text){
-    localStorage.setItem('selected', text);
-    window.location = "/from_" + identity;
-}

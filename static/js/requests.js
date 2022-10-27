@@ -4,17 +4,18 @@
 
 	Request functions:
 		dataToServer(dictionary) -> request
-		listRequest()
+		listRequest() -> request
+		requestInformation(string) -> request
 */
 
 
 
 
 /*
-    Requests a classroom to be saved on the server.
+    Requests data to be saved on the server.
+    Location depends on identity.
 
-    @param name: Name of the classroom
-    @param layout_array: Array containing the room information
+    @param name: Data to be saved
     @return: Request
 */
 function dataToServer(send_data) {
@@ -23,9 +24,8 @@ function dataToServer(send_data) {
 
 
 /*
-	Requests the list of all classrooms.
+	Requests the list of every file relating to identity.
 
-	@param text: List of the classrooms
 	@return: Request
 */
 function listRequest() {
@@ -34,9 +34,10 @@ function listRequest() {
 
 
 /*
-    Requests the classroom information from server.
+    Requests the content of a file from the server.
+    Which file is requested depends on identity and the given string.
 
-    @param text: String of the classroom name
+    @param text: String of the file name
     @return: Request
 */
 function requestInformation(data_name){
@@ -45,9 +46,10 @@ function requestInformation(data_name){
 
 
 /*
-    Requests the deletion of the specified classroom.
+    Requests the deletion of a specified file from the Server.
+    Which file is requested depends on identity and the given string.
 
-    @param del_name: Classroom to be deleted
+    @param del_name: String of the file name
     @return: Request
 */
 function deleteRequest(del_name) {
