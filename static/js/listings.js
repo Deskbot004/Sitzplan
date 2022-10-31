@@ -35,7 +35,7 @@ function addElement(text) {
     node.appendChild(document.createTextNode(text));
     node.className += 'elem';
     node.onclick = function(event){selectElement(event);};
-    document.querySelector('#var_list').appendChild(node);
+    document.getElementById("var_list").appendChild(node);
     return 1;
 };
 
@@ -121,6 +121,7 @@ function getLists() {
         alert("Getting all lists failed! Please reload!");
 		console.log("Function getLists failed with ERROR " + error.toString());
     });
+    return listRequest();
 };
 
 

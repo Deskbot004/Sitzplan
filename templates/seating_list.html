@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seatings</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/listings.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/requests.js') }}"></script>
+    <div class="headerContainer">
+
+		<h2>Create Seating</h2>
+
+	</div>
+</head>
+<body>
+    <div class="container">
+        <div class="left" col ="1">
+            <ul>
+            <li><a href="#home" onclick="switchToHome()">Home</a></li>
+            <li><a href="#seating" onclick="switchToSeating()">Create seating</a></li>
+            <li><a href="#student" onclick="switchToStudents()">Student lists</a></li>
+            <li><a href="#room" onclick="switchToClassroom()">Classrooms</a></li>
+            <li><a href="#about" onclick="switchToAbout()">About</a></li></ul>
+        </div>
+        <div col="2">
+            <h2>List of students:</h2>
+            <ul id="stud_list">
+            </ul>
+        </div>
+        <div col="3">
+            <h2>List of classrooms:</h2>
+            <ul id="room_list">
+            </ul>
+        </div>
+        <div class="left" col="4">
+            <h2>Confirm selection</h2>
+            <a>Students:</a>
+            <a id="student">None</a>
+            <a>Classroom:</a>
+            <a id="classroom">None</a>
+            <button style="width:50%" class="popup" onclick="createInformation()">Confirm
+                <span class="popuptext" id="popup"></span>
+            </button>
+        </div>
+    </div>
+<script>
+    var identity = "seating";       // identity to use correct functions in listings.js
+    window.onload = fillLists();
+
+    async function fillLists() {
+        identity = "student";
+        var stud_list = document.getElementById("stud_list");
+        stud_list.id = 'var_list';
+        await getLists();
+        stud_list.id = "stud_list";
+
+        identity = "classroom";
+        var room_list = document.getElementById("room_list");
+        room_list.id = "var_list";
+        await getLists();
+        room_list.id = "room_list";
+
+        identity = "seating";
+    };
+
+
+    function selectElement(event) {
+        try {
+            var parent = event.target.parentNode;
+            resetBackground(parent);
+
+            event.target.style.background = "yellow";
+
+            if (parent.id == "stud_list") text = "student";
+            if (parent.id == "room_list") text = "classroom";
+
+            var textfield = document.getElementById(text);
+            textfield.innerHTML = event.target.innerHTML;
+        } catch (err) {
+            alert("Selecting element went wrong! The element was not selected!");
+            console.log("Function selectElement failed with " + err);
+        }
+
+    };
+
+    function resetBackground(List) {
+        var ul_elements = List.getElementsByTagName('li');
+        for (var i = 0, len = ul_elements.length; i < len; i++) {
+            ul_elements[i].style.background = "transparent";
+        }
+    }
+
+</script>
+</body>
+</html>

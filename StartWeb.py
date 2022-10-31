@@ -23,7 +23,7 @@ def switch_classroom():
 
 @app.route('/seating')
 def switch_seating():
-    return render_template("seating.html")
+    return render_template("seating_list.html")
 
 
 @app.route('/student')
