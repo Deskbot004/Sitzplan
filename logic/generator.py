@@ -12,6 +12,10 @@ TODO: create simple weighted random algorithm (only constraints) [random_constra
 
 TODO: pretty much everything except complete random
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! SHOULD LATER NOT BE ACCESSED ANYMORE SINCE STARTWEB SHOULD REPLACES EVERY FUNCTIONALITY PRESENT HERE !!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 Functions:
     start()
 '''
@@ -84,3 +88,15 @@ def start():
         used_algorithm.save_result()
         del used_algorithm
         """
+
+
+def run(data):
+    """
+    New function to be used by the web interface.
+
+    :param data: String information from website
+    :return: State of function
+    """
+    information = data.split(",")
+    print(information)
+    return

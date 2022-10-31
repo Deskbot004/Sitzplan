@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from logic import students, classrooms, preferences
+from logic import students, classrooms, preferences, generator
 
 app = Flask(__name__)
 
@@ -156,7 +156,7 @@ def get_classroom_lists():
 
 
 # ________________________________________________________________________________________________________
-# Functions preferences
+# Functions preferences IN WORK
 @app.route('/getpreflists', methods=["GET", "POST"])
 def get_pref_lists():
     if request.method == "POST":
@@ -165,6 +165,17 @@ def get_pref_lists():
         return preferences.preferences_read(request.form["result"])
     elif request.method == "GET":
         return preferences.get_all_pref_lists()
+
+
+# ________________________________________________________________________________________________________
+# Functions seating IN WORK
+
+
+@app.route('/getseatinglists', methods=["POST"])
+def get_seating():
+    if request.method == "POST":
+        print(request.form["result"])
+        return generator.run(request.form["result"])
 
 
 if __name__ == "__main__":

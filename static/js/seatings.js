@@ -63,15 +63,17 @@ function resetBackground(List) {
 	Overwrites createInformation from listings.js.
 	Creates an array of the relevant information and sends it to seating_editor.
 
+	@param show: Changes the functionality to only show the last one.
 	@return: void
 */
-function createInformation() {
+function createInformation(show) {
     try {
         var student = document.getElementById("student").innerHTML;
         if (student == "None") throw "student_empty";
         var classroom = document.getElementById("classroom").innerHTML;
         if (classroom == "None") throw "room_empty";
         var algorithm = document.getElementById("algorithm").value;
+		if (show == "show") algorithm = "show";
 
         var data = [student, classroom, algorithm];
 
@@ -89,6 +91,7 @@ function createInformation() {
         }
 
         var popup = document.getElementById("popup")
+        if (show == "show") popup = document.getElementById("popup_show")
         popup.innerHTML = err_text;
         popup.classList.toggle("show");
         console.log("Function createInformation() failed with " + err);
@@ -128,8 +131,10 @@ async function fillLists() {
 /*
 	Function which on load runs the selected algorithm and displays the created seating.
 
+	TODO
+
 	@return: void
 */
 function start() {
-	return;
+	var running_algorithm = requestInformation(data);
 };
