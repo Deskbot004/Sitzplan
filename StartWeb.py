@@ -55,6 +55,12 @@ def from_classroom():
 def from_students():
     return render_template("students_editor.html")
 
+
+@app.route('/from_seating')
+def from_seating():
+    return render_template("seating_editor.html")
+
+
 # ________________________________________________________________________________________________________
 # Functions students
 @app.route('/getstudentlists', methods=["POST","GET"])

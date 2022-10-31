@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/requests.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/seatings.js') }}"></script>
+    <div class="headerContainer">
+
+		<h2>Seating editor</h2>
+
+	</div>
+</head>
+<body>
+    <div class="container">
+        <div class="left" col ="1">
+            <ul>
+            <li><a href="#home" onclick="switchToHome()">Home</a></li>
+            <li><a href="#seating" onclick="switchToSeating()">Create seating</a></li>
+            <li><a href="#student" onclick="switchToStudents()">Student lists</a></li>
+            <li><a href="#room" onclick="switchToClassroom()">Classrooms</a></li>
+            <li><a href="#about" onclick="switchToAbout()">About</a></li></ul>
+        </div>
+        <div class="center" col="2">
+            <h2 id="head_text">Show information</h2>
+            <a>Show created seating</a>
+        </div>
+    </div>
+<script>
+    identity = "seating";                                   // identity to use correct functions in listings.js
+    var data = localStorage.getItem('selected');            // get information from seating_list in form of Array
+    //window.onload = start();
+</script>
+</body>
+</html>

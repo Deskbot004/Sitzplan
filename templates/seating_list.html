@@ -9,6 +9,7 @@
     <script src="{{ url_for('static', filename='js/common.js') }}"></script>
     <script src="{{ url_for('static', filename='js/listings.js') }}"></script>
     <script src="{{ url_for('static', filename='js/requests.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/seatings.js') }}"></script>
     <div class="headerContainer">
 
 		<h2>Create Seating</h2>
@@ -35,12 +36,17 @@
             <ul id="room_list">
             </ul>
         </div>
-        <div class="left" col="4">
+        <div class="right" col="4">
             <h2>Confirm selection</h2>
-            <a>Students:</a>
-            <a id="student">None</a>
-            <a>Classroom:</a>
-            <a id="classroom">None</a>
+            <label for="student">Students:</label>
+            <a id="student" style="font-weight: bold">None</a>
+            <label for="classroom">Classroom:</label>
+            <a id="classroom" style="font-weight: bold">None</a>
+            <label for="algorithm">Algorithm:</label>
+            <select id="algorithm">
+                <option value="random_algo">Random</option>
+                <option value="constraint_random">Random with rules</option>
+            </select>
             <button style="width:50%" class="popup" onclick="createInformation()">Confirm
                 <span class="popuptext" id="popup"></span>
             </button>
@@ -49,50 +55,6 @@
 <script>
     var identity = "seating";       // identity to use correct functions in listings.js
     window.onload = fillLists();
-
-    async function fillLists() {
-        identity = "student";
-        var stud_list = document.getElementById("stud_list");
-        stud_list.id = 'var_list';
-        await getLists();
-        stud_list.id = "stud_list";
-
-        identity = "classroom";
-        var room_list = document.getElementById("room_list");
-        room_list.id = "var_list";
-        await getLists();
-        room_list.id = "room_list";
-
-        identity = "seating";
-    };
-
-
-    function selectElement(event) {
-        try {
-            var parent = event.target.parentNode;
-            resetBackground(parent);
-
-            event.target.style.background = "yellow";
-
-            if (parent.id == "stud_list") text = "student";
-            if (parent.id == "room_list") text = "classroom";
-
-            var textfield = document.getElementById(text);
-            textfield.innerHTML = event.target.innerHTML;
-        } catch (err) {
-            alert("Selecting element went wrong! The element was not selected!");
-            console.log("Function selectElement failed with " + err);
-        }
-
-    };
-
-    function resetBackground(List) {
-        var ul_elements = List.getElementsByTagName('li');
-        for (var i = 0, len = ul_elements.length; i < len; i++) {
-            ul_elements[i].style.background = "transparent";
-        }
-    }
-
 </script>
 </body>
 </html>

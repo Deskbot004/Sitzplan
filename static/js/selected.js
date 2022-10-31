@@ -4,7 +4,7 @@
 	@return: void
 */
 function start(){
-    getInformation(data);
+    getInformation(data); //depends on own .js
     document.getElementById('head_text').innerHTML = document.getElementById('head_text').innerHTML.replace("free", data);
     document.getElementById('filename').value = data;
 };
