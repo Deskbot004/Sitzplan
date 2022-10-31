@@ -179,8 +179,6 @@ def get_seating():
         return call[0], 200
 
 
-
-
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
