@@ -1,5 +1,7 @@
 from logic.algorithms.weighted_algo import WeightedAlgo
+from logic import preferences as pref
 import time
+
 
 '''
 Module containing the class to run the random algorithm with constraints.
@@ -23,15 +25,23 @@ class ConstraintRandom(WeightedAlgo):
         Overrides super class with given algorithm
     """
 
-    def __init__(self, clas, clas_name, room, room_name):
-        super().__init__(clas, clas_name, room, room_name)
+    def __init__(self, clas, clas_name, room, room_name, pref_name):
+        super().__init__(clas, clas_name, room, room_name, pref_name)
 
     def algorithm(self):
         """
-        Update self.room with created seating!
+        Update room with created seating
 
-        :return: void
+        :return: Updated room
         """
-        print("ConstraintRandom not implemented yet!")
-        time.sleep(3)
-        return
+        try:
+            room = self.room[0].split(";")
+            pref_list = pref.preferences_read(self.pref_name)
+
+            return room
+
+        except Exception as err:
+            print("Caught this error: " + repr(err))
+            return "FAIL"
+
+

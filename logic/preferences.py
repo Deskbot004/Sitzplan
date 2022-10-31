@@ -150,7 +150,7 @@ def preferences_read(name_class):
         read_file = open(pref_path + name_class + ".json", "r")
         pref_dict = json.load(read_file)
         read_file.close()
-    return pref_dict
+    return pref_dict, "SUCCESS"
 
 
 def validate_entry(entry, studentnr):
