@@ -135,6 +135,11 @@ async function fillLists() {
 
 	@return: void
 */
-function start() {
-	var running_algorithm = requestInformation(data);
+async function start() {
+	var header = document.getElementById("head_text");
+	var filepath = await requestInformation(data);
+
+	var image = document.getElementById("seating_image");
+	image.src = "/static/seatings/" + filepath;
+
 };

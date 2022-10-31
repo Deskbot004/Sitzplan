@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 from logic import students, classrooms, preferences, generator
+import os
 
 app = Flask(__name__)
 
@@ -58,7 +59,7 @@ def from_students():
 
 @app.route('/from_seating')
 def from_seating():
-    return render_template("seating_editor.html")
+    return render_template("seating_editor.html", user_image="static/images/working.png")
 
 
 # ________________________________________________________________________________________________________
@@ -174,8 +175,16 @@ def get_pref_lists():
 @app.route('/getseatinglists', methods=["POST"])
 def get_seating():
     if request.method == "POST":
-        print(request.form["result"])
-        return generator.run(request.form["result"])
+        call = generator.run(request.form["result"])
+        return call[0], 200
+
+
+
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 if __name__ == "__main__":

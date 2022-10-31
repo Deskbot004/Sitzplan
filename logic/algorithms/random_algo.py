@@ -1,8 +1,4 @@
-import os, time, random
-from datetime import date
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
+import os, random
 
 '''
 Module only containing the algorithm to create a completely random seating.
@@ -19,21 +15,17 @@ path = os.path.abspath(os.getcwd())
 seatings_path = path + "/data/seatings/"
 
 
-def start(clas, clas_name, room, room_name):
+def start(clas, room):
     """
     A completely random algorithm, which assigns any seating to any student.
     For the best results use rooms with the same number of students as seating available.
     The seating is displayed and saved as an image and can be remade on the spot.
     Also it is then saved as a .txt file to later read and display it.
 
-    :param clas: Directory containing the student list
-    :param clas_name: Name of the student list/class to be seated as string
+    :param clas: Dictionary containing the student list
     :param room: Room information as string
-    :param room_name: Room name as string
     :return: void
     """
-    old_room = room
-    old_clas = clas
     room = room.split(";")
 
     row = 0
@@ -51,6 +43,7 @@ def start(clas, clas_name, room, room_name):
     while len(values) > 0:
         rand_row = random.randrange(len(room))
         rand_col = random.randrange(len(room[rand_row]))
+
         if room[rand_row][rand_col] == 1:
             rand_stud = random.randrange(len(values))
             room[rand_row][rand_col] = clas[values[rand_stud]]

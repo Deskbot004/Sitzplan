@@ -25,8 +25,8 @@ class ConstraintRandom(WeightedAlgo):
         Overrides super class with given algorithm
     """
 
-    def __init__(self, clas, clas_name, room, room_name, pref_name):
-        super().__init__(clas, clas_name, room, room_name, pref_name)
+    def __init__(self, clas, clas_name, room, room_name, pref):
+        super().__init__(clas, clas_name, room, room_name, pref)
 
     def algorithm(self):
         """
@@ -34,14 +34,19 @@ class ConstraintRandom(WeightedAlgo):
 
         :return: Updated room
         """
-        try:
-            room = self.room[0].split(";")
-            pref_list = pref.preferences_read(self.pref_name)
 
-            return room
+        room = self.room.split(";")
+        pref_list = self.pref
 
-        except Exception as err:
-            print("Caught this error: " + repr(err))
-            return "FAIL"
+        # Lies das doch besser in generator aus und gib das als allgemeine Klassenvariable mit!
+        # Jeder anderer algorithmus würde seine preflist ja auch brauchen par random_algo
+        # Plus ich habe es so geändert, dass bereits room[1] reingegeben wird, da man das [] ja nicht braucht
+
+        # btw bevor ich es vergesse return room war nur sinnvoll bei rdm algo
+        # hier überschreibe den eigenen room der Klasse damit das alles klappt also self.room = new_room
+
+        # Letzte Sache, try catch hier dann doch unnötig, da ich es jetzt immer 1 weiter oben fangen werde
+        return room
+
 
 

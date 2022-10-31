@@ -49,7 +49,7 @@ class WeightedAlgo:
         Displays the image
     """
 
-    def __init__(self, clas, clas_name, room, room_name, pref_name):
+    def __init__(self, clas, clas_name, room, room_name, pref):
         """
         Constructs all attributes necessary for the algorithm
 
@@ -57,15 +57,17 @@ class WeightedAlgo:
         :param clas_name: The name of the student list
         :param room: The room information
         :param room_name: The room name
+        :param pref: The preference list of the class
         """
         self.clas = clas
         self.clas_name = clas_name
         self.room = room
         self.room_name = room_name
-        self.pref_name = pref_name
+        self.pref = pref
         path = os.path.abspath(os.getcwd())
         self.seatings_path = path + "/data/seatings/"
-        self.pref_path = path + "/data/preferences"
+        self.pref_path = path + "/data/preferences/"
+        self.image_path = path + "/static/seatings/"
 
     def startup(self):
         """
@@ -83,8 +85,9 @@ class WeightedAlgo:
         """
         Function to save the result as an image and as text.
 
-        :return: void
+        :return: Name of the image
         """
+
         try:
             file = open(self.seatings_path + self.clas_name + self.room_name + str(date.today()) + ".txt", "x")
         except FileExistsError:
@@ -93,10 +96,10 @@ class WeightedAlgo:
         with open(self.seatings_path + self.clas_name + self.room_name + ".pkl", 'rb') as fid:
             ax = pickle.load(fid)
 
-        plt.savefig(self.seatings_path + self.clas_name + "_" + self.room_name + "_" + str(date.today()) + ".png",
-                    dpi=300)
+        filename = self.clas_name + "_" + self.room_name + "_" + str(date.today()) + ".png"
+        plt.savefig(self.image_path + filename, dpi=300)
 
-        print("Image saved in " + self.seatings_path + ". Returning to main menu.")
+        print("Image saved in " + self.seatings_path + ".")
 
         room_list = ""
         for element in self.room:
@@ -108,9 +111,8 @@ class WeightedAlgo:
 
         file.write(room_list)
         file.close()
-        time.sleep(5)
         plt.close()
-        return
+        return filename
 
     def create_image(self):
         """

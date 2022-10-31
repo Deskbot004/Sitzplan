@@ -1,5 +1,5 @@
 import os, time, platform
-from logic import classrooms, students
+from logic import classrooms, students, preferences
 from logic.algorithms import random_algo, weighted_optimized, weighted_random, constraint_random
 
 '''
@@ -34,11 +34,17 @@ def start():
     :return: void
     """
     room_name = "3Row"
-    room = classrooms.get_classroom(room_name)  # check room[1] for FAIL
+    room_ret = classrooms.get_classroom(room_name)  # check room[1] for FAIL
+    room = room_ret[0]
 
     clas_name = "10Names"
-    clas = students.get_student_list(clas_name)
+    clas_ret = students.get_student_list(clas_name)
+    clas = clas_ret[0]
+
     pref_name = "10Names"
+    #hier read pref: pref_ret = preferences.preferences_read(clas_name)  #Teilt sich ja den namen
+    #hier get expected: pref = pref_ret[0]
+
     """
     if len(clas) > room.count("1"):
         print("This room does not have enough seating available for the class! Returning to main menu.")
@@ -94,9 +100,48 @@ def run(data):
     """
     New function to be used by the web interface.
 
-    :param data: String information from website
+    :param data: String information from website in form of 3 entries
     :return: State of function
     """
-    information = data.split(",")
-    print(information)
-    return
+    try:
+        information = data.split(",")
+        clas_name = information[0]
+        room_name = information[1]
+        action = information[2]
+
+        room_ret = classrooms.get_classroom(room_name)  # check room[1] for FAIL
+        room = room_ret[0]
+        room = room[:-1]
+
+        clas_ret = students.get_student_list(clas_name)
+        clas = clas_ret[0]
+
+        pref_ret = preferences.preferences_read(clas_name)
+        pref = pref_ret[0]
+
+        if room_ret[1] == "FAIL" or clas_ret[1] == "FAIL" or pref_ret[1] == "FAIL":
+            raise Exception('Getting information failed')
+
+        if action == "show":
+            # maybe just return here and give back information of the image to open?
+            # used_algorithm = constraint_random.ConstraintRandom(clas, clas_name, room, room_name, pref)
+            return
+        elif action == "random_algo":
+            room = random_algo.start(clas, room)
+            used_algorithm = constraint_random.ConstraintRandom(clas, clas_name, room, room_name, pref)
+        elif action == "constraint_random":
+            used_algorithm = constraint_random.ConstraintRandom(clas, clas_name, room, room_name, pref)
+            used_algorithm.startup()
+        else:
+            raise Exception('No valid action found')
+
+        used_algorithm.create_image()
+        # reader = input("Image created. Type to continue")
+        # used_algorithm.show_result()
+        # reader = input("Result was shown. Type to continue")
+        filename = used_algorithm.save_result()
+        del used_algorithm
+        return filename, "SUCCESS"
+    except Exception as error:
+        print('Caught this error: ' + repr(error))
+        return "", "FAIL"
