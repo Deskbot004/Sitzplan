@@ -31,8 +31,8 @@
             <div class="flex-container">
                 <div class=" menu desktop-6-cols phone-12-cols">
                     <div class="grid-container grid-parent">
-                        {% for x in range(10) %}
-                            {% for y in range(10) %}
+                        {% for x in range(15) %}
+                            {% for y in range(15) %}
                                 <div class="grid-item"></div>
                             {% endfor %}
                         {% endfor %}
@@ -65,13 +65,13 @@
         </div>
     </div>
 <script>
-    const grid_length = 10;                                     // set grid length
-    const grid_height = 10;                                     // set grid height
+    const grid_length = 15;                                     // set grid length
+    const grid_height = 15;                                     // set grid height
     const divs = document.querySelectorAll('.grid-item');       // get divs that make up the grid
     var data = localStorage.getItem('selected');                // get information from classroom_list
     var color = 'white';                                        // set standard color to white
     var grid = Array.from(divs);                                // create grid from divs
-    var classroom = new Array(10);                              // create empty array for classroom data
+    var classroom = new Array(15);                              // create empty array for classroom data
     var identity = "classroom";                                 // identity to use general functions
 
     // call the start function upon opening the page
@@ -88,7 +88,7 @@
 
     // fill classroom with row arrays
     for (var i = 0; i < classroom.length; i++) {
-        classroom[i] = new Array(10).fill(0);
+        classroom[i] = new Array(15).fill(0);
     }
 
     // add mouse events to grid divs
