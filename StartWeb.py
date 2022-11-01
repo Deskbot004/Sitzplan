@@ -37,16 +37,6 @@ def switch_about():
     return render_template("about.html")
 
 
-@app.route('/preferences')
-def switch_preferences():
-    return render_template("preferences_list.html")
-
-
-@app.route('/from_pref')
-def from_pref():
-    return render_template("preferences_editor.html")
-
-
 @app.route('/from_classroom')
 def from_classroom():
     return render_template("classroom_editor.html")
