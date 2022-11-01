@@ -101,7 +101,7 @@
     var grid_number = 0;
     for (let x = 0; x < grid_height; x++) {
         for (let y = 0; y < grid_length; y++) {
-            grid[grid_number].setAttribute("id", x.toString() + y.toString());
+            grid[grid_number].setAttribute("id", x.toString() + ',' + y.toString());
             grid_number += 1;
         }
     }

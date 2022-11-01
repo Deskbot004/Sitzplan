@@ -131,8 +131,6 @@ async function fillLists() {
 /*
 	Function which on load runs the selected algorithm and displays the created seating.
 
-	TODO
-
 	@return: void
 */
 async function start() {

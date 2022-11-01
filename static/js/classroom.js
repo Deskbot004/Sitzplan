@@ -137,8 +137,9 @@ function check_validity(classroom) {
     @return: void
 */
 function changeArray(classroom, array_id, color) {
-    var x_val = array_id[0];
-    var y_val = array_id[1];
+	var values = array_id.split(',');
+    var x_val = values[0];
+    var y_val = values[1];
     switch(color) {
         case "white":
             classroom[x_val][y_val] = 0;

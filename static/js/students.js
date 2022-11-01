@@ -199,3 +199,26 @@ function pre_saveData() {
 		popup.classList.toggle("show");
 	}
 }
+
+
+/*
+	Function which on load fills both lists with the existing information.
+
+	TODO
+
+	@return: void
+*/
+async function fillLists() {
+    var stud_list = document.getElementById("stud_list");
+    stud_list.id = 'var_list';
+    await getLists();
+    stud_list.id = "stud_list";
+
+    identity = "classroom";
+    var room_list = document.getElementById("room_list");
+    room_list.id = "var_list";
+    await getLists();
+    room_list.id = "room_list";
+
+    identity = "student";
+};
