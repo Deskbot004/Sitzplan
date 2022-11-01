@@ -54,7 +54,7 @@ def start(clas, room):
         col_val = 0
         for col in row:
             if room[row_val][col_val] == 1 or room[row_val][col_val] == 2:
-                room[row_val][col_val] = "Empty"
+                room[row_val][col_val] = "---"
             elif room[row_val][col_val] == 0:
                 room[row_val][col_val] = ""
             elif room[row_val][col_val] == 3:

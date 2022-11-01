@@ -1,5 +1,5 @@
-import os, time, platform
-from logic import preferences
+import os
+from PIL import Image
 from datetime import date
 import numpy as np
 import pandas as pd
@@ -98,6 +98,10 @@ class WeightedAlgo:
 
         filename = self.clas_name + "_" + self.room_name + "_" + str(date.today()) + ".png"
         plt.savefig(self.image_path + filename, dpi=300)
+
+        im = Image.open(self.image_path + filename)
+        im = im.crop(im.getbbox())
+        im.save(self.image_path + filename)
 
         print("Image saved in " + self.seatings_path + ".")
 
