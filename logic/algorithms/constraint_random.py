@@ -1,6 +1,7 @@
 from logic.algorithms.weighted_algo import WeightedAlgo
 from logic import preferences as pref
 import time
+import math
 
 
 '''
@@ -35,18 +36,20 @@ class ConstraintRandom(WeightedAlgo):
         :return: Updated room
         """
 
-        room = self.room.split(";")
-        pref_list = self.pref
+        format_room = self.room.split(";")[:-1]
+        seating_order = format_room.reverse()   # reversed because the last element is the first row!
+        seatable_rows = [i for i, row in zip(range(len(format_room)), format_room) if "1" in row]
+        front_end_seatable = math.ceil(len(seatable_rows) * 0.3) - 1
+        front_end_total = seatable_rows[math.ceil(len(seatable_rows) * 0.3)] - 1
+        front_preferred_students = [student for student in self.pref.keys() if self.pref[student][4] != "empty"]
+        print(front_preferred_students)
+        # fill seats
+        for row in seating_order:
+            for seat in row:
 
-        # Lies das doch besser in generator aus und gib das als allgemeine Klassenvariable mit!
-        # Jeder anderer algorithmus würde seine preflist ja auch brauchen par random_algo
-        # Plus ich habe es so geändert, dass bereits room[1] reingegeben wird, da man das [] ja nicht braucht
 
-        # btw bevor ich es vergesse return room war nur sinnvoll bei rdm algo
-        # hier überschreibe den eigenen room der Klasse damit das alles klappt also self.room = new_room
 
-        # Letzte Sache, try catch hier dann doch unnötig, da ich es jetzt immer 1 weiter oben fangen werde
-        return room
+        return format_room
 
 
 
