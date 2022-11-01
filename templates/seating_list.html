@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Seatings</title>
+    <title>Seating select</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -45,7 +45,7 @@
             <label for="algorithm">Algorithm:</label>
             <select id="algorithm">
                 <option value="random_algo">Random</option>
-                <option value="constraint_random">Random with rules</option>
+                <option value="constraint_random">Random with rules (not working)</option>
             </select>
             <button style="width:50%" class="popup" onclick="createInformation('none')">Create new
                 <span class="popuptext" id="popup"></span>

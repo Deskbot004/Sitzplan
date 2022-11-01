@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Seating Generator</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
@@ -24,7 +24,19 @@
             <li><a href="#about" onclick="switchToAbout()">About</a></li></ul>
         </div>
         <div class="center" col="2">
-            <h2>Hier könnte ihre Werbung stehen! (Main Menu)</h2>
+            <h1>Welcome to Seating Generator!</h1>
+            <h2>Home</h2>
+            <a>Return to the start menu.</a>
+            <h2>Create seating</h2>
+            <a>Create a seating plan with an existing student list and an existing room.
+                Additionally an algorithm which will calculate the plan can be chosen.
+                Right now pure random is the only working one.</a>
+            <h2>Student lists</h2>
+            <a>Create, edit or delete a list of students to use in the seating generation.</a>
+            <h2>Classrooms</h2>
+            <a>Create, edit or delete a classroom to use in the seating generation.</a>
+            <h2>About</h2>
+            <a>For now an empty site.</a>
         </div>
     </div>
 </body>
