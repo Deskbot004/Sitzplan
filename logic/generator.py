@@ -41,9 +41,8 @@ def start():
     clas_ret = students.get_student_list(clas_name)
     clas = clas_ret[0]
 
-    pref_name = "10Names"
-    #hier read pref: pref_ret = preferences.preferences_read(clas_name)  #Teilt sich ja den namen
-    #hier get expected: pref = pref_ret[0]
+    pref_ret = preferences.preferences_read(clas_name)  #Teilt sich ja den namen
+    pref = pref_ret[0]
 
     """
     if len(clas) > room.count("1"):
@@ -60,12 +59,8 @@ def start():
             " 3. Weighted optimized\n 4. Weighted random")
         algorithm = input("Selection: ")
 
-        if algorithm == "1":
-            room = random_algo.start(clas, clas_name, room, room_name)
-            used_algorithm = weighted_random.WeightedRandom(clas, clas_name, room, room_name)
-            running = 0
-        elif algorithm == "2":
-            used_algorithm = constraint_random.ConstraintRandom(clas, clas_name, room, room_name, pref_name)
+        if algorithm == "2":
+            used_algorithm = constraint_random.ConstraintRandom(clas, clas_name, room, room_name, pref)
             error = used_algorithm.startup()
             running = 0
         elif algorithm == "3":
