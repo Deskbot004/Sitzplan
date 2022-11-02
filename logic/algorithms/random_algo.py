@@ -26,7 +26,8 @@ def start(clas, room):
     :param room: Room information as string
     :return: void
     """
-    room = room.split(";")
+    room = room.split(";")[:-1]
+    # random.seed(10)
 
     row = 0
     for line in room:
