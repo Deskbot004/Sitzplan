@@ -66,10 +66,14 @@ class ConstraintRandom(WeightedAlgo):
         THEORETICAL_OPT_SCORE = NO_NEGATIVE_NEIGHBOR_SCORE * len(self.clas.keys()) \
                                 + FRONT_SEAT_SCORE * len(front_preferred_students)
         rooms = []
+        scores = []
         for epoch in range(epochs):
             total_score = 0
             rand_room = ran_alg.start(self.clas, self.room)
             rand_room.reverse()
+            if rand_room in rooms:
+                print("DUPLICATE ROOM")
+                continue
 
             for row_count, row in zip(range(len(rand_room)), rand_room):
                 for seat_count, student in zip(range(len(row)), row):
@@ -88,11 +92,16 @@ class ConstraintRandom(WeightedAlgo):
 
                         if self.pref[student_key][3] not in neighbor_keys:
                             total_score += NO_NEGATIVE_NEIGHBOR_SCORE
-            # rooms.append(rand_room)
-            rooms.append(total_score)
+            rooms.append(rand_room)
+            scores.append(total_score)
 
-        print(rooms)
-        return format_room
+        # get a room with highest score
+        max_index = scores.index(max(scores))
+        good_room = rooms[max_index]
+        good_room.reverse()
+        print(f"The found room has a score of {scores[max_index]} out of {THEORETICAL_OPT_SCORE}.")
+        print(good_room)
+        return good_room
 
 
 
