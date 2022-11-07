@@ -215,6 +215,22 @@ function changeColor(color_arg) {
 	}
 };
 
+/*
+    Clears all grid elements and sets them to white
+
+    @return: void
+*/
+function clearAll(classroom, grid) {
+    try {
+        for (num = 0; num < grid.length; num++) {
+            grid[num].style.backgroundColor = "white";
+            changeArray(classroom, grid[num].getAttribute("id"), "white");
+        }
+    } catch(err) {
+        alert("Something went wrong! Could not clear the grid!");
+        console.log("Function clearAll failed with " + err);
+    }
+};
 
 /*
     Changes the background color of a grid div upon downward press of the left mouse button.
