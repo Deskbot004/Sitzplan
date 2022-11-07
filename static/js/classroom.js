@@ -218,6 +218,8 @@ function changeColor(color_arg) {
 /*
     Clears all grid elements and sets them to white
 
+    @param classroom: An array of the classroom information
+	@param grid: The grid to be coloured
     @return: void
 */
 function clearAll(classroom, grid) {
@@ -226,6 +228,7 @@ function clearAll(classroom, grid) {
             grid[num].style.backgroundColor = "white";
             changeArray(classroom, grid[num].getAttribute("id"), "white");
         }
+        teacher_desk_count = 0;
     } catch(err) {
         alert("Something went wrong! Could not clear the grid!");
         console.log("Function clearAll failed with " + err);
@@ -239,10 +242,42 @@ function clearAll(classroom, grid) {
 */
 function addColor() {
 	try {
+	    var div_id = this.getAttribute("id");
 	    if (window.mouseDown) {
-	        this.style.backgroundColor = color;
-	        var div_id = this.getAttribute("id");
-	        changeArray(classroom, div_id, color);
+	        if (color != "pink") {
+	            if (this.style.backgroundColor == "pink") teacher_desk_count -= 1;
+                this.style.backgroundColor = color;
+                changeArray(classroom, div_id, color);
+            } else {
+                switch (teacher_desk_count) {
+                    case 0:
+                        this.style.backgroundColor = "pink";
+                        changeArray(classroom, div_id, "pink");
+                        teacher_desk_count += 1;
+                        break;
+                    case 1:
+                        neighbors = getNeighboringDivColors(div_id.split(","));
+                        found_desk = false;
+                        for (i = 0; i < neighbors.length; i++) {
+                            if (neighbors[i].style.backgroundColor == "pink") {
+                                this.style.backgroundColor = "pink";
+                                changeArray(classroom, div_id, "pink");
+                                teacher_desk_count += 1;
+                                found_desk = true;
+                                break;
+                            }
+                        }
+                        if (!found_desk) console.log("No neighboring teacher desk!");
+                        break;
+                    case 2:
+                        console.log("The maximum number of teacher desk has been reached!");
+                        break;
+                    default:
+                        console.log("teacher_desk_count is " + String(teacher_desk_count) +
+                        "! Something went REALLY wrong!");
+                        break;
+                }
+            }
 	    }
 	} catch(err) {
 		alert("Adding color went wrong! The color was not correctly applied!");
@@ -250,6 +285,23 @@ function addColor() {
 	}
 };
 
+/*
+    Gets the neighbor divs of a cell in the grid
+
+    @param div_id: array containing the cell coordinates
+    @return: array with the neighbor divs
+*/
+function getNeighboringDivColors(div_id) {
+    var neighbor_divs = new Array();
+    neighbor_divs.push(document.getElementById(String(parseInt(div_id[0]) - 1) + "," + div_id[1]));
+    neighbor_divs.push(document.getElementById(String(parseInt(div_id[0]) + 1) + "," + div_id[1]));
+    neighbor_divs.push(document.getElementById(div_id[0] + "," + String(parseInt(div_id[1]) - 1)));
+    neighbor_divs.push(document.getElementById(div_id[0] + "," + String(parseInt(div_id[1]) + 1)));
+    neighbor_divs = neighbor_divs.filter(function(item) {
+        return item !== null
+    })
+    return neighbor_divs
+};
 
 /*
     Changes the background color of a grid.
@@ -258,9 +310,41 @@ function addColor() {
 */
 function addColorClick() {
 	try {
-        this.style.backgroundColor = color;
         var div_id = this.getAttribute("id");
-        changeArray(classroom, div_id, color);
+        if (color != "pink") {
+            if (this.style.backgroundColor == "pink") teacher_desk_count -= 1;
+            this.style.backgroundColor = color;
+            changeArray(classroom, div_id, color);
+        } else {
+            switch (teacher_desk_count) {
+                case 0:
+                    this.style.backgroundColor = color;
+                    changeArray(classroom, div_id, color);
+                    teacher_desk_count += 1;
+                    break;
+                case 1:
+                    neighbors = getNeighboringDivColors(div_id.split(","));
+                    found_desk = false;
+                    for (i = 0; i < neighbors.length; i++) {
+                        if (neighbors[i].style.backgroundColor == "pink") {
+                            this.style.backgroundColor = "pink";
+                            changeArray(classroom, div_id, "pink");
+                            teacher_desk_count += 1;
+                            found_desk = true;
+                            break;
+                        }
+                    }
+                    if (!found_desk) console.log("No neighboring teacher desk!");
+                    break;
+                case 2:
+                    console.log("The maximum number of teacher desk has been reached!");
+                    break;
+                default:
+                    console.log("teacher_desk_count is " + String(teacher_desk_count) +
+                    "! Something went REALLY wrong!");
+                    break;
+            }
+        }
     } catch(err) {
 		alert("Adding color went wrong! The color was not correctly applied!");
 		console.log("Function addColorClick failed with " + err);
