@@ -49,6 +49,10 @@ function arrayToText(classroom) {
         text_untrimmed += ";";
         if (place_semi) text += ";";
     }
+    text_untrimmed = text_untrimmed.slice(0, -1);
+    text = text.slice(0, -1);
+    console.log(text_untrimmed)
+    console.log(text)
     var text_array = [text, text_untrimmed];
     return text_array;
 };
@@ -365,7 +369,7 @@ function getInformation(text){
 		});
 		req_room.fail(function() {
 			console.log("No file named "+ text + " found, loading template.");
-			room = "000000000000000;000000000000000;000000000000000;000000000000000;000000000000000;000000000000000;000000011000000;000000011000000;000000033000000;000000000000000;000000000000000;000000000000000;000000000000000;000000000000000;000000000000000;";
+			room = "000000000000000;000000000000000;000000000000000;000000000000000;000000000000000;000000000000000;000000011000000;000000011000000;000000033000000;000000000000000;000000000000000;000000000000000;000000000000000;000000000000000;000000000000000";
 			fillGrid(classroom, grid, room);
 		});
 	} catch(err) {

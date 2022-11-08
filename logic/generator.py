@@ -35,7 +35,7 @@ def start():
     """
     room_name = "3Row"
     room_ret = classrooms.get_classroom(room_name)  # check room[1] for FAIL
-    room = room_ret[0]
+    room = room_ret[0].split(";")
 
     clas_name = "10Names"
     clas_ret = students.get_student_list(clas_name)
@@ -105,8 +105,9 @@ def run(data):
         action = information[2]
 
         room_ret = classrooms.get_classroom(room_name)  # check room[1] for FAIL
-        room = room_ret[0]
-        room = room[:-1]
+        room = room_ret[0].split(";")
+        print("GENERATOR ")
+        print(room)
 
         clas_ret = students.get_student_list(clas_name)
         clas = clas_ret[0]

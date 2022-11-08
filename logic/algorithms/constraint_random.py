@@ -53,8 +53,7 @@ class ConstraintRandom(WeightedAlgo):
         epochs = 1000
         FRONT_SEAT_SCORE = 2
         NO_NEGATIVE_NEIGHBOR_SCORE = 1
-
-        format_room = self.room.split(";")[:-1]
+        format_room = self.room[:]
         format_room.reverse()   # reversed because the last element in format_room is the first row!
 
         seatable_rows = [i for i, row in zip(range(len(format_room)), format_room) if "1" in row]
@@ -69,7 +68,7 @@ class ConstraintRandom(WeightedAlgo):
         scores = []
         for epoch in range(epochs):
             total_score = 0
-            rand_room = ran_alg.start(self.clas, self.room)
+            rand_room = ran_alg.start(self.clas, self.room[:])
             rand_room.reverse()
             if rand_room in rooms:
                 print("DUPLICATE ROOM")
