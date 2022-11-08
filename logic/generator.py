@@ -106,8 +106,6 @@ def run(data):
 
         room_ret = classrooms.get_classroom(room_name)  # check room[1] for FAIL
         room = room_ret[0].split(";")
-        print("GENERATOR ")
-        print(room)
 
         clas_ret = students.get_student_list(clas_name)
         clas = clas_ret[0]

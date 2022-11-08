@@ -62,5 +62,4 @@ def start(clas, room):
                 room[row_val][col_val] = "Teacher desk"
             col_val += 1
         row_val += 1
-
     return room

@@ -100,6 +100,7 @@ class ConstraintRandom(WeightedAlgo):
         good_room.reverse()
         print(f"The found room has a score of {scores[max_index]} out of {THEORETICAL_OPT_SCORE}.")
         print(good_room)
+        self.room = good_room
         return good_room
 
 
