@@ -171,6 +171,7 @@ function changeArray(classroom, array_id, color) {
     @return: void
 */
 function fillGrid(classroom, grid, room) {
+    teacher_desk_count = 0;
     if(room.length <= 0) return;
     var room = room.replace(/;/g, "");
     var col_change = "";
@@ -188,6 +189,7 @@ function fillGrid(classroom, grid, room) {
                 break;
             case "3":
                 col_change = "pink";
+                teacher_desk_count += 1;
                 break;
             default: break;
         }
@@ -271,10 +273,10 @@ function addColor() {
                                 break;
                             }
                         }
-                        if (!found_desk) console.log("No neighboring teacher desk!");
+                        if (!found_desk) throw "no neighbor";
                         break;
                     case 2:
-                        console.log("The maximum number of teacher desk has been reached!");
+                        throw "desk limit";
                         break;
                     default:
                         console.log("teacher_desk_count is " + String(teacher_desk_count) +
@@ -284,8 +286,32 @@ function addColor() {
             }
 	    }
 	} catch(err) {
-		alert("Adding color went wrong! The color was not correctly applied!");
-		console.log("Function addColor failed with " + err);
+	    switch (err) {
+	        case "no neighbor":
+	            err_text = "No neighboring teacher desk!";
+	            break;
+	        case "desk limit":
+	            err_text = "The maximum number of teacher desks has been reached!";
+	            break;
+	        default:
+                console.log("teacher_desk_count is " + String(teacher_desk_count) +
+                "! Something went REALLY wrong!");
+                break;
+	    }
+	    var popup = document.getElementById("popup_teacher");
+		popup.innerHTML = err_text;
+		popup.classList.toggle("show");
+
+		switch(typeof err) {
+			case "string":
+				console.log("Function addColor failed with " + err);break;
+			case "object":
+				console.log("Adding color failed with "+ error_case);
+				console.log(err);
+				break;
+			default:
+				console.log("Undetected Error type: " + typeof err);break;
+		}
 	}
 };
 
@@ -338,10 +364,10 @@ function addColorClick() {
                             break;
                         }
                     }
-                    if (!found_desk) console.log("No neighboring teacher desk!");
-                    break;
+                    if (!found_desk) throw "no neighbor";
+                        break;
                 case 2:
-                    console.log("The maximum number of teacher desk has been reached!");
+                    throw "desk limit";
                     break;
                 default:
                     console.log("teacher_desk_count is " + String(teacher_desk_count) +
@@ -350,8 +376,32 @@ function addColorClick() {
             }
         }
     } catch(err) {
-		alert("Adding color went wrong! The color was not correctly applied!");
-		console.log("Function addColorClick failed with " + err);
+		switch (err) {
+	        case "no neighbor":
+	            err_text = "No neighboring teacher desk!";
+	            break;
+	        case "desk limit":
+	            err_text = "The maximum number of teacher desks has been reached!";
+	            break;
+	        default:
+                console.log("teacher_desk_count is " + String(teacher_desk_count) +
+                "! Something went REALLY wrong!");
+                break;
+	    }
+	    var popup = document.getElementById("popup_teacher");
+		popup.innerHTML = err_text;
+		popup.classList.toggle("show");
+
+		switch(typeof err) {
+			case "string":
+				console.log("Function addColor failed with " + err);break;
+			case "object":
+				console.log("Adding color failed with "+ error_case);
+				console.log(err);
+				break;
+			default:
+				console.log("Undetected Error type: " + typeof err);break;
+		}
     }
 };
 

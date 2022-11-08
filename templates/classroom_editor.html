@@ -44,7 +44,10 @@
                         <li><button onclick="changeColor('white')">Clear Desk</button></li>
                         <li><button onclick="changeColor('lightblue')">Student Desk</button></li>
                         <li><button onclick="changeColor('orange')">Unusable Desk</button></li>
-                        <li><button onclick="changeColor('pink')">Teacher Desk</button></li>
+                        <li><button class="popup" onclick="changeColor('pink')">Teacher Desk
+                            <span class="popuptext" id="popup_teacher">Free space</span>
+                            </button>
+                        </li>
                         <li><form>
                             <label for="filename">File name:</label><br>
                             <input type="text" id="filename" name="filename" value="classroom">
