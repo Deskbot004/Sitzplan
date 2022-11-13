@@ -22,8 +22,8 @@ class WeightedOptimized(WeightedAlgo):
         Overrides super class with given algorithm
     """
 
-    def __init__(self, clas, clas_name, room, room_name):
-        super().__init__(clas, clas_name, room, room_name)
+    def __init__(self, clas, clas_name, room, room_name, pref):
+        super().__init__(clas, clas_name, room, room_name, pref)
 
     def algorithm(self):
         """
@@ -31,6 +31,8 @@ class WeightedOptimized(WeightedAlgo):
 
         :return: void
         """
-        print("WeightedOptimized not implemented yet!")
-        time.sleep(3)
+        FIRST_PREF_VAL = 10
+        SECOND_PREF_VAL = 6
+        THIRD_PREF_VAL = 2
+        DOUBLE_PREF_MULT = 3
         return
