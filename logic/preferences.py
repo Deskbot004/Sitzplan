@@ -255,3 +255,30 @@ def get_all_pref_lists():
             file_arr.append(file[:-5])
 
     return sorted(file_arr)
+
+
+def save_preferences(name, pref_str):
+    """
+    Method to save a dictionary as .json from string.
+
+    :param name: Name of the class
+    :param student_str: The students of the class seperated by "|"
+    :return: State of the function
+    """
+
+    try:
+        pref_str = pref_str.split("|")[:-1]
+        student_dict = {}
+        num = 1
+
+        for pref in pref_str:
+            student_dict[num] = pref
+            num = num + 1
+
+        file = open(pref_path + name + ".json", "w")
+        json.dump(pref_str, file)
+        file.close()
+        return "SUCCESS"
+    except Exception as err:
+        print(f"Student saving failed... with Error {err}")
+        return "FAIL"

@@ -27,10 +27,11 @@
 	The element gets the class "elem" and the function selectElement(e).
 
 	@param text: String containing the innerHTML of the new Element
+	@param remove_duplicates: Boolean if duplicates need to be removed or not
 	@return: Boolean if adding was successful
 */
-function addElement(text) {
-    if (existsElement(text)) return 0;
+function addElement(text, remove_duplicates) {
+    if (remove_duplicates && existsElement(text)) return 0;
     var node = document.createElement('li');
     node.appendChild(document.createTextNode(text));
     node.className += 'elem';
@@ -87,7 +88,7 @@ function deleteElement(text) {
 */
 function addList(element_arr) {
     for (var i = 0; i < element_arr.length; i++) {
-        addElement(element_arr[i]);
+        addElement(element_arr[i], 1);
     };
 };
 
@@ -96,11 +97,12 @@ function addList(element_arr) {
 	Executes addElement() for each entry in the given dictionary.
 
 	@param element_dict: dictionary containing all Elements to be added
+	@param remove_duplicates: Boolean if duplicates need to be removed or not
 	@return: void
 */
-function addDict(element_dict) {
+function addDict(element_dict, remove_duplicates) {
 	for (var elem of Object.keys(element_dict)) {
-		addElement(element_dict[elem]);
+		addElement(element_dict[elem], remove_duplicates);
 	};
 };
 
@@ -115,7 +117,7 @@ function addDict(element_dict) {
 function getLists() {
     var lists_req = listRequest();
     lists_req.done(function(data) {
-        addDict(data);
+        addDict(data, 1);
     });
     lists_req.fail(function(xhr, status, error){
         alert("Getting all lists failed! Please reload!");

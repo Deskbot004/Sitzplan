@@ -158,6 +158,20 @@ def get_pref_lists():
         return preferences.get_all_pref_lists()
 
 
+@app.route('/pref_info', methods=["POST"])
+def pref_info():
+    try:
+        if request.method == "POST":
+            pref_dict = request.form
+            call = preferences.save_preferences(pref_dict["name"], pref_dict["students"])
+            if call == "SUCCESS":
+                return "", 204
+            else:
+                return "", 404
+    except Exception as err:
+        print(f"Accessing students.py for delete failed with {err}")
+        return "", 404
+
 # ________________________________________________________________________________________________________
 # Functions seating IN WORK
 

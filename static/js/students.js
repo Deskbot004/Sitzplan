@@ -56,45 +56,39 @@ function create_str() {
     @return: void
 */
 async function getInformation(text) {
-	try {
-		await fillLists();
-		/*
-		var req_students = requestInformation(text);
-		req_students.done( function(students_info) {
-			addDict(students_info);
-		});
-		req_students.fail( function(){
-			console.log("No file named " + text + " found, loading template.");
-			addDict({1: "Max Mustermann"});
-		});
-		*/
-	} catch(err) {
-		alert("Getting Information went wrong! The student list was not properly loaded!");
-		console.log("Function getInformation failed with " + err);
-	}
-};
-
-/*
-	Function which on load fills both lists with the existing information.
-
-	TODO does not catch non existing lists yet
-
-	@return: void
-*/
-async function fillLists() {
+    // TODO change fill method
     identity = "pref";
     var room_list = document.getElementById("pref_list");
     room_list.id = "var_list";
-    var req_prefs = getLists();
 
-    Errors
+    var req_prefs = requestInformation(data);
+	req_prefs.done( function(pref_info) {
+		addDict(pref_info, 0);
+	});
 
     await req_prefs;
     room_list.id = "pref_list";
 
-    identity = "student";
 
-    await getLists();
+    identity = "student";
+	var stud_list = document.getElementById("stud_list");
+	stud_list.id = "var_list";
+
+	var req_studs = requestInformation(data);
+	req_studs.done( function(studs_info) {
+		addDict(studs_info, 0);
+	});
+	req_studs.fail( function(){
+		console.log("No file named " + text + " found, loading template.");
+		stud_list.id = "stud_list";
+		document.getElementById('studentname').value = "Max Mustermann";
+		addStudent();
+		document.getElementById('studentname').value = "Student";
+	});
+
+    await req_studs;
+    stud_list.id = "stud_list";
+
     document.getElementById('head_text').innerHTML = document.getElementById('head_text').innerHTML.replace("free", data);
     document.getElementById('filename').value = data;
 };
@@ -107,7 +101,17 @@ async function fillLists() {
 */
 function addStudent() {
 	try {
-	    if(!addElement(document.getElementById('studentname').value)) throw "exists"
+		var stud_list = document.getElementById("stud_list");
+		stud_list.id = "var_list";
+	    if(!addElement(document.getElementById('studentname').value, 1)) throw "exists"
+	    stud_list.id = "stud_list";
+
+		// TODO change fill method
+	     var room_list = document.getElementById("pref_list");
+        room_list.id = "var_list";
+        addElement("empty,empty,empty,empty,empty", 0)
+        room_list.id = "pref_list";
+
 	} catch (err) {
 		switch (err) {
 			case "exists":
@@ -122,6 +126,15 @@ function addStudent() {
 	}
 }
 
+function deleteStudent(){
+	var stud_list = document.getElementById("stud_list");
+	stud_list.id = "var_list";
+    deleteElement(old_name);
+	closeDialog()
+    stud_list.id = "stud_list";
+
+    //TODO Remove entry on preflist
+}
 
 /*
 	Renames a student from the opened dialog window.
@@ -130,11 +143,19 @@ function addStudent() {
 */
 function renameStudent() {
 	try {
+		var stud_list = document.getElementById("stud_list");
+		stud_list.id = "var_list";
+
 		var new_name = document.getElementById("new_studentname").value;
 		if (new_name == old_name) return;
-		if(!addElement(new_name)) throw "exists";
+		if(!addElement(new_name, 1)) throw "exists";
 	    deleteElement(old_name);
 	    closeDialog();
+
+	    stud_list.id = "stud_list";
+
+
+	    // TODO add interaction with preflist
 	} catch(err) {
 		switch (err) {
 			case "exists":
@@ -194,6 +215,9 @@ function closeDialog() {
 */
 function pre_saveData() {
 	try {
+		var stud_list = document.getElementById("stud_list");
+		stud_list.id = "var_list";
+
 		var error_case = "Not request fail";
 
 		if(document.getElementById('var_list').innerHTML.trim() == "") throw "empty";
@@ -203,7 +227,19 @@ function pre_saveData() {
 
 	    saveData({"name" : name, "students": student_str});
 
+		stud_list.id = "stud_list";
 	    //TODO update preflists when everything went fine
+
+		var pref_list = document.getElementById("pref_list");
+		pref_list.id = "var_list";
+		identity = "pref"
+
+		var pref_str = create_str();
+
+		saveData({"name" : name, "students": pref_str});
+
+		pref_list.id = "room_list";
+		identity = "student"
 
 	} catch (err) {
 		switch(err) {
@@ -228,4 +264,9 @@ function pre_saveData() {
 		popup.innerHTML = err_text;
 		popup.classList.toggle("show");
 	}
+}
+
+// TODO configure deleting preflists
+function deleteClass(){
+	deleteInformation();
 }
