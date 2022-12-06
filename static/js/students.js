@@ -57,18 +57,8 @@ function create_str() {
 */
 async function getInformation(text) {
     // TODO change fill method
-    identity = "pref";
-    var room_list = document.getElementById("pref_list");
-    room_list.id = "var_list";
 
-    var req_prefs = requestInformation(data);
-	req_prefs.done( function(pref_info) {
-		addDict(pref_info, 0);
-	});
-
-    await req_prefs;
-    room_list.id = "pref_list";
-
+	await addPrefs();
 
     identity = "student";
 	var stud_list = document.getElementById("stud_list");
@@ -92,6 +82,66 @@ async function getInformation(text) {
     document.getElementById('head_text').innerHTML = document.getElementById('head_text').innerHTML.replace("free", data);
     document.getElementById('filename').value = data;
 };
+
+
+
+
+async function addPrefs(){
+	identity = "pref";
+    var req_prefs = requestInformation(data);
+	req_prefs.done( function(pref_info) {
+		addPrefElements(pref_info);
+	});
+
+    await req_prefs;
+}
+
+function addPrefElements(list){
+	var List = document.getElementById("pref_list");
+
+	var Element = list[0].split(",");
+	//var Element = ["1", "2", "3", "4", "5"]
+
+	var field0 = document.createElement("input");
+	field0.setAttribute("type","text");
+	field0.setAttribute("name", "0");
+	field0.setAttribute("style", "width: 30%")
+	field0.setAttribute("value", Element[0]);
+
+	var field1 = document.createElement("input");
+	field1.setAttribute("type","text");
+	field1.setAttribute("name", "1");
+	field1.setAttribute("style", "width: 30%")
+	field1.setAttribute("value", Element[1]);
+
+	var field2 = document.createElement("input");
+	field2.setAttribute("type","text");
+	field2.setAttribute("name", "0");
+	field2.setAttribute("style", "width: 30%")
+	field2.setAttribute("value", Element[2]);
+
+	var field3 = document.createElement("input");
+	field3.setAttribute("type","text");
+	field3.setAttribute("name", "3");
+	field3.setAttribute("style", "width: 30%")
+	field3.setAttribute("value", Element[3]);
+
+	var field4 = document.createElement("input");
+	field4.setAttribute("type","text");
+	field4.setAttribute("name", "4");
+	field4.setAttribute("style", "width: 30%")
+	field4.setAttribute("value", Element[4]);
+
+	var line = document.createElement("div")
+	line.setAttribute("style", "width: 120%; display: flex;");
+	line.appendChild(field0);
+	line.appendChild(field1);
+	line.appendChild(field2);
+	line.appendChild(field3);
+	line.appendChild(field4);
+
+	List.appendChild(line);
+}
 
 
 /*
@@ -232,14 +282,14 @@ function pre_saveData() {
 
 		var pref_list = document.getElementById("pref_list");
 		pref_list.id = "var_list";
-		identity = "pref"
+		identity = "pref";
 
 		var pref_str = create_str();
 
 		saveData({"name" : name, "students": pref_str});
 
 		pref_list.id = "room_list";
-		identity = "student"
+		identity = "student";
 
 	} catch (err) {
 		switch(err) {
@@ -266,7 +316,12 @@ function pre_saveData() {
 	}
 }
 
-// TODO configure deleting preflists
-function deleteClass(){
-	deleteInformation();
+
+async function deleteClass(){
+	console.log("Prefdel");
+	identity = "pref";
+	await deleteInformation();
+	console.log("Studdel");
+	identity = "student";
+	await deleteInformation(1);
 }

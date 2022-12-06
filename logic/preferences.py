@@ -124,18 +124,14 @@ def preferences_delete(name_class):
     """
     Function to delete an existing .json file containing a preference list.
 
+    TODO UPDATE
+
     :return: void
     """
-    clear_screen()
     if os.path.exists(pref_path + name_class + ".json"):
         os.remove(pref_path + name_class + ".json")
     else:
         print("This list does not exist yet.")
-        time.sleep(3)
-        return
-    print("Done! Returning to main menu.")
-    time.sleep(3)
-    return
     
     
 def preferences_read(name_class):

@@ -151,8 +151,6 @@ def get_classroom_lists():
 @app.route('/getpreflists', methods=["GET", "POST"])
 def get_pref_lists():
     if request.method == "POST":
-        print(request.form["result"])
-        print(preferences.preferences_read(request.form["result"]))
         return preferences.preferences_read(request.form["result"])
     elif request.method == "GET":
         return preferences.get_all_pref_lists()
@@ -170,6 +168,20 @@ def pref_info():
                 return "", 404
     except Exception as err:
         print(f"Accessing students.py for delete failed with {err}")
+        return "", 404
+
+
+@app.route("/delpref", methods=["POST"])
+def del_pref():
+    try:
+        if request.method == "POST":
+            call = preferences.preferences_delete(request.form["result"])
+            if call == "SUCCESS":
+                return "", 204
+            else:
+                return "", 404
+    except Exception as err:
+        print(f"Accessing preferences.py for delete failed with {err}")
         return "", 404
 
 # ________________________________________________________________________________________________________

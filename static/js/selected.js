@@ -31,9 +31,10 @@ function ask_delete() {
 /*
     Deletes the current file from the server.
 
+	@param confirm: Integer to skip the confirmation
     @return: void
 */
-async function deleteInformation() {
+async function deleteInformation(confirm) {
 	try {
 		var error_case = "Not request fail";
 		var rename_request = listRequest();
@@ -51,7 +52,10 @@ async function deleteInformation() {
 	    }
 
 		if (!found) throw "not_created";
-		if (!ask_delete()) throw "canceled";
+
+		if (!confirm){
+			if (!ask_delete()) throw "canceled";
+		}
 
 	    var delete_return = deleteRequest(data);
 	    delete_return.done(function(data) {
