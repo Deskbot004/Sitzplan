@@ -7,17 +7,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <script src="{{ url_for('static', filename='js/common.js') }}"></script>
-
-    <div class="header">
-        <a href="#home" onclick="switchToHome()">
-            <img src="../static/images/chair.png">
-        </a>
-        <h2> Home </h2>
-    </div>
 </head>
 <body>
 <!------- SIDEBAR ------->
 <aside>
+    <a href="#home" onclick="switchToHome()">
+        <img src="../static/images/chair.png">
+    </a>
     <nav><ul>
         <li><a href="#home" onclick="switchToHome()" class="current">Home</a></li>
         <li><a href="#seating" onclick="switchToSeating()">Create seating</a></li>
@@ -30,23 +26,25 @@
 <!------- MAIN BODY ------->
 <div class="main">
     <h1>Welcome to the Seating Generator!</h1>
-    <h2>Home</h2>
-    <a>Return to the start menu.</a>
-    <h2>Create seating</h2>
-    <a>Create a seating plan with an existing student list and an existing room.
-        Additionally, an algorithm which will calculate the plan can be chosen.
-        Right now pure random is the only working one.</a>
-    <h2>Student lists</h2>
-    <a>Create, edit or delete a list of students to use in the seating generation.</a>
-    <h2>Classrooms</h2>
-    <a>Create, edit or delete a classroom to use in the seating generation.</a>
-    <h2>About</h2>
-    <a>For now an empty site.</a>
+    <div class="inner">
+        <h2>Home</h2>
+        <a>Return to the start menu.</a>
+        <h2>Create seating</h2>
+        <a>Create a seating plan with an existing student list and an existing room.
+            Additionally, an algorithm which will calculate the plan can be chosen.
+            Right now pure random is the only working one.</a>
+        <h2>Student lists</h2>
+        <a>Create, edit or delete a list of students to use in the seating generation.</a>
+        <h2>Classrooms</h2>
+        <a>Create, edit or delete a classroom to use in the seating generation.</a>
+        <h2>About</h2>
+        <a>For now an empty site.</a>
+    </div>
 </div>
 
 <!------- SIDE BODY ------->
 <div class="side">
-    <h2>This is some text</h2>
+    <h1>This is some text</h1>
 </div>
 </body>
 </html>

@@ -8,28 +8,25 @@
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <script src="{{ url_for('static', filename='js/common.js') }}"></script>
 
-    <div class="header">
-        <a href="#home" onclick="switchToHome()">
-            <img src="../static/images/chair.png">
-        </a>
-        <h2> About </h2>
-    </div>
 </head>
 <body>
 <!------- SIDEBAR ------->
 <aside>
+    <a href="#home" onclick="switchToHome()">
+        <img src="../static/images/chair.png">
+    </a>
     <nav><ul>
         <li><a href="#home" onclick="switchToHome()">Home</a></li>
         <li><a href="#seating" onclick="switchToSeating()">Create seating</a></li>
         <li><a href="#student" onclick="switchToStudents()">Student lists</a></li>
         <li><a href="#room" onclick="switchToClassroom()">Classrooms</a></li>
-        <li><a href="#about" onclick="switchToAbout()" class="current">About</a></li>
+        <li><a href="#about" onclick="switchToAbout()"  class="current">About</a></li>
     </ul></nav>
 </aside>
 
 <!------- MAIN BODY ------->
-<div class="main">
-    <h2>Hier könnte ihre Werbung stehen! (About)</h2>
+<div class="main" class="inner">
+    <h1>Hier könnte ihre Werbung stehen! (About)</h1>
 </div>
 <script>
 

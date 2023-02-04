@@ -4,28 +4,28 @@
     --font2: Arial, serif;
 
     /*---Colors---*/
-    --col-background: #eeeeee; /*grey*/
+    --col-background: #ffffff; /*white*/
+    --col-side: #dddddd; /*grey*/
     --col-accent: #8a54bf; /*purple*/
-    --col-main: #ffffff; /*white*/
+    --col-accent2: #db5ab2; /*pink*/
     --col-hover: #5d2f8a; /*dark purple*/
     --col-click: #391d54; /*even darker purple*/
 
     /*---Gradient---*/
-    --grad-begin: 100px;
-    --grad-end: 170px;
+    --grad-begin: 60px;
+    --grad-end: 100px;
 
     /*---Other things---*/
-    --sidebar-width: max(150px, min(200px, 10vw)); /*min: 100px, max: 200px, default: 10vw*/
+    --sidebar-width: max(150px, min(200px, 20vw)); /*min: 100px, max: 200px, default: 10vw*/
 }
 
-/*TODO: Proper Scaling*/
-
-/*-------------------- Header --------------------*/
 html {
     height: 100%;
     width: 100%;
     overflow: hidden;
     margin: 0;
+    padding: 0;
+    background: red;
 }
 
 body {
@@ -36,42 +36,30 @@ body {
     background: linear-gradient(var(--col-accent) var(--grad-begin), var(--col-background) var(--grad-end), var(--col-background));
 }
 
-.header{
-    height: calc(var(--grad-begin) - 20px);
-    margin-top: 10px;
-    font-family: var(--font1);
-}
-
-.header img{
-    height: 100%;
-    width: var(--sidebar-width);
-    margin-left: 10px;
-    object-fit: cover; /*Options: cover, fill, contain, none*/
-}
-
-.header a{
-    text-decoration: none;  /*So the link (image in this case) isn't underlined*/
-}
-
-.header h2{
-    display: inline; /* So its next to the image instead of below */
-
-    font-size: 50px;
-    vertical-align: bottom;
-    margin-left: 100px;
-    color: var(--col-main);
+h1 {
+	margin-top: 0;
+	padding: 0;
 }
 
 /*-------------------- Sidebar --------------------*/
 aside {
-    width: calc(var(--sidebar-width) + 10px);   /* +10px to mach the offset of the logo*/
-    min-height: calc(100vh - var(--grad-end) - 30px);   /* Even if it's not full, it'll reach the bottom of the page */
+    width: calc(var(--sidebar-width) + 20px);   /* +20px to mach the offset of the logo*/
+    min-height: 100%;   /* Even if it's not full, it'll reach the bottom of the page */
     float: left;
-    position: sticky;                           /* position normally, offset relative to the scrolling body */
-    margin-top: calc(var(--grad-end) - var(--grad-begin) + 30px);   /* 30px away from end of gradient */
+
+    background: var(--col-side);
+    box-shadow: inset -5px 0 0px var(--col-accent);
 }
 
-nav ul{
+aside img {
+    height: calc(var(--grad-end) - 20px);
+    width: calc(var(--sidebar-width) - 4px);
+    margin: 10px 14px 10px 10px;
+    margin-right: 14px;
+    object-fit: fill; /*Options: cover, fill, contain, none*/
+}
+
+nav ul {
     list-style-type: none; /*no dots before list entry*/
     padding-left: 0px;
     margin-top: 0px;
@@ -83,60 +71,76 @@ nav ul{
 }
 
 nav a {
-    line-height: 2em;       /*vertical size of button*/
+    line-height: 45px;       /*vertical size of button*/
     padding-left: 10px;
     display: block;         /*change size to match the list element*/
 
     /*separator between list elements*/
     border-style: solid solid solid none;
-    border-width: 2px 4px 2px 0px;
-    border-color: var(--col-accent) var(--col-accent) var(--col-accent) white;
+    border-width: 2px 4px;
+    border-color: var(--col-accent);
 
     font-family: var(--font1);
     font-size: 18px;
     text-decoration: none;
     background-color: var(--col-sidebar);
+    color: black;
 }
 
 nav a:hover {
     text-decoration: none;
-    color: var(--col-main);
+    color: var(--col-side);
     background-color: var(--col-hover);
 }
 
 nav a:active {
     text-decoration: none;
-    color: var(--col-main);
+    color: var(--col-side);
     background-color: var(--col-click);
 }
 
 /*--- Sidebar Current Position ---*/
 .current {
+    background: var(--col-background);
+
     /*separator between list elements*/
-    border-style: solid none solid none;
-    border-width: 2px 4px 2px 0px;
-    border-color: var(--col-accent) yellow var(--col-accent) white;
-    background: var(--col-main);
+    border-style: solid solid solid solid;
+    border-width: 2px 4px 2px 4px;
+    border-color: var(--col-accent) var(--col-background) var(--col-accent) var(--col-accent2);
+}
+
+.current:hover {
+    border-style: solid solid solid solid;
+    border-width: 2px 4px 2px 4px;
+    border-color: var(--col-accent) var(--col-hover) var(--col-accent) var(--col-accent2);
 }
 
 /*-------------------- Main Body --------------------*/
 .main {
     min-height: 100%;
     min-width: 500px;
-    width: 60vw;
+    width: 65vw;
+
     float: left;
 	position: sticky;
-	margin-top: calc(var(--grad-end) - var(--grad-begin) + 30px);   /* 30px away from end of gradient */
-    margin-left: -4px;  /*So that the border overlaps with the sidebar border*/
-    z-index:-1;         /*So that the element is behind the sidebar*/
+
 
 	font-family: var(--font1);
 	text-align:center;
+}
 
-	background: var(--col-main);
-	border-style: solid solid none solid;
-    border-width: 4px 4px 4px 4px;
-    border-color: var(--col-accent) var(--col-accent) var(--col-accent) var(--col-accent);
+.main h1 {
+    margin-top: 10px;
+    font-size: calc(var(--grad-begin) - 20px);
+
+    color: var(--col-background);
+    -webkit-text-stroke: 2px black; /* width and color */
+}
+
+.inner {
+    margin-top: calc(var(--grad-end) - var(--grad-begin));   /* 30px away from end of gradient */
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 /*-------------------- Side Body --------------------*/
@@ -144,15 +148,13 @@ nav a:active {
     min-height: 100%;
     overflow: hidden;
 	position: sticky;
-	margin-top: calc(var(--grad-end) - var(--grad-begin) + 30px);   /* 30px away from end of gradient */
 
 	font-family: var(--font1);
 	text-align:center;
 
-	background: var(--col-background);
+	background: var(--col-side);
 	background-size:100%;
-	border-style: none none none none;
-    border-width: 4px 4px 4px 4px;
-    border-color: var(--col-accent) var(--col-accent) var(--col-accent) var(--col-accent);
-
+	border-style: none none none solid;
+    border-width: 4px;
+    border-color: var(--col-accent);
 }
