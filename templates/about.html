@@ -25,11 +25,47 @@
 </aside>
 
 <!------- MAIN BODY ------->
-<div class="main" class="inner">
-    <h1>Hier könnte ihre Werbung stehen! (About)</h1>
+<div class="main">
+    <h1>My test area right now :P (About)</h1>
+    <div class="inner">
+        <form action="{{ url_for('test') }}" method="post" enctype="multipart/form-data">
+            <label>Choose file here:
+                <input id="in_file" name="files[]" type="file">
+            </label>
+            <output id="out_file"></output>
+            <button>Upload</button>
+        </form>
+        <label id="lol"></label>
+    </div>
 </div>
 <script>
+    // Testing upload possibilities
 
+    document.getElementById('in_file').addEventListener('change', choose_file, false);
+
+    function choose_file(evt) {
+            var files = evt.target.files;
+            var fragments = [];
+
+            for (var i = 0, f; f = files[i]; i++) {
+                fragments.push('<strong>', f.name, '</strong> (', f.type || 'n/a', ') - ', f.size, ' bytes', '<br>');
+            }
+
+            document.getElementById('out_file').innerHTML = fragments.join('');
+    }
+
+    function post() {
+        document.getElementById('lol').innerHTML = "Haha lol";
+    }
 </script>
+<style>
+    input[type="file"] {
+        display: block;
+        margin: 2em;
+        padding: 2em;
+        border: thin dotted;
+        background: #fff;
+    }
+</style>
 </body>
 </html>

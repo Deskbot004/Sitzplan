@@ -194,6 +194,15 @@ def get_seating():
         call = generator.run(request.form["result"])
         return call[0], 200
 
+# ________________________________________________________________________________________________________
+# Submitting stuff? IN WORK
+
+
+@app.route('/test', methods=["POST"])
+def test():
+    gotten_files = request.files
+    return switch_about()
+
 
 @app.after_request
 def after_request(response):
@@ -207,3 +216,4 @@ if __name__ == "__main__":
         port=5000,
         debug=True
     )
+
