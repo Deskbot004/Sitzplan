@@ -84,17 +84,17 @@ function changeArray(first_desk, second_desk, type) {
 /*
     Fills the grid with a loaded classroom.
 
-	@param classroom: An array of the classroom information
 	@param grid: The grid to be coloured
     @param room: String of the loaded classroom
     @return: void
 */
-function fillGrid(classroom, grid, room) {
+function fillGrid(grid, room) {
     if(room.length <= 0) return;
     // turn the room string into an array
     new_room = textToArray(room);
     teacher_desk_count = 2;
-
+    console.log("FILLING CLASSROOM")
+    classroom = new_room;
     for (i = 0; i < new_room.length; i++) {
         switch(new_room[i][2]) {
             case "student":
@@ -387,13 +387,13 @@ function getInformation(text){
 	try {
 		var req_room = requestInformation(text);
 		req_room.done(function(room) {
-			fillGrid(classroom, grid, room);
+			fillGrid(grid, room);
 		});
 		req_room.fail(function() {
 			console.log("No file named "+ text + " found, loading template.");
 			classroom = [["7;7", "7;8", "student"], ["8;7", "8;8", "teacher"]]
 			room = "7;7,7;8,student-8;7,8;8,teacher"
-			fillGrid(classroom, grid, room);
+			fillGrid(grid, room);
 		});
 	} catch(err) {
 		alert("Getting Information went wrong! The room was not properly loaded!");
