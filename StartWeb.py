@@ -106,7 +106,7 @@ def classroom_info():
     try:
         if request.method == "POST":
             classroom_dict = request.form
-            call = classrooms.save_classroom(classroom_dict["name"], classroom_dict["layout_untrimmed"], classroom_dict["layout"])
+            call = classrooms.save_classroom(classroom_dict["name"], classroom_dict["layout"])
             if call == "SUCCESS":
                 return "", 204
             else:
@@ -134,7 +134,7 @@ def del_classroom():
 def get_classroom_lists():
     try:
         if request.method == "POST":
-            call = classrooms.get_classroom_untrimmed(request.form["result"])
+            call = classrooms.get_classroom(request.form["result"])
         elif request.method == "GET":
             call = classrooms.get_all_classroom_lists()
         if call[1] == "SUCCESS":

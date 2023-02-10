@@ -3,14 +3,11 @@
 
 	Simple functions on html:
 		arrayToText(array) -> string
-		detectWidthToTrim(array) -> array
-		detectHeightToTrim(array) -> array
 		check_validity(array) -> Boolean
 		change_array(array, string, string)
 		fillGrid(array, array, string)
 	Functions from user interaction:
 		changeColor(string)
-		addColor()
 		addColorClick()
 		getInformation(string)
 		pre_saveData()
@@ -25,92 +22,30 @@
 
 
 /*
-    Converts the classroom array into a text string where the rows are separated by semicolons.
+    Converts the classroom array into a text string.
 
 	@param classroom: An array of the classroom information
     @return: String of the classroom data
 */
-function arrayToText(classroom) {
-    var width = detectWidthToTrim(classroom);
-    var height = detectHeightToTrim(classroom);
-    var place_semi = 0;
-    var text = "";
-    var text_untrimmed = "";
-
-    for (let x = 0; x < grid_height; x++) {
-        place_semi = 0;
-        for (let y = 0; y < grid_length; y++) {
-            text_untrimmed += classroom[x][y].toString();
-            if (width[0] <= y && y <= width[1] && height[0] <= x && x <= height[1]) {
-                text += classroom[x][y].toString();
-                place_semi = 1;
-            }
-        }
-        text_untrimmed += ";";
-        if (place_semi) text += ";";
-    }
-    text_untrimmed = text_untrimmed.slice(0, -1);
-    text = text.slice(0, -1);
-    console.log(text_untrimmed)
-    console.log(text)
-    var text_array = [text, text_untrimmed];
-    return text_array;
+function arrayToText() {
+    return classroom.join('-');
 };
 
 
 /*
-    Detects if columns can be trimmed (are only filled with zeros) from the array representing the classroom data.
+    Converts the classroom text string into an array.
 
-	@param classroom: An array of the classroom information
-    @return: List with two entries describing the interval of columns that can't be trimmed
+	@param classroom: String of the classroom data
+    @return: An array of the classroom information
 */
-function detectWidthToTrim(classroom) {
-    var start_width = 99;
-    var end_width = 0;
-    var found_num = 0;
-    var entry = 0;
-
-    for (let x = 0; x < grid_height; x++) {
-        found_num = 0;
-        for (let y = 0; y < grid_length; y++) {
-            entry = classroom[x][y];
-            if (entry != 0 && found_num == 0) {
-                found_num = 1;
-                if (y < start_width) start_width = y;
-            } else if (entry != 0) {
-                if (y > end_width) end_width = y;
-            }
-        }
+function textToArray(room) {
+    entries = room.split("-")
+    new_room = new Array()
+    for (i=0; i < entries.length; i++){
+        new_room.push(entries[i].split(","));
     }
-    return [start_width, end_width];
-};
-
-
-/*
-    Detects if rows can be trimmed (are only filled with zeros) from the array representing the classroom data.
-
-	@param classroom: An array of the classroom information
-    @return: List with two entries describing the interval of columns that can't be trimmed
-*/
-function detectHeightToTrim(classroom) {
-    var start_height = 99;
-    var end_height = 0;
-    var found_num = 0;
-
-    for (let x = 0; x < grid_height; x++) {
-        found_num = 0;
-        for (let y = 0; y < grid_length; y++) {
-            if (classroom[x][y] != 0) found_num = 1;
-        }
-        if (found_num == 1) {
-            if (x < start_height) start_height = x;
-            if (x > end_height) end_height = x;
-        }
-    }
-
-    return [start_height, end_height];
-};
-
+    return new_room;
+}
 
 /*
     Checks for a valid classroom (at least one teacher and one student desk in the room).
@@ -121,44 +56,28 @@ function detectHeightToTrim(classroom) {
 function check_validity(classroom) {
     var student_found = 0;
     var teacher_found = 0;
-    for (let x = 0; x < grid_height; x++) {
-        found_num = 0;
-        for (let y = 0; y < grid_length; y++) {
-            if (classroom[x][y] == 1) student_found = 1;
-            if (classroom[x][y] == 3) teacher_found = 1;
-        }
+    for (i = 0; i < classroom.length; i++) {
+        if (classroom[i][2] == "student") student_found = 1;
+        if (classroom[i][2] == "teacher") teacher_found = 1;
     }
     return student_found.toString() + teacher_found.toString();
 };
 
 
 /*
-    Updates the classroom array with new color values.
+    Updates the classroom array with desks.
 
-	@param classroom: An array of the classroom information
-    @param array_id: The array entry that is to be changed as a double-digit string
-    @param color: The new color as a string (e.g. "white")
+	@param first_desk: a tuple of coordinates with the position of the first desk
+    @param second_desk: a tuple of coordinates with the position of the second desk or Null
+    @param type: the type of the desk (either "student", "teacher" or "unusable")
     @return: void
 */
-function changeArray(classroom, array_id, color) {
-	var values = array_id.split(',');
-    var x_val = values[0];
-    var y_val = values[1];
-    switch(color) {
-        case "white":
-            classroom[x_val][y_val] = 0;
-            break;
-        case "lightblue":
-            classroom[x_val][y_val] = 1;
-            break;
-        case "orange":
-            classroom[x_val][y_val] = 2;
-            break;
-        case "pink":
-            classroom[x_val][y_val] = 3;
-            break;
-        default:
-    }
+function changeArray(first_desk, second_desk, type) {
+	new_entry = new Array();
+	new_entry.push(first_desk);
+	new_entry.push(second_desk);
+	new_entry.push(type);
+	classroom.push(new_entry)
 };
 
 
@@ -171,30 +90,28 @@ function changeArray(classroom, array_id, color) {
     @return: void
 */
 function fillGrid(classroom, grid, room) {
-    teacher_desk_count = 0;
     if(room.length <= 0) return;
-    var room = room.replace(/;/g, "");
-    var col_change = "";
+    // turn the room string into an array
+    new_room = textToArray(room);
+    teacher_desk_count = 2;
 
-    for (num = 0; num < room.length; num++) {
-        switch(room[num]) {
-            case "0":
-                col_change = "white";
+    for (i = 0; i < new_room.length; i++) {
+        switch(new_room[i][2]) {
+            case "student":
+                document.getElementById(new_room[i][0]).style.backgroundColor = "lightblue";
+                if (new_room[i][1] != null) document.getElementById(new_room[i][1]).style.backgroundColor = "lightblue";
                 break;
-            case "1":
-                col_change = "lightblue";
+            case "unusable":
+                document.getElementById(new_room[i][0]).style.backgroundColor = "orange";
+                if (new_room[i][1] != null) document.getElementById(new_room[i][1]).style.backgroundColor = "orange";
                 break;
-            case "2":
-                col_change = "orange";
-                break;
-            case "3":
-                col_change = "pink";
-                teacher_desk_count += 1;
+            case "teacher":
+                document.getElementById(new_room[i][0]).style.backgroundColor = "pink";
+                if (new_room[i][1] != null) document.getElementById(new_room[i][1]).style.backgroundColor = "pink";
                 break;
             default: break;
         }
-        grid[num].style.backgroundColor = col_change;
-        changeArray(classroom, grid[num].getAttribute("id"), col_change);
+        //changeArray(classroom, grid[num].getAttribute("id"), col_change);
     }
 };
 
@@ -232,87 +149,13 @@ function clearAll(classroom, grid) {
     try {
         for (num = 0; num < grid.length; num++) {
             grid[num].style.backgroundColor = "white";
-            changeArray(classroom, grid[num].getAttribute("id"), "white");
+            classroom = [];
         }
         teacher_desk_count = 0;
     } catch(err) {
         alert("Something went wrong! Could not clear the grid!");
         console.log("Function clearAll failed with " + err);
     }
-};
-
-/*
-    Changes the background color of a grid div upon downward press of the left mouse button.
-
-    @return: void
-*/
-function addColor() {
-	try {
-	    var div_id = this.getAttribute("id");
-	    if (window.mouseDown) {
-	        if (color != "pink") {
-	            if (this.style.backgroundColor == "pink") teacher_desk_count -= 1;
-                this.style.backgroundColor = color;
-                changeArray(classroom, div_id, color);
-            } else {
-                switch (teacher_desk_count) {
-                    case 0:
-                        this.style.backgroundColor = "pink";
-                        changeArray(classroom, div_id, "pink");
-                        teacher_desk_count += 1;
-                        break;
-                    case 1:
-                        neighbors = getNeighboringDivColors(div_id.split(","));
-                        found_desk = false;
-                        for (i = 0; i < neighbors.length; i++) {
-                            if (neighbors[i].style.backgroundColor == "pink") {
-                                this.style.backgroundColor = "pink";
-                                changeArray(classroom, div_id, "pink");
-                                teacher_desk_count += 1;
-                                found_desk = true;
-                                break;
-                            }
-                        }
-                        if (!found_desk) throw "no neighbor";
-                        break;
-                    case 2:
-                        throw "desk limit";
-                        break;
-                    default:
-                        console.log("teacher_desk_count is " + String(teacher_desk_count) +
-                        "! Something went REALLY wrong!");
-                        break;
-                }
-            }
-	    }
-	} catch(err) {
-	    switch (err) {
-	        case "no neighbor":
-	            err_text = "No neighboring teacher desk!";
-	            break;
-	        case "desk limit":
-	            err_text = "The maximum number of teacher desks has been reached!";
-	            break;
-	        default:
-                console.log("teacher_desk_count is " + String(teacher_desk_count) +
-                "! Something went REALLY wrong!");
-                break;
-	    }
-	    var popup = document.getElementById("popup_teacher");
-		popup.innerHTML = err_text;
-		popup.classList.toggle("show");
-
-		switch(typeof err) {
-			case "string":
-				console.log("Function addColor failed with " + err);break;
-			case "object":
-				console.log("Adding color failed with "+ error_case);
-				console.log(err);
-				break;
-			default:
-				console.log("Undetected Error type: " + typeof err);break;
-		}
-	}
 };
 
 /*
@@ -323,59 +166,188 @@ function addColor() {
 */
 function getNeighboringDivColors(div_id) {
     var neighbor_divs = new Array();
-    neighbor_divs.push(document.getElementById(String(parseInt(div_id[0]) - 1) + "," + div_id[1]));
-    neighbor_divs.push(document.getElementById(String(parseInt(div_id[0]) + 1) + "," + div_id[1]));
-    neighbor_divs.push(document.getElementById(div_id[0] + "," + String(parseInt(div_id[1]) - 1)));
-    neighbor_divs.push(document.getElementById(div_id[0] + "," + String(parseInt(div_id[1]) + 1)));
+    neighbor_divs.push(document.getElementById(String(parseInt(div_id[0]) - 1) + ";" + div_id[1]));
+    neighbor_divs.push(document.getElementById(String(parseInt(div_id[0]) + 1) + ";" + div_id[1]));
+    neighbor_divs.push(document.getElementById(div_id[0] + ";" + String(parseInt(div_id[1]) - 1)));
+    neighbor_divs.push(document.getElementById(div_id[0] + ";" + String(parseInt(div_id[1]) + 1)));
     neighbor_divs = neighbor_divs.filter(function(item) {
         return item !== null
     })
     return neighbor_divs
 };
 
+
 /*
-    Changes the background color of a grid.
+    Highlight the selection in the grid so the user can see which divs a table would be placed on
+
+    @return: void
+*/
+function highlightSelection() {
+    mouse_div = this;
+    var div_id = this.getAttribute("id").split(";");
+    var highlight_color = "palegreen";
+    var error_color = "lightsalmon";
+    if (double) {
+        if (orientation == 0) {   // if desk is oriented horizontally
+            var neighbor_div = document.getElementById(div_id[0] + ";" + String(parseInt(div_id[1]) + 1));
+            if (neighbor_div == null) {
+                this.style.backgroundColor = error_color;
+                return;
+            }
+            if (this.style.backgroundColor == "white" && neighbor_div.style.backgroundColor == "white") {
+                this.style.backgroundColor = highlight_color;
+                neighbor_div.style.backgroundColor = highlight_color;
+            } else if (this.style.backgroundColor == "white" && neighbor_div.style.backgroundColor != "white") {
+                this.style.backgroundColor = error_color;
+            }
+        } else {    // if desk is oriented vertically
+            var neighbor_div = document.getElementById(String(parseInt(div_id[0]) - 1) + ";" + div_id[1]);
+            if (neighbor_div == null) {
+                this.style.backgroundColor = error_color;
+                return;
+            }
+            if (this.style.backgroundColor == "white" && neighbor_div.style.backgroundColor == "white") {
+                this.style.backgroundColor = highlight_color;
+                neighbor_div.style.backgroundColor = highlight_color;
+            } else if (this.style.backgroundColor == "white" && neighbor_div.style.backgroundColor != "white") {
+                this.style.backgroundColor = error_color;
+            }
+        }
+    }
+
+}
+/*
+    Rotate the selection of a double desk on the grid and change where the desk would be placed
+
+    @param e: the key pressed (has to be "r")
+    @return: void
+*/
+function rotate(e) {
+    if(window.event) { // IE
+    keynum = e.keyCode;
+    } else if(e.which){ // Netscape/Firefox/Opera
+    keynum = e.which;
+    }
+    var highlight_color = "palegreen";
+    var error_color = "lightsalmon";
+
+    if (keynum == 114 && double) { // rotate when "r" key is pressed
+        if (mouse_div != null) {
+            var div_id = mouse_div.getAttribute("id").split(";");
+            if (orientation == 0) {     // if table is oriented horizontally
+                old_neighbor = document.getElementById(div_id[0] + ";" + String(parseInt(div_id[1]) + 1));
+                new_neighbor = document.getElementById(String(parseInt(div_id[0]) - 1) + ";" + div_id[1]);
+            } else {        // if table is oriented vertically
+                old_neighbor = document.getElementById(String(parseInt(div_id[0]) - 1) + ";" + div_id[1]);
+                new_neighbor = document.getElementById(div_id[0] + ";" + String(parseInt(div_id[1]) + 1));
+            }
+            if (mouse_div.style.backgroundColor == highlight_color) {
+                if (new_neighbor != null) {
+                    if (new_neighbor.style.backgroundColor == "white") {
+                        old_neighbor.style.backgroundColor = "white";
+                        new_neighbor.style.backgroundColor = highlight_color;
+                    } else {
+                        old_neighbor.style.backgroundColor = "white";
+                        mouse_div.style.backgroundColor = error_color;
+                    }
+                } else {
+                    if (old_neighbor != null) old_neighbor.style.backgroundColor = "white";
+                    mouse_div.style.backgroundColor = error_color;
+                }
+            } else if (mouse_div.style.backgroundColor == error_color && old_neighbor != null) {
+                if (new_neighbor != null) {
+                    if (new_neighbor.style.backgroundColor == "white") {
+                        mouse_div.style.backgroundColor = highlight_color;
+                        new_neighbor.style.backgroundColor = highlight_color;
+                    } else {
+                        mouse_div.style.backgroundColor = error_color;
+                    }
+                } else {
+                    if (old_neighbor != null) old_neighbor.style.backgroundColor = "white";
+                    mouse_div.style.backgroundColor = error_color;
+                }
+            }
+        }
+        orientation = Math.abs(orientation - 1);
+    }
+}
+/*
+    Deselects the highlight selection on the grid if the mouse cursor is moved out of a cell
+
+    @return: void
+*/
+
+function highlightDeselection() {
+    var div_id = this.getAttribute("id").split(";");
+    var highlight_color = "palegreen";
+    var error_color = "lightsalmon";
+    if (double) {
+        if (orientation == 0) {   // if table is oriented horizontally
+            var neighbor_div = document.getElementById(div_id[0] + ";" + String(parseInt(div_id[1]) + 1));
+            if (this.style.backgroundColor == error_color) this.style.backgroundColor = "white";
+            if (neighbor_div == null) return;
+            if (this.style.backgroundColor == highlight_color && neighbor_div.style.backgroundColor == highlight_color) {
+                this.style.backgroundColor = "white";
+                neighbor_div.style.backgroundColor = "white";
+            }
+        } else {    // if table is oriented vertically
+            var neighbor_div = document.getElementById(String(parseInt(div_id[0]) - 1) + ";" + div_id[1]);
+            if (this.style.backgroundColor == error_color) this.style.backgroundColor = "white";
+            if (neighbor_div == null) return;
+            if (this.style.backgroundColor == highlight_color && neighbor_div.style.backgroundColor == highlight_color) {
+                this.style.backgroundColor = "white";
+                neighbor_div.style.backgroundColor = "white";
+            }
+        }
+    }
+
+}
+
+/*
+    Changes the background color of a grid cell.
 
     @return: void
 */
 function addColorClick() {
 	try {
-        var div_id = this.getAttribute("id");
-        if (color != "pink") {
-            if (this.style.backgroundColor == "pink") teacher_desk_count -= 1;
-            this.style.backgroundColor = color;
-            changeArray(classroom, div_id, color);
-        } else {
-            switch (teacher_desk_count) {
-                case 0:
-                    this.style.backgroundColor = color;
-                    changeArray(classroom, div_id, color);
-                    teacher_desk_count += 1;
-                    break;
-                case 1:
-                    neighbors = getNeighboringDivColors(div_id.split(","));
-                    found_desk = false;
-                    for (i = 0; i < neighbors.length; i++) {
-                        if (neighbors[i].style.backgroundColor == "pink") {
-                            this.style.backgroundColor = "pink";
-                            changeArray(classroom, div_id, "pink");
-                            teacher_desk_count += 1;
-                            found_desk = true;
-                            break;
-                        }
-                    }
-                    if (!found_desk) throw "no neighbor";
+	    var highlight_color = "palegreen";
+        var error_color = "lightsalmon";
+        var div_id = this.getAttribute("id").split(";");
+        if (this.style.backgroundColor == highlight_color) {
+            if (orientation == 0) {     // if table is oriented horizontally
+                neighbor = document.getElementById(div_id[0] + ";" + String(parseInt(div_id[1]) + 1));
+            } else {        // if table is oriented vertically
+                neighbor = document.getElementById(String(parseInt(div_id[0]) - 1) + ";" + div_id[1]);
+            }
+            if (color != "pink") {
+                if (this.style.backgroundColor == "pink") teacher_desk_count -= 1;
+                this.style.backgroundColor = color;
+                neighbor.style.backgroundColor = color;
+                if (color == "lightblue") changeArray(this.getAttribute("id"), neighbor.getAttribute("id"), "student");
+                if (color == "orange") changeArray(this.getAttribute("id"), neighbor.getAttribute("id"), "unusable");
+            } else {
+                switch (teacher_desk_count) {
+                    case 0:
+                        this.style.backgroundColor = color;
+                        neighbor.style.backgroundColor = color;
+                        changeArray(this.getAttribute("id"), neighbor.getAttribute("id"), "teacher");
+                        teacher_desk_count += 1;
                         break;
-                case 2:
-                    throw "desk limit";
-                    break;
-                default:
-                    console.log("teacher_desk_count is " + String(teacher_desk_count) +
-                    "! Something went REALLY wrong!");
-                    break;
+                    case 1:
+                    case 2:
+                        throw "desk limit";
+                        break;
+                    default:
+                        console.log("teacher_desk_count is " + String(teacher_desk_count) +
+                        "! Something went REALLY wrong!");
+                        break;
+                }
             }
         }
+        console.log(classroom)
     } catch(err) {
+        err_text = "Unknown Error!"
+        console.log(err)
 		switch (err) {
 	        case "no neighbor":
 	            err_text = "No neighboring teacher desk!";
@@ -396,7 +368,7 @@ function addColorClick() {
 			case "string":
 				console.log("Function addColor failed with " + err);break;
 			case "object":
-				console.log("Adding color failed with "+ error_case);
+				console.log("Adding color failed with "+ err);
 				console.log(err);
 				break;
 			default:
@@ -419,7 +391,8 @@ function getInformation(text){
 		});
 		req_room.fail(function() {
 			console.log("No file named "+ text + " found, loading template.");
-			room = "000000000000000;000000000000000;000000000000000;000000000000000;000000000000000;000000000000000;000000011000000;000000011000000;000000033000000;000000000000000;000000000000000;000000000000000;000000000000000;000000000000000;000000000000000";
+			classroom = [["7;7", "7;8", "student"], ["8;7", "8;8", "teacher"]]
+			room = "7;7,7;8,student-8;7,8;8,teacher"
 			fillGrid(classroom, grid, room);
 		});
 	} catch(err) {
@@ -451,7 +424,7 @@ function pre_saveData() {
 	    var layout_array = arrayToText(classroom);
 	    var name = document.getElementById("filename").value;
 
-	    saveData({"name" : name, "layout": layout_array[0], "layout_untrimmed": layout_array[1]});
+	    saveData({"name" : name, "layout": layout_array});
 	} catch (err) {
 		switch(err) {
 			case 'no_student_or_teacher':

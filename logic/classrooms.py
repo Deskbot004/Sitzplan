@@ -17,7 +17,7 @@ path = os.path.abspath(os.getcwd())
 room_path = path + "/data/rooms/"
 
 
-def save_classroom(class_name, class_information, class_information_trimmed):
+def save_classroom(class_name, class_information):
     """
     A function to save the information of a classroom in /data.
 
@@ -28,12 +28,9 @@ def save_classroom(class_name, class_information, class_information_trimmed):
     """
     try:
         file = open(room_path + class_name + ".txt", "w")
-        file.write(class_information_trimmed)
-        file.close()
-
-        file = open(room_path + class_name, "w")
         file.write(class_information)
         file.close()
+
         return "SUCCESS"
     except Exception as err:
         print(f"Classroom saving failed... with Error {err}")
@@ -51,24 +48,6 @@ def get_classroom(name_room):
 
     try:
         read_file = open(room_path + name_room + ".txt", "r")
-        room = read_file.read()
-        read_file.close()
-        return room, "SUCCESS"
-    except Exception as err:
-        print(f"Classroom getting failed... with Error {err}")
-        return "", "FAIL"
-
-
-def get_classroom_untrimmed(name_room):
-    """
-    This function returns a untrimmed room from an existing file.
-
-    :param name_room: Name of the room as a string
-    :return: String containing the room information, State of the function
-    """
-
-    try:
-        read_file = open(room_path + name_room, "r")
         room = read_file.read()
         read_file.close()
         return room, "SUCCESS"
@@ -112,7 +91,6 @@ def delete_classroom(name):
     """
     try:
         os.remove(room_path + name + ".txt")
-        os.remove(room_path + name)
         return "SUCCESS"
     except Exception as err:
         print(f"Classroom deleting failed... with Error {err}")
