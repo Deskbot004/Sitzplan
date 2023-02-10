@@ -5,42 +5,55 @@
     <title>Student lists</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_old.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="{{ url_for('static', filename='js/common.js') }}"></script>
     <script src="{{ url_for('static', filename='js/listings.js') }}"></script>
     <script src="{{ url_for('static', filename='js/requests.js') }}"></script>
-    <div class="headerContainer">
-
-		<h2>Students</h2>
-
-	</div>
 </head>
 <body>
-    <div class="container">
-        <div class="left" col ="1">
-            <ul>
-            <li><a href="#home" onclick="switchToHome()">Home</a></li>
-            <li><a href="#seating" onclick="switchToSeating()">Create seating</a></li>
-            <li><a href="#student" onclick="switchToStudents()">Student lists</a></li>
-            <li><a href="#room" onclick="switchToClassroom()">Classrooms</a></li>
-            <li><a href="#about" onclick="switchToAbout()">About</a></li></ul>
-        </div>
-        <div class="center" col="2">
-            <h2>List of students:</h2>
-            <ul id="var_list">
-            </ul>
-        </div>
-        <div class="right" col="3">
-            <h2>Add new List</h2>
-            <form>
-                <label for="filename">New Class:</label><br>
-                <input type="text" id="filename" name="filename" value="Class">
-            </form>
-            <button style="width:50%" class="popup" onclick="createInformation()">Create
-                <span class="popuptext" id="popup_check"></span>
-            </button>
-        </div>
+<!------- SIDEBAR ------->
+<aside>
+    <a href="#home" onclick="switchToHome()">
+        <img src="../static/images/chair.png">
+    </a>
+    <nav><ul>
+        <li><a href="#home" onclick="switchToHome()">Home</a></li>
+        <li><a href="#seating" onclick="switchToSeating()">Create seating</a></li>
+        <li><a href="#student" onclick="switchToStudents()" class="current">Student lists</a></li>
+        <li><a href="#room" onclick="switchToClassroom()">Classrooms</a></li>
+        <li><a href="#about" onclick="switchToAbout()">About</a></li>
+    </ul></nav>
+</aside>
+
+<!------- MAIN BODY ------->
+<div class="main">
+    <h1>Student Lists</h1>
+    <div class="inner">
+        <h2>Please Select a Class --></h2>
     </div>
+    <h4>Click here to create a class from down right (While the js for the button there isn't ready):</h4>
+    <button style="width:50%" class="popup" onclick="createInformation()">Create (Real)
+        <span class="popuptext" id="popup_check"></span>
+    </button>
+    <h4>Plan: This middle part will change to students_editor when selecting or creating a class</h4>
+</div>
+
+<!------- SIDE BODY ------->
+<div class="side">
+    <h2>List of all Classes</h2>
+    <form>
+        <input type="text" placeholder="Search..." class="textinput searchbar"> <!--TODO: JS-->
+    </form>
+    <ul id="var_list">
+    </ul>
+    <form class="bottomform">
+        <label for="filename">Create New Class:</label>
+        <input type="text" id="filename" name="filename" placeholder="Class Name" class="textinput">
+        <input type="submit" value="Create (Fake)">
+    </form>
+</div>
+
+<!-- TODO: Currently empty Class name is allowed -->
 <script>
     var identity = "student";       // identity to use correct functions in listings.js
     window.onload = getLists();
