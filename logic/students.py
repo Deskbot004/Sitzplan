@@ -105,6 +105,30 @@ def delete_students(name):
         return "FAIL"
 
 
+def read_from_upload(content, file_type, name):
+    """
+    For now just takes an input which needs to be a .txt and separates the content on each ';' or line break.
+
+    :param content: content of the uploaded file
+    :param file_type: type of the uploaded file
+    :param name: filename and later name of the class to be saved
+    :return: Status
+    """
+    print(content)
+    print(file_type)
+    print(name.split('.')[0])
+    content_conv = content.decode("latin1")
+    print("---")
+    print(content_conv)
+    content_conv = content_conv.replace('\n', ';')
+    print("---")
+    print(content_conv)
+    content_conv = ''.join(content_conv.splitlines())
+    print("---")
+    print(content_conv.split(';'))
+    return "Hello"
+
+
 '''
 def save_students():
     """

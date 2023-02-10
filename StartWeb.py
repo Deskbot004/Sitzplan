@@ -201,6 +201,9 @@ def get_seating():
 @app.route('/test', methods=["POST"])
 def test():
     gotten_files = request.files
+    list = gotten_files["files[]"]
+    answer = students.read_from_upload(list.read(), list.mimetype, list.filename)
+    print(answer)
     return switch_about()
 
 
