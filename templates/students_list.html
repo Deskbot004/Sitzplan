@@ -31,25 +31,24 @@
     <div class="inner">
         <h2>Please Select a Class --></h2>
     </div>
-    <h4>Click here to create a class from down right (While the js for the button there isn't ready):</h4>
-    <button style="width:50%" class="popup" onclick="createInformation()">Create (Real)
-        <span class="popuptext" id="popup_check"></span>
-    </button>
     <h4>Plan: This middle part will change to students_editor when selecting or creating a class</h4>
 </div>
 
 <!------- SIDE BODY ------->
 <div class="side">
-    <h2>List of all Classes</h2>
+    <h2 id="test">List of all Classes</h2>
     <form>
-        <input type="text" placeholder="Search..." class="textinput searchbar"> <!--TODO: JS-->
+        <input type="text" autocomplete="off" placeholder="Search..." class="textinput searchbar">
     </form>
     <ul id="var_list">
     </ul>
-    <form class="bottomform">
+    <form class="bottomform" onsubmit="createInformation(); return false">
         <label for="filename">Create New Class:</label>
-        <input type="text" id="filename" name="filename" placeholder="Class Name" class="textinput">
-        <input type="submit" value="Create (Fake)">
+        <div class="tooltipcontainer">
+            <div class="tooltip" id="popup_check">Tooltip Text </div>
+            <input type="text" autocomplete="off" id="filename" name="filename" placeholder="Class Name" class="textinput">
+        </div>
+        <input type="submit" value="Create">
     </form>
 </div>
 
@@ -57,6 +56,12 @@
 <script>
     var identity = "student";       // identity to use correct functions in listings.js
     window.onload = getLists();
+
+    const searchInput = document.querySelector('.searchbar');
+    searchInput.addEventListener("input", (e) => {searchList(e)});
+
+    const createInput = document.getElementById("filename");
+    createInput.addEventListener("input", (e) => {errorPopup(e)});
 </script>
 </body>
 </html>

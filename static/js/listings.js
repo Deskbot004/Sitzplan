@@ -14,6 +14,8 @@
 	Functions from user interaction:
 	    createInformation()
 	    selectElement(event)
+	    searchList(event)
+	    errorPopup(event)
 */
 
 
@@ -154,35 +156,16 @@ function sendInformation(text){
 	@return: void
 */
 function createInformation() {
-    try {
+    var popup = document.getElementById("popup_check")
+    if (popup.style.visibility == "visible"){
+        popup.style.animation = "1s popupcolor"; //play popup animation
+        setTimeout(function(){popup.style.animation = "";}, 1000); //reset animation
+        //console.log("Function createInformation() failed with " + err);
+        return false;
+    } else {
         var text = document.getElementById('filename').value;
-
-        if (!checkForIllegalCharacters(text)) {
-            throw "illegal";
-        }
-
-        if (existsElement(text)) {
-            throw "already_exists";
-            var popup = document.getElementById("exists");
-            popup.classList.toggle("show");
-        }
         sendInformation(text);
-    } catch(err) {
-        var err_text = "";
-        switch (err) {
-            case "illegal":
-                err_text = "The name should only contain letters and numbers!";
-                break;
-            case "already_exists":
-                err_text = "The entry " + text + " already exists!";
-                break;
-            default: break;
-        }
-
-        var popup = document.getElementById("popup_check")
-        popup.innerHTML = err_text;
-        popup.classList.toggle("show");
-        console.log("Function createInformation() failed with " + err);
+        event.preventDefault();
     }
 };
 
@@ -201,3 +184,50 @@ function selectElement(event) {
 		console.log("Function selectElement failed with " + err);
 	}
 };
+
+
+/*
+    Trims the list down to only show elements that match the searchbar
+
+    @param searchInput: searchbar object
+    @return: void
+*/
+function searchList(searchInput){
+    //Get value inside searchbar
+    let searchWord = searchInput.target.value;
+    //Exclude white space and change input to all lowercase
+    searchWord = searchWord.trim().toLowerCase();
+
+    let fullList = document.getElementById("var_list");
+    for (let elem of fullList.children) {
+        if (!elem.innerHTML.trim().toLowerCase().includes(searchWord)) {
+            elem.style.display = "none";
+        } else {
+            elem.style.display = "block";
+        }
+    }
+};
+
+
+/*
+    Creates a Popup Bubble with error message when entering wrong input
+
+    @param createInput: textinput object
+    @return: void
+*/
+function errorPopup(createInput) {
+    var text = createInput.target.value;
+    var popup = document.getElementById("popup_check");
+
+    if (!checkForIllegalCharacters(text)) {
+        err_text = "The name should only contain letters and numbers!";
+        popup.innerHTML = err_text;
+        popup.style.visibility = "visible";
+    } else if (existsElement(text)) {
+        err_text = "The entry \"" + text + "\" already exists!";
+        popup.innerHTML = err_text;
+        popup.style.visibility = "visible";
+    } else {
+        popup.style.visibility = "hidden";
+    }
+}

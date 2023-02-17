@@ -240,7 +240,7 @@ nav a:active { /*Sidebar List Entry when clicked*/
 }
 
 .side .textinput {
-    width: 50%;
+    width: 100%;
     padding: 2px;
     outline: none; /*No blue border when selected*/
 
@@ -263,6 +263,46 @@ nav a:active { /*Sidebar List Entry when clicked*/
 .side .textinput:focus::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: var(--col-text);
     opacity: 0.7; /* Firefox */
+}
+
+.side .tooltipcontainer {
+    width: 50%;
+    margin-right: 30px;
+    float: right;
+}
+
+.side .tooltip {
+    visibility: hidden;
+
+    width: fit-content;
+    position: absolute;
+    bottom: 95%;
+    z-index: 1;
+    margin-right: 20px;
+
+    background-color: black;
+    border-radius: 6px;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+}
+
+/*Triangle below tooltip box*/
+.side .tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+@keyframes popupcolor {
+    0% {background: red;}
+    50% {background: red;}
+    100% {background: black;}
 }
 
 .side input[type=submit] {
