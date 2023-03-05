@@ -1,0 +1,337 @@
+/*
+	This js contains functions called by students_editor.html.
+
+
+	Simple functions on html:
+		create_str()
+	Functions from user interaction:
+	x	getInformation(string)
+		addStudent()
+		renameStudent()
+		selectElement(event)
+		closeDialog()
+
+	// saving a class should either update or create pref_list
+	// Alphabetical Sorting of student list? Per Button? <- Traceback preflist
+*/
+
+
+
+
+//_________________________________Simple functions on html______________________________________________
+
+
+
+
+/*
+	Function to transform the current 'var_list' to string.
+	Used to transfer the dictionary information back to the server.
+
+	@return: String containing the dictionary information
+*/
+function create_str() {
+    var list = document.getElementById('var_list');
+    var elements = list.getElementsByTagName("li");
+    var student_str = "";
+
+    for ( var i = 0, len = elements.length; i < len; i++) {
+        student_str += elements[i].innerHTML + "|";
+    }
+    return student_str;
+}
+
+
+
+
+//_________________________________Functions from user interaction_______________________________________
+
+
+
+
+/*
+    Loads the information of a given classroom list
+
+    @param name: name of the Class/Student that has been selected
+    @param type: type of the hidden div, that should be shown ("student", "pref")
+    @return: void
+*/
+async function getInformation(name, type) {
+    // TODO change fill method
+
+	//await addPrefs(class_name);
+
+	var req_studs = requestInformation(name);
+	req_studs.done( function(studs_info) {
+	    switch (type) {
+	        case "student":
+                $("#student_list").empty();
+	            addDict(studs_info, 0, "student_list", type);
+	            document.getElementById('class_name').innerHTML = name;
+                addDictDatalist(studs_info, 1, "student_list_pref");
+	            break;
+	        case "pref":
+	            // TODO
+                document.getElementById('pref_name').value = name;
+	            break;
+	        default:
+	            alert("students/getInformation: " + type + " not supported")
+	    }
+	});
+	req_studs.fail( function(){
+		switch (type) {
+	        case "student":
+                $("#student_list").empty();
+	            document.getElementById('student_title').innerHTML = name;
+	            break;
+	        case "pref":
+	            // TODO
+	            document.getElementById('pref_name').value = name;
+	            break;
+	        default:
+	            alert("students/getInformation: " + type + " not supported")
+	    }
+	});
+    await req_studs;
+};
+
+
+
+
+async function addPrefs(class_name){
+	var req_prefs = requestInformation(class_name);
+	req_prefs.done( function(pref_info) {
+		addPrefElements(pref_info);
+	});
+
+    await req_prefs;
+}
+
+function addPrefElements(list){
+	var List = document.getElementById("pref_list");
+
+	var Element = list[0].split(",");
+	//var Element = ["1", "2", "3", "4", "5"]
+
+	var field0 = document.createElement("input");
+	field0.setAttribute("type","text");
+	field0.setAttribute("name", "0");
+	field0.setAttribute("style", "width: 30%")
+	field0.setAttribute("value", Element[0]);
+
+	var field1 = document.createElement("input");
+	field1.setAttribute("type","text");
+	field1.setAttribute("name", "1");
+	field1.setAttribute("style", "width: 30%")
+	field1.setAttribute("value", Element[1]);
+
+	var field2 = document.createElement("input");
+	field2.setAttribute("type","text");
+	field2.setAttribute("name", "0");
+	field2.setAttribute("style", "width: 30%")
+	field2.setAttribute("value", Element[2]);
+
+	var field3 = document.createElement("input");
+	field3.setAttribute("type","text");
+	field3.setAttribute("name", "3");
+	field3.setAttribute("style", "width: 30%")
+	field3.setAttribute("value", Element[3]);
+
+	var field4 = document.createElement("input");
+	field4.setAttribute("type","text");
+	field4.setAttribute("name", "4");
+	field4.setAttribute("style", "width: 30%")
+	field4.setAttribute("value", Element[4]);
+
+	var line = document.createElement("div")
+	line.setAttribute("style", "width: 120%; display: flex;");
+	line.appendChild(field0);
+	line.appendChild(field1);
+	line.appendChild(field2);
+	line.appendChild(field3);
+	line.appendChild(field4);
+
+	List.appendChild(line);
+}
+
+
+/*
+	Adds a Student from the on site input field.
+
+	@return: void
+*/
+function addStudent() {
+	try {
+		var stud_list = document.getElementById("stud_list");
+		stud_list.id = "var_list";
+	    if(!addElement(document.getElementById('studentname').value, 1)) throw "exists"
+	    stud_list.id = "stud_list";
+
+		// TODO change fill method
+	     var room_list = document.getElementById("pref_list");
+        room_list.id = "var_list";
+        addElement("empty,empty,empty,empty,empty", 0)
+        room_list.id = "pref_list";
+
+	} catch (err) {
+		switch (err) {
+			case "exists":
+				err_text = "This student already exists!"; break;
+			default:
+				err_text = "Adding student went wrong! The student was not added!"; break;
+		}
+		console.log("Function addStudent failed with " + err);
+		var popup = document.getElementById("popup_add");
+		popup.innerHTML = err_text;
+	    popup.classList.toggle("show");
+	}
+}
+
+function deleteStudent(){
+	var stud_list = document.getElementById("stud_list");
+	stud_list.id = "var_list";
+    deleteElement(old_name);
+	closeDialog()
+    stud_list.id = "stud_list";
+
+    //TODO Remove entry on preflist
+}
+
+/*
+	Renames a student from the opened dialog window.
+
+	@return: void
+*/
+function renameStudent() {
+	try {
+		var stud_list = document.getElementById("stud_list");
+		stud_list.id = "var_list";
+
+		var new_name = document.getElementById("new_studentname").value;
+		if (new_name == old_name) return;
+		if(!addElement(new_name, 1)) throw "exists";
+	    deleteElement(old_name);
+	    closeDialog();
+
+	    stud_list.id = "stud_list";
+
+
+	    // TODO add interaction with preflist
+	} catch(err) {
+		switch (err) {
+			case "exists":
+				err_text = "This student already exists!"; break;
+			default:
+				err_text = "Adding student went wrong! The student was not added!"; break;
+		}
+		console.log("Function renameStudent failed with " + err);
+		var popup = document.getElementById("popup_rename");
+		popup.innerHTML = err_text;
+	    popup.classList.toggle("show");
+	}
+}
+
+
+/*
+	Opens a dialog window, when a student is clicked.
+
+	@param event: The click event
+	@return: void
+
+function selectElement(event) {
+	try {
+		old_name = event.target.innerHTML;
+		document.getElementById("dialog").showModal();
+		var dialog_text = document.getElementById("dialog_text");
+		dialog_text.innerHTML = dialog_text.innerHTML.replace("free", old_name);
+		document.getElementById("new_studentname").value = old_name;
+	} catch (err) {
+		alert("Selecting element went wrong! The element was not selected!");
+		console.log("Function selectElement failed with " + err);
+	}
+}
+*/
+
+/*
+	Closes the dialog window and resets its title.
+
+	@return: void
+*/
+function closeDialog() {
+	try {
+		document.getElementById("dialog").close();
+		var dialog_text = document.getElementById("dialog_text");
+		dialog_text.innerHTML = dialog_text.innerHTML.replace(old_name, "free");
+	} catch (err) {
+		alert("Closing dialog went wrong! The dialog was not closed!");
+		console.log("Function closeDialog failed with " + err);
+	}
+}
+
+
+/*
+	Function to test specific edge cases before sending the information to generic saveData().
+
+	@return: void
+*/
+function pre_saveData() {
+	try {
+		var stud_list = document.getElementById("stud_list");
+		stud_list.id = "var_list";
+
+		var error_case = "Not request fail";
+
+		if(document.getElementById('var_list').innerHTML.trim() == "") throw "empty";
+
+	    var name = document.getElementById("filename").value;
+		var student_str = create_str();
+
+	    saveData({"name" : name, "students": student_str});
+
+		stud_list.id = "stud_list";
+	    //TODO update preflists when everything went fine
+
+		var pref_list = document.getElementById("pref_list");
+		pref_list.id = "var_list";
+		identity = "pref";
+
+		var pref_str = create_str();
+
+		saveData({"name" : name, "students": pref_str});
+
+		pref_list.id = "room_list";
+		identity = "student";
+
+	} catch (err) {
+		switch(err) {
+			case 'empty':
+				err_text = "The class is empty!"; break;
+			default:
+				err_text = "Saving class went wrong! The class has not been saved!"; break;
+		}
+
+		switch(typeof err) {
+			case "string":
+				if(err != "saved") console.log("Function pre_sendData failed with " + err);break;
+			case "object":
+				console.log("Save request failed with "+ error_case);
+				console.log(err);
+				break;
+			default:
+				console.log("Undetected Error type: " + typeof err);break;
+		}
+
+		var popup = document.getElementById("popup_save");
+		popup.innerHTML = err_text;
+		popup.classList.toggle("show");
+	}
+}
+
+
+async function deleteClass(){
+	console.log("Prefdel");
+	identity = "pref";
+	await deleteInformation();
+	console.log("Studdel");
+	identity = "student";
+	await deleteInformation(1);
+}
