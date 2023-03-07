@@ -6,9 +6,13 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/listings.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/requests.js') }}"></script>
+    <script src="{{ url_for('static', filename='js_new/common.js') }}"></script>
+    <script src="{{ url_for('static', filename='js_new/selected.js') }}"></script>
+    <script src="{{ url_for('static', filename='js_new/requests.js') }}"></script>
+    <script src="{{ url_for('static', filename='js_new/students.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js_new/students_new.js') }}"></script>
+    <script src="{{ url_for('static', filename='js_new/listings_new.js') }}"></script>
 </head>
 <body>
 <!------- SIDEBAR ------->
@@ -17,36 +21,82 @@
         <img src="../static/images/chair.png">
     </a>
     <nav><ul>
-        <li><a href="#home" onclick="switchToHome()">Home</a></li>
-        <li><a href="#seating" onclick="switchToSeating()">Create seating</a></li>
-        <li><a href="#student" onclick="switchToStudents()" class="current">Student lists</a></li>
-        <li><a href="#room" onclick="switchToClassroom()">Classrooms</a></li>
-        <li><a href="#about" onclick="switchToAbout()">About</a></li>
+        <li><a href="#home" onclick="switchToHome()" class="elem">Home</a></li>
+        <li><a href="#seating" onclick="switchToSeating()" class="elem">Create seating</a></li>
+        <li><a href="#student" onclick="switchToStudents()" class="elem current">Student lists</a></li>
+        <li><a href="#room" onclick="switchToClassroom()" class="elem">Classrooms</a></li>
+        <li><a href="#about" onclick="switchToAbout()" class="elem">About</a></li>
     </ul></nav>
 </aside>
 
 <!------- MAIN BODY ------->
 <div class="main">
     <h1>Student Lists</h1>
+
+    <h2 id="student_prompt" style="position: absolute;"><br>Please Select a Class -></h2>
     <div class="inner">
-        <h2>Please Select a Class --></h2>
+
+
+
+        <!------- Students List ------->
+        <div class="students-list selection" id="student_container">
+            <h2 id="class_name">Class Name Placeholder</h2> <!-- Class Name -->
+            <input type="text" autocomplete="off" placeholder="Search..." class="textinput searchbar" id="student_search"> <!-- Search bar -->
+            <ul id="student_list"></ul> <!-- The List itself -->
+            <form class="create-form" onsubmit="createListElement('student_tooltip', 'student_create', 'student'); return false"> <!-- Create new student -->
+                <label for="student_create">Add Student:</label>
+                <div class="tooltipcontainer">
+                    <div class="tooltip" id="student_tooltip">Tooltip Placeholder</div>
+                    <input type="text" autocomplete="off" id="student_create" name="filename" placeholder="Student Name" class="textinput">
+                </div>
+                <input type="submit" value="Create">
+            </form>
+            <h2 id="pref_prompt" style="position: absolute;"> <- Please Select a Student</h2>
+        </div>
+
+        <!------- Preference List ------->
+
+        <form class="prefs selection" id="pref_container">
+            <h3>Name</h3>
+            <input type="text" autocomplete="off" placeholder="Name" class="textinput" id="pref_name">
+
+            <h3>Wants to sit next to</h3>
+            <input type="text" autocomplete="off" placeholder="Type to search" class="textinput" list="dropdown_list">
+            <input type="text" autocomplete="off" placeholder="Type to search" class="textinput" list="dropdown_list">
+            <input type="text" autocomplete="off" placeholder="Type to search" class="textinput" list="dropdown_list">
+
+            <h3>Should not sit next to</h3>
+            <input type="text" autocomplete="off" placeholder="Type to search" class="textinput" list="dropdown_list">
+            <datalist id="dropdown_list"></datalist>
+
+            <h3>Should sit in the</h3>
+            <fieldset class="toggle">
+                <input type="radio" name="position" id="Either" checked="checked"> <label for="Either">Either</label>
+                <input type="radio" name="position" id="Front"> <label for="Front">Front</label>
+                <input type="radio" name="position" id="Back"> <label for="Back">Back</label>
+            </fieldset>
+
+            <h3>Save Options</h3>
+            <fieldset class="toggle">
+                <input type="button" id="Save"> <label for="Save" style="padding: 15px;">Save Student</label>
+                <input type="button" id="Delete"> <label for="Delete" style="padding: 15px;">Delete Student</label>
+            </fieldset>
+        </form>
     </div>
-    <h4>Plan: This middle part will change to students_editor when selecting or creating a class</h4>
 </div>
 
 <!------- SIDE BODY ------->
 <div class="side">
-    <h2 id="test">List of all Classes</h2>
-    <form>
-        <input type="text" autocomplete="off" placeholder="Search..." class="textinput searchbar">
-    </form>
-    <ul id="var_list">
-    </ul>
-    <form class="bottomform" onsubmit="createInformation(); return false">
-        <label for="filename">Create New Class:</label>
+    <h2>List of all Classes</h2>
+    <input type="text" autocomplete="off" placeholder="Search..." class="textinput searchbar" id="class_search"> <!-- Search bar -->
+
+    <ul id="class_list"></ul> <!-- TODO The List itself -->
+    <span id="class_list_empty">No classes found</span>
+    <form class="create-form" onsubmit="createListElement('class_tooltip', 'class_create', 'class'); return false"> <!-- Create new Class -->
+        <label for="class_create">Create New Class:</label>
         <div class="tooltipcontainer">
-            <div class="tooltip" id="popup_check">Tooltip Text </div>
-            <input type="text" autocomplete="off" id="filename" name="filename" placeholder="Class Name" class="textinput">
+            <div class="tooltip" id="class_tooltip">Tooltip Text </div>
+            <input type="text" autocomplete="off" id="class_create" name="filename" placeholder="Class Name" class="textinput">
         </div>
         <input type="submit" value="Create">
     </form>
@@ -55,13 +105,19 @@
 <!-- TODO: Currently empty Class name is allowed -->
 <script>
     var identity = "student";       // identity to use correct functions in listings.js
-    window.onload = getLists();
+    window.onload = loadList("class", "class_list");
 
-    const searchInput = document.querySelector('.searchbar');
-    searchInput.addEventListener("input", (e) => {searchList(e)});
+    // Event Listeners for the Search bars
+    const classSearch = document.querySelector('#class_search');
+    const studentSearch = document.querySelector('#student_search');
+    classSearch.addEventListener("input", (e) => {trimList(e, "class_list")});
+    studentSearch.addEventListener("input", (e) => {trimList(e, "student_list")});
 
-    const createInput = document.getElementById("filename");
-    createInput.addEventListener("input", (e) => {errorPopup(e)});
+    // Event Listeners for the Textinputs (Create Student/Class)
+    const createClass = document.getElementById("class_create");
+    const createStudent = document.getElementById("student_create");
+    createClass.addEventListener("input", (e) => {checkInput(e, "class_tooltip", "class_list")});
+    createStudent.addEventListener("input", (e) => {checkInput(e, "student_tooltip", "student_list")});
 </script>
 </body>
 </html>
