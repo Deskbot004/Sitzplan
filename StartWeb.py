@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request
 from logic import students, classrooms, preferences, generator
-import os
 
 app = Flask(__name__)
 
@@ -200,10 +199,11 @@ def get_seating():
 
 @app.route('/test', methods=["POST"])
 def test():
+    #print(request)
     gotten_files = request.files
     list = gotten_files["files[]"]
     answer = students.read_from_upload(list.read(), list.mimetype, list.filename)
-    print(answer)
+    #print(answer)
     return switch_about()
 
 
