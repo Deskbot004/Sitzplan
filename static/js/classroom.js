@@ -145,7 +145,7 @@ function changeColor(color_arg) {
 	@param grid: The grid to be coloured
     @return: void
 */
-function clearAll(classroom, grid) {
+function clearAll(grid) {
     try {
         for (num = 0; num < grid.length; num++) {
             grid[num].style.backgroundColor = "white";
@@ -176,7 +176,6 @@ function getNeighboringDivColors(div_id) {
     return neighbor_divs
 };
 
-
 /*
     Highlight the selection in the grid so the user can see which divs a table would be placed on
 
@@ -188,34 +187,64 @@ function highlightSelection() {
     var highlight_color = "palegreen";
     var error_color = "lightsalmon";
     if (double) {
-        if (orientation == 0) {   // if desk is oriented horizontally
-            var neighbor_div = document.getElementById(div_id[0] + ";" + String(parseInt(div_id[1]) + 1));
-            if (neighbor_div == null) {
-                this.style.backgroundColor = error_color;
-                return;
+        if (color != "white") {     // highlight selection for placing desks
+            if (orientation == 0) {   // if desk is oriented horizontally
+                var neighbor_div = document.getElementById(div_id[0] + ";" + String(parseInt(div_id[1]) + 1));
+                if (neighbor_div == null) {
+                    this.style.backgroundColor = error_color;
+                    return;
+                }
+                if (this.style.backgroundColor == "white" && neighbor_div.style.backgroundColor == "white") {
+                    this.style.backgroundColor = highlight_color;
+                    neighbor_div.style.backgroundColor = highlight_color;
+                } else if (this.style.backgroundColor == "white" && neighbor_div.style.backgroundColor != "white") {
+                    this.style.backgroundColor = error_color;
+                }
+            } else {    // if desk is oriented vertically
+                var neighbor_div = document.getElementById(String(parseInt(div_id[0]) - 1) + ";" + div_id[1]);
+                if (neighbor_div == null) {
+                    this.style.backgroundColor = error_color;
+                    return;
+                }
+                if (this.style.backgroundColor == "white" && neighbor_div.style.backgroundColor == "white") {
+                    this.style.backgroundColor = highlight_color;
+                    neighbor_div.style.backgroundColor = highlight_color;
+                } else if (this.style.backgroundColor == "white" && neighbor_div.style.backgroundColor != "white") {
+                    this.style.backgroundColor = error_color;
+                }
             }
-            if (this.style.backgroundColor == "white" && neighbor_div.style.backgroundColor == "white") {
-                this.style.backgroundColor = highlight_color;
-                neighbor_div.style.backgroundColor = highlight_color;
-            } else if (this.style.backgroundColor == "white" && neighbor_div.style.backgroundColor != "white") {
+        } else {    // highlight selection for removing desks
+            coordinate = String(div_id[0] + ";" + div_id[1]);
+            desk_coord = searchArray(classroom, coordinate);
+            if (desk_coord.length == 0)  {
                 this.style.backgroundColor = error_color;
-            }
-        } else {    // if desk is oriented vertically
-            var neighbor_div = document.getElementById(String(parseInt(div_id[0]) - 1) + ";" + div_id[1]);
-            if (neighbor_div == null) {
-                this.style.backgroundColor = error_color;
-                return;
-            }
-            if (this.style.backgroundColor == "white" && neighbor_div.style.backgroundColor == "white") {
-                this.style.backgroundColor = highlight_color;
-                neighbor_div.style.backgroundColor = highlight_color;
-            } else if (this.style.backgroundColor == "white" && neighbor_div.style.backgroundColor != "white") {
-                this.style.backgroundColor = error_color;
+            } else {
+                for (i = 0; i < desk_coord.length - 1; i++) {
+                    document.getElementById(desk_coord[i]).style.backgroundColor = highlight_color;
+                }
             }
         }
     }
-
 }
+
+/*
+    Searches a classroom array for an entry that matches the given coordinate and returns all coordinates belonging
+    to that entry
+
+    @param classroom: the array to be searched
+    @param coord: the coordinate to be checked
+
+    @return: the coordinates of the found entry (can be emtpy)
+*/
+function searchArray(classroom, coord) {
+    for (i = 0; i < classroom.length; i++) {
+        for (j = 0; j < classroom[i].length; j++) {
+            if (classroom[i][j] == coord) return classroom[i];
+        }
+    }
+    return []
+}
+
 /*
     Rotate the selection of a double desk on the grid and change where the desk would be placed
 
@@ -282,25 +311,52 @@ function highlightDeselection() {
     var highlight_color = "palegreen";
     var error_color = "lightsalmon";
     if (double) {
-        if (orientation == 0) {   // if table is oriented horizontally
-            var neighbor_div = document.getElementById(div_id[0] + ";" + String(parseInt(div_id[1]) + 1));
-            if (this.style.backgroundColor == error_color) this.style.backgroundColor = "white";
-            if (neighbor_div == null) return;
-            if (this.style.backgroundColor == highlight_color && neighbor_div.style.backgroundColor == highlight_color) {
-                this.style.backgroundColor = "white";
-                neighbor_div.style.backgroundColor = "white";
+        if (color != "white") {     // highlight deselection for empty spaces
+            if (orientation == 0) {   // if table is oriented horizontally
+                var neighbor_div = document.getElementById(div_id[0] + ";" + String(parseInt(div_id[1]) + 1));
+                if (this.style.backgroundColor == error_color) this.style.backgroundColor = "white";
+                if (neighbor_div == null) return;
+                if (this.style.backgroundColor == highlight_color && neighbor_div.style.backgroundColor == highlight_color) {
+                    this.style.backgroundColor = "white";
+                    neighbor_div.style.backgroundColor = "white";
+                }
+            } else {    // if table is oriented vertically
+                var neighbor_div = document.getElementById(String(parseInt(div_id[0]) - 1) + ";" + div_id[1]);
+                if (this.style.backgroundColor == error_color) this.style.backgroundColor = "white";
+                if (neighbor_div == null) return;
+                if (this.style.backgroundColor == highlight_color && neighbor_div.style.backgroundColor == highlight_color) {
+                    this.style.backgroundColor = "white";
+                    neighbor_div.style.backgroundColor = "white";
+                }
             }
-        } else {    // if table is oriented vertically
-            var neighbor_div = document.getElementById(String(parseInt(div_id[0]) - 1) + ";" + div_id[1]);
-            if (this.style.backgroundColor == error_color) this.style.backgroundColor = "white";
-            if (neighbor_div == null) return;
-            if (this.style.backgroundColor == highlight_color && neighbor_div.style.backgroundColor == highlight_color) {
+        } else {    // highlight deselection for desks
+            coordinate = String(div_id[0] + ";" + div_id[1]);
+            desks = searchArray(classroom, coordinate);
+            if (desks.length == 0) {
                 this.style.backgroundColor = "white";
-                neighbor_div.style.backgroundColor = "white";
+            } else {
+                desk_type = desks[desks.length - 1];
+                desk_coord = desks.slice(0, -1);
+                switch (desk_type) {
+                    case "student":
+                        new_color = "lightblue";
+                        break;
+                    case "teacher":
+                        new_color = "pink";
+                        break;
+                    case "unusable":
+                        new_color = "orange";
+                        break;
+                     default:
+                        new_color = "black";
+                        console.log("WRONG DESK_TYPE");
+                }
+                for (i = 0; i < desk_coord.length; i++) {
+                    document.getElementById(desk_coord[i]).style.backgroundColor = new_color;
+                }
             }
         }
     }
-
 }
 
 /*
