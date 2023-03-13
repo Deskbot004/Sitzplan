@@ -3,6 +3,7 @@
 
 	Functions:
         loadInformation() - Loads a list (or similar) from the server
+        saveElement() - Saves the Element to the server
 
     Common Variables:
         list_id - id of a list
@@ -41,10 +42,59 @@ async function loadInformation(list_type, name) {
     });
 
     request.fail(function(xhr, status, error){
-        //alert("Getting " + list_type + "-lists failed! Please reload!" + error.toString()); //TODO: This Error also shows, when new list ist created
+        //alert("Getting " + list_type + "-lists failed! Please reload!" + error.toString()); //TODO: This Error also shows, when new list is created
         console.log("Function getLists failed with ERROR " + error.toString());
         document.getElementById('pref_name').value = name; //TODO: Remove, once case pref works
     });
 
     await request;
+}
+
+
+function saveElement(element_type, name) {
+	try {
+	    //Check whether name empty
+	    if (name.trim() == "") throw "empty_name";
+
+        if (element_type == "class") {
+            var title = name;
+            var student_str = "";
+        } else if (element_type == "student") {
+            var title = document.getElementById('class_name').value;
+            var student_str = "";
+
+            //list to str
+            var list = document.getElementById("student_list");
+            var elements = list.getElementsByTagName("li");
+            for ( var i = 0, len = elements.length; i < len; i++) {
+                student_str += elements[i].innerHTML + "|";
+            }
+            student_str += name + "|";
+        }
+
+        saveData({"name": title, "students": student_str});
+        //TODO update preflists when everything went fine
+        return true;
+	} catch (err) {
+		switch(err) {
+			case 'empty_name':
+				err_text = "Name can't be empty"; break;
+			default:
+				err_text = "Saving class went wrong! The class has not been saved!"; break;
+		}
+
+		switch(typeof err) {
+			case "string":
+				if(err != "saved") console.log("Function pre_sendData failed with " + err);break;
+			case "object":
+				console.log("Save request failed with "+ error_case);
+				console.log(err);
+				break;
+			default:
+				console.log("Undetected Error type: " + typeof err);break;
+		}
+
+		showTooltip(element_type + "_tooltip", err_text);
+		return false;
+	}
 }

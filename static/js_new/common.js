@@ -35,3 +35,15 @@ function switchToPreferences() {
 function checkForIllegalCharacters(str) {
     return /^[A-Za-z0-9 ]*$/.test(str);
 }
+
+/*
+    Shows the Dropdown Menu, when clicking the three-dots-button
+    @param menu_id: id of menu
+*/
+function showDropdown(menu_id) {
+    document.getElementById(menu_id).classList.toggle("hide");
+    //Close Dropdown, once you click anything
+    document.body.addEventListener("click", function closeDropdown(e) {
+        document.getElementById(menu_id).classList.add("hide");
+    }, {once : true});
+}

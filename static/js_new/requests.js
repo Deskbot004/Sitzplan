@@ -29,7 +29,7 @@ function dataToServer(send_data) {
 	@return: Request
 */
 function listRequest() {
-    return $.get("/get"+ identity +"lists"); //TODO Question: Was genau heißt das? Wo ist /getstudentlists zB?
+    return $.get("/get"+ identity +"lists");
 };
 
 

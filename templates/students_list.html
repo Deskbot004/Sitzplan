@@ -39,8 +39,17 @@
 
 
         <!------- Students List ------->
-        <div class="students-list selection" id="student_container">
-            <h2 id="class_name">Class Name Placeholder</h2> <!-- Class Name -->
+        <div class="students-list hide" id="student_container">
+            <div class="title-container">
+                <h2 id="class_name">Class Name Placeholder</h2> <!-- Class Name -->
+                <div class="dots-menu">
+                    <svg onclick="event.stopPropagation(); showDropdown('dropdown_classname')" xmlns="http://www.w3.org/2000/svg" class="a" width="25px" height="25px" viewBox="0 0 25 25" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                    <ul class="dots-dropdown hide" id="dropdown_classname">
+                        <li><a onclick="alert('rename');" class="elem">Rename</a></li>
+                        <li><a onclick="alert('delete');" class="elem">Delete</a></li>
+                    </ul>
+                </div>
+            </div>
             <input type="text" autocomplete="off" placeholder="Search..." class="textinput searchbar" id="student_search"> <!-- Search bar -->
             <ul id="student_list"></ul> <!-- The List itself -->
             <form class="create-form" onsubmit="createListElement('student_tooltip', 'student_create', 'student'); return false"> <!-- Create new student -->
@@ -56,7 +65,7 @@
 
         <!------- Preference List ------->
 
-        <form class="prefs selection" id="pref_container">
+        <form class="prefs hide" id="pref_container">
             <h3>Name</h3>
             <input type="text" autocomplete="off" placeholder="Name" class="textinput" id="pref_name">
 

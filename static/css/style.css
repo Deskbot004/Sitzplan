@@ -86,6 +86,27 @@ h1 {
     margin-bottom: 10px;
 }
 
+/*---Three Dots Dropdown Menu---*/
+.dots-menu {
+    height: 25px;
+    width: 25px;
+    margin: 0px 5px;
+}
+
+.dots-menu svg {
+    cursor: pointer;
+}
+
+.dots-menu .dots-dropdown {
+    position: sticky;
+    width: 100px;
+    height: auto;
+    top: 0;
+
+    background: white;
+    z-index: 1;
+}
+
 /*---Create New Thing---*/
 .create-form { /*General*/
     position: sticky;
@@ -242,7 +263,6 @@ nav .current { /*Current Page in Sidebar*/
     float: left;
 	position: sticky;
 
-
 	font-family: var(--font1);
 	text-align:center;
 }
@@ -260,7 +280,7 @@ nav .current { /*Current Page in Sidebar*/
     transform: translate(-50%, -50%);
 }
 
-.selection { /*Content that's dependent on a selection*/
+.hide { /*Content that's dependent on a selection*/
     visibility: hidden;
 }
 
@@ -290,9 +310,20 @@ nav .current { /*Current Page in Sidebar*/
     flex-direction: column;
 }
 
+.students-list .title-container { /*Contains title + three dots dropdown*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .students-list h2 {
-    margin-top: 10px;
-    margin-bottom: 0px;
+    margin: 0px;
+}
+
+.students-list svg {
+    vertical-align:bottom;
+    padding: 0px;
+    margin-left: 5px;
 }
 
 .students-list ul { /*List itself*/
@@ -459,3 +490,6 @@ nav .current { /*Current Page in Sidebar*/
     color: var(--col-side);
     background-color: var(--col-click);
 }
+
+
+/*Testing*/

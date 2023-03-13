@@ -105,11 +105,11 @@ async function saveData(info) {
 
 	    if (!checkForIllegalCharacters(name)) throw "illegal";
 
-		if (name != data) {
+
+		/*if (name != data) {
 		    rename_value = await renaming(data, name);
 			if(!rename_value) throw "exists";
-		}
-
+		}*/
 	    var data_return = dataToServer(info);
 
 	    data_return.done(function(data) {
@@ -117,11 +117,12 @@ async function saveData(info) {
 	    });
 	    data_return.fail(function(xhr, status, error) {
 	        error_case = "ERROR " + error.toString();
+	        alert(error_case);
 	    });
 
 	    await data_return;
-	    data = name;
-	    throw "saved";
+	    //data = name;
+	    //throw "saved";
 	} catch(err) {
 		switch(err) {
 			case 'illegal':

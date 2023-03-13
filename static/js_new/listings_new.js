@@ -126,7 +126,7 @@ function trimList(searchInput, list_id){
 function selectElement(event_target, element_type) {
 	try {
 	    var list_id = element_type + "_list";
-
+        //TODO: hide all popups and clear input fields
 	    //Apply .current class to selected item
 	    var fullList = document.getElementById(list_id);
 	    for (let elem of fullList.children) {
@@ -177,19 +177,27 @@ function selectElement(event_target, element_type) {
 */
 function checkInput(createInput, tooltip_id, list_id) {
     var text = createInput.target.value;
-    var tooltip = document.getElementById(tooltip_id);
 
     if (!checkForIllegalCharacters(text)) {
         err_text = "The name should only contain letters and numbers!";
-        tooltip.innerHTML = err_text;
-        tooltip.style.visibility = "visible";
+        showTooltip(tooltip_id, err_text);
     } else if (existsElement(text, list_id)) {
         err_text = "The entry \"" + text + "\" already exists!";
-        tooltip.innerHTML = err_text;
-        tooltip.style.visibility = "visible";
+        showTooltip(tooltip_id, err_text);
     } else {
-        tooltip.style.visibility = "hidden";
+        hideTooltip(tooltip_id);
     }
+}
+
+function showTooltip(tooltip_id, text){
+    var tooltip = document.getElementById(tooltip_id);
+    tooltip.innerHTML = text;
+    tooltip.style.visibility = "visible";
+}
+
+function hideTooltip(tooltip_id){
+    var tooltip = document.getElementById(tooltip_id);
+    tooltip.style.visibility = "hidden";
 }
 
 
@@ -208,9 +216,10 @@ function createListElement(tooltip_id, input_id, list_type) {
         return false;
     } else { //Create Element
         var name = document.getElementById(input_id).value;
-        //Create new file or modify existing file (TODO)
-        var node = addElement(name, 0, list_type) //Add the new item to list
+        if (!saveElement(list_type, name)) return;
+        var node = addElement(name, 0, list_type); //Add the new item to list
         selectElement(node, list_type); //Select that new item
+        document.getElementById(input_id).value = "";//Clear input field
         event.preventDefault();
     }
 }
