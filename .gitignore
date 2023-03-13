@@ -1,8 +1,3 @@
 .idea/*
 *.pyc
 *.pyo
-.idea/encodings.xml
-.idea/misc.xml
-.idea/Sitzplan.iml
-.idea/vcs.xml
-.idea/workspace.xml
