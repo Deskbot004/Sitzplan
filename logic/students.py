@@ -72,16 +72,17 @@ def save_students(name, student_str):
     """
 
     try:
-        student_str = student_str.split("|")[:-1]
+        student_str = student_str.split("|")
         student_dict = {}
         num = 1
 
         for student in student_str:
-            student_dict[num] = student
-            num = num + 1
+            if student != '':
+                student_dict[num] = student
+                num = num + 1
 
         file = open(class_path + name + ".json", "w")
-        json.dump(student_str, file)
+        json.dump(student_dict, file)
         file.close()
         return "SUCCESS"
     except Exception as err:
@@ -107,7 +108,10 @@ def delete_students(name):
 
 def read_from_upload(content, file_type, name):
     """
-    For now just takes an input which needs to be a .txt and separates the content on each ';' or line break.
+    Takes the content of the upload file and calls save_students to store the file in data.
+    IMPORTANT NOTE: The content must follow rules. Each name needs to be separated by either a ';' or a line break
+
+    The only working file format is .txt for now.
 
     :param content: content of the uploaded file
     :param file_type: type of the uploaded file
@@ -115,19 +119,15 @@ def read_from_upload(content, file_type, name):
     :return: Status
     """
     try:
-        print(content)
-        print(file_type)
-        print(name.split('.')[0])
-        content_conv = content.decode("latin1")
-        print("---")
-        print(content_conv)
-        content_conv = content_conv.replace('\n', ';')
-        print("---")
-        print(content_conv)
-        content_conv = ''.join(content_conv.splitlines())
-        print("---")
-        print(content_conv.split(';'))
-        return "SUCCESS"
+        if "text" in file_type:
+            content_conv = content.decode("latin1")
+            content_conv = content_conv.replace('\n', '|')
+            content_conv = ''.join(content_conv.splitlines())
+            content_conv = content_conv.replace(';', '|')
+            save_students(name[:name.find('.')], content_conv)
+            return "SUCCESS"
+        else:
+            raise RuntimeError(f"Can not handle the given filetype {file_type}")
     except Exception as err:
         print(f"Uploading class failed with Error {err}")
         return "FAIL"
