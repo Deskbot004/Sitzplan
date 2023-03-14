@@ -1,4 +1,5 @@
-import  os, json
+import base64
+import os, json
 
 '''
 This Module handles all interaction with students and their respective lists.
@@ -77,7 +78,7 @@ def save_students(name, student_str):
         num = 1
 
         for student in student_str:
-            if student != '':
+            if student != '' and student != ' ':
                 student_dict[num] = student
                 num = num + 1
 
@@ -109,9 +110,11 @@ def delete_students(name):
 def read_from_upload(content, file_type, name):
     """
     Takes the content of the upload file and calls save_students to store the file in data.
-    IMPORTANT NOTE: The content must follow rules. Each name needs to be separated by either a ';' or a line break
+    The only working file format are .txt and .csv.
 
-    The only working file format is .txt for now.
+    IMPORTANT NOTE: The content must follow rules.
+        For .txt: Each name needs to be separated by either a ';' or a line break
+        For .csv: The implementation expects a name in row 1 and a surname in row 2, but can easily be changed in code
 
     :param content: content of the uploaded file
     :param file_type: type of the uploaded file
@@ -126,8 +129,25 @@ def read_from_upload(content, file_type, name):
             content_conv = content_conv.replace(';', '|')
             save_students(name[:name.find('.')], content_conv)
             return "SUCCESS"
+
+        elif "excel" in file_type:
+
+            content_conv = content.decode("UTF-8-sig")
+            content_conv = content_conv.replace('\n', '|').splitlines()
+
+            counter = 0
+            for elem in content_conv:
+                # change the find element call if no surnames in the second row exist
+                content_conv[counter] = elem[:(elem.find(',', elem.find(',') + 1))]
+                counter += 1
+
+            content_conv = ''.join(content_conv)
+            content_conv = content_conv.replace(',', ' ')
+            save_students(name[:name.find('.')], content_conv)
+            return "SUCCESS"
+
         else:
-            raise RuntimeError(f"Can not handle the given filetype {file_type}")
+            raise RuntimeError(f"Can not handle the given filetype: {file_type}")
     except Exception as err:
         print(f"Uploading class failed with Error {err}")
         return "FAIL"
