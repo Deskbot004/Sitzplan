@@ -30,7 +30,7 @@ def get_student_list(name_class):
         read_file.close()
         return student_dict, "SUCCESS"
     except Exception as err:
-        print(f"Student getting failed... with Error {err}")
+        print(f"Student getting failed with Error {err}")
         return {}, "FAIL"
 
 
@@ -58,7 +58,7 @@ def get_all_student_lists():
 
         return file_dict, "SUCCESS"
     except Exception as err:
-        print(f"Student list getting failed... with Error {err}")
+        print(f"Student list getting failed with Error {err}")
         return {}, "FAIL"
 
 
@@ -85,7 +85,7 @@ def save_students(name, student_str):
         file.close()
         return "SUCCESS"
     except Exception as err:
-        print(f"Student saving failed... with Error {err}")
+        print(f"Student saving failed with Error {err}")
         return "FAIL"
 
 
@@ -101,7 +101,7 @@ def delete_students(name):
         os.remove(class_path + name + ".json")
         return "SUCCESS"
     except Exception as err:
-        print(f"Student deleting failed... with Error {err}")
+        print(f"Student deleting failed with Error {err}")
         return "FAIL"
 
 
@@ -114,19 +114,24 @@ def read_from_upload(content, file_type, name):
     :param name: filename and later name of the class to be saved
     :return: Status
     """
-    print(content)
-    print(file_type)
-    print(name.split('.')[0])
-    content_conv = content.decode("latin1")
-    print("---")
-    print(content_conv)
-    content_conv = content_conv.replace('\n', ';')
-    print("---")
-    print(content_conv)
-    content_conv = ''.join(content_conv.splitlines())
-    print("---")
-    print(content_conv.split(';'))
-    return "Hello"
+    try:
+        print(content)
+        print(file_type)
+        print(name.split('.')[0])
+        content_conv = content.decode("latin1")
+        print("---")
+        print(content_conv)
+        content_conv = content_conv.replace('\n', ';')
+        print("---")
+        print(content_conv)
+        content_conv = ''.join(content_conv.splitlines())
+        print("---")
+        print(content_conv.split(';'))
+        return "SUCCESS"
+    except Exception as err:
+        print(f"Uploading class failed with Error {err}")
+        return "FAIL"
+
 
 
 '''
