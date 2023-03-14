@@ -73,11 +73,22 @@ function check_validity(classroom) {
     @return: void
 */
 function changeArray(first_desk, second_desk, type) {
-	new_entry = new Array();
-	new_entry.push(first_desk);
-	new_entry.push(second_desk);
-	new_entry.push(type);
-	classroom.push(new_entry)
+    if (type == "remove") {
+        desks = searchArray(classroom, first_desk);
+        rem_type = desks[desks.length - 1];
+        console.log(teacher_desk_count);
+        if (rem_type == "teacher") teacher_desk_count -= (desks.length - 1);
+        console.log(desks.length);
+        console.log(teacher_desk_count);
+        index = getArrayId(classroom, first_desk);
+        classroom.splice(index, 1);
+        return;
+    }
+        new_entry = new Array();
+        new_entry.push(first_desk);
+        new_entry.push(second_desk);
+        new_entry.push(type);
+        classroom.push(new_entry)
 };
 
 
@@ -236,13 +247,31 @@ function highlightSelection() {
 
     @return: the coordinates of the found entry (can be emtpy)
 */
-function searchArray(classroom, coord) {
-    for (i = 0; i < classroom.length; i++) {
-        for (j = 0; j < classroom[i].length; j++) {
-            if (classroom[i][j] == coord) return classroom[i];
+function searchArray(arr, coord) {
+    for (i = 0; i < arr.length; i++) {
+        for (j = 0; j < arr[i].length; j++) {
+            if (arr[i][j] == coord) return arr[i];
         }
     }
     return []
+}
+
+/*
+    Searches a classroom array for an entry that matches the given coordinate and returns the id of the entry or -1
+    if no entry is found
+
+    @param classroom: the array to be searched
+    @param coord: the coordinate to be checked
+
+    @return: the id of the found entry (-1 if no id)
+*/
+function getArrayId(arr, coord) {
+    for (i = 0; i < arr.length; i++) {
+        for (j = 0; j < arr[i].length; j++) {
+            if (arr[i][j] == coord) return i;
+        }
+    }
+    return -1;
 }
 
 /*
@@ -252,6 +281,7 @@ function searchArray(classroom, coord) {
     @return: void
 */
 function rotate(e) {
+    if (color == "white") return;   // exit when in remove desk mode
     if(window.event) { // IE
     keynum = e.keyCode;
     } else if(e.which){ // Netscape/Firefox/Opera
@@ -311,7 +341,7 @@ function highlightDeselection() {
     var highlight_color = "palegreen";
     var error_color = "lightsalmon";
     if (double) {
-        if (color != "white") {     // highlight deselection for empty spaces
+        if (color != "white") {     // highlight deselection for empty cells
             if (orientation == 0) {   // if table is oriented horizontally
                 var neighbor_div = document.getElementById(div_id[0] + ";" + String(parseInt(div_id[1]) + 1));
                 if (this.style.backgroundColor == error_color) this.style.backgroundColor = "white";
@@ -377,17 +407,27 @@ function addColorClick() {
             }
             if (color != "pink") {
                 if (this.style.backgroundColor == "pink") teacher_desk_count -= 1;
-                this.style.backgroundColor = color;
-                neighbor.style.backgroundColor = color;
+                if (color != "white") {
+                    this.style.backgroundColor = color;
+                    neighbor.style.backgroundColor = color;
+                } else {
+                   coordinate = String(div_id[0] + ";" + div_id[1]);
+                    desks = searchArray(classroom, coordinate);
+                    desk_coord = desks.slice(0, -1);
+                    for (i = 0; i < desk_coord.length; i++) {
+                        document.getElementById(desk_coord[i]).style.backgroundColor = "white";
+                    }
+                }
                 if (color == "lightblue") changeArray(this.getAttribute("id"), neighbor.getAttribute("id"), "student");
                 if (color == "orange") changeArray(this.getAttribute("id"), neighbor.getAttribute("id"), "unusable");
+                if (color == "white") changeArray(this.getAttribute("id"), neighbor.getAttribute("id"), "remove");
             } else {
                 switch (teacher_desk_count) {
                     case 0:
                         this.style.backgroundColor = color;
                         neighbor.style.backgroundColor = color;
                         changeArray(this.getAttribute("id"), neighbor.getAttribute("id"), "teacher");
-                        teacher_desk_count += 1;
+                        teacher_desk_count += 2;
                         break;
                     case 1:
                     case 2:
