@@ -122,7 +122,7 @@ def read_from_upload(content, file_type, name):
     :return: Status
     """
     try:
-        if "text" in file_type:
+        if "plain" in file_type:
             content_conv = content.decode("latin1")
             content_conv = content_conv.replace('\n', '|')
             content_conv = ''.join(content_conv.splitlines())
@@ -130,7 +130,7 @@ def read_from_upload(content, file_type, name):
             save_students(name[:name.find('.')], content_conv)
             return "SUCCESS"
 
-        elif "excel" in file_type:
+        elif "excel" in file_type or "csv" in file_type:
 
             content_conv = content.decode("UTF-8-sig")
             content_conv = content_conv.replace('\n', '|').splitlines()
