@@ -95,23 +95,29 @@ def run(data):
     """
     New function to be used by the web interface.
 
+    TODO severly outdated!! for every file format
+
     :param data: String information from website in form of 3 entries
     :return: State of function
     """
     try:
         information = data.split(",")
-        clas_name = information[0]
+        #clas_name = information[0]
+        clas_name = "10Names"
         room_name = information[1]
         action = information[2]
 
         room_ret = classrooms.get_classroom(room_name)  # check room[1] for FAIL
         room = room_ret[0].split(";")
+        print(room)
 
         clas_ret = students.get_student_list(clas_name)
         clas = clas_ret[0]
+        print(clas)
 
         pref_ret = preferences.preferences_read(clas_name)
         pref = pref_ret[0]
+        print(pref)
 
         if room_ret[1] == "FAIL" or clas_ret[1] == "FAIL" or pref_ret[1] == "FAIL":
             raise Exception('Getting information failed')

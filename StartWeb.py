@@ -146,7 +146,8 @@ def get_classroom_lists():
 
 
 # ________________________________________________________________________________________________________
-# Functions preferences IN WORK
+# Functions preferences !! should be irrelevant with new rework!
+"""
 @app.route('/getpreflists', methods=["GET", "POST"])
 def get_pref_lists():
     if request.method == "POST":
@@ -182,6 +183,7 @@ def del_pref():
     except Exception as err:
         print(f"Accessing preferences.py for delete failed with {err}")
         return "", 404
+"""
 
 # ________________________________________________________________________________________________________
 # Functions seating IN WORK
