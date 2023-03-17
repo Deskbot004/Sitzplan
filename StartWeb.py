@@ -195,17 +195,16 @@ def get_seating():
         call = generator.run(request.form["result"])
         return call[0], 200
 
+
 # ________________________________________________________________________________________________________
-# Submitting stuff? IN WORK
+# Functions upload handling
 
 
-@app.route('/test', methods=["POST"])
-def test():
-    #print(request)
+@app.route('/upload', methods=["POST"])
+def upload():
     gotten_files = request.files
     list = gotten_files["files[]"]
-    answer = students.read_from_upload(list.read(), list.mimetype, list.filename)
-    #print(answer)
+    students.read_from_upload(list.read(), list.mimetype, list.filename)
     return switch_about()
 
 
