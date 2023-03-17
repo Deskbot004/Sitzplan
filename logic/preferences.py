@@ -1,6 +1,9 @@
 import os, time, json, platform
 
-'''
+"""
+
+TODO REMOVE ANY INSTANCE CALLING THIS MODULE AS IT SHOULD NOT BE USED ANYMORE!
+
 Module to create and read preference lists which can either contain real preferences
 or constraints for seating creation.
 
@@ -12,7 +15,7 @@ Functions:
     validate_entry(string, int) -> Boolean
     check_int(String) -> Boolean
     clear_screen()
-'''
+"""
 
 path = os.path.abspath(os.getcwd())
 pref_path = path + "/data/preferences/"
