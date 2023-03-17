@@ -38,7 +38,16 @@ async function loadInformation(list_type, name) {
 
     request.done( function(information) {
         addDict(information, 0, list_type, 1);
-        if (list_type === "student") {addDict(information, 0, "dropdown", 1);}
+        if (list_type === "student") {  //TODO: needs a small rework to fit the new format of classes rn preferences get loaded instead
+            localStorage.clear();
+
+            // saves each key value pair into local storage for easier access
+            // example access localStorage.getItem("Jonas") would get all preferences of "Jonas" eg. "pref1;pref2;;;1;"
+            for (student_name of Object.keys(information)) {
+                localStorage.setItem(student_name, information[student_name])
+            }
+            addDict(information, 0, "dropdown", 1);
+        }
     });
 
     request.fail(function(xhr, status, error){
