@@ -26,6 +26,12 @@ async function loadInformation(list_type, name) {
             break;
         case "student":
             var request = requestInformation(name);
+            localStorage.clear()
+            localStorage.setItem("filename", name);
+
+            // Please keep this line for now as it will be useful when testing the file opened blocking later
+            console.log("I am currently viewing the file " + name);
+
             document.getElementById('class_name').innerHTML = name;
             break;
         case "pref": //TODO
@@ -48,7 +54,7 @@ async function loadInformation(list_type, name) {
                 default: //checked="checked"
                     document.getElementById('Either').checked = "checked";
             }
-            break;
+            return;
         default:
 	        alert("students/loadInformation: type \"" + list_type + "\" not recognized");
     }
@@ -56,7 +62,6 @@ async function loadInformation(list_type, name) {
     request.done( function(information) {
         if (list_type === "student") {  //TODO: needs a small rework to fit the new format of classes rn preferences get loaded instead
             //Save student prefs to local Storage
-            localStorage.clear();
             for (student_name of Object.keys(information)) {
                 //Example: localStorage.getItem("Jonas") would get all preferences of "Jonas" eg. "pref1;pref2;;;1;"
                 localStorage.setItem(student_name, information[student_name])
