@@ -16,7 +16,7 @@
 */
 
 //_________________________________Functions________________________________________________
-
+//TODO: Local storage dictionary variable "read_dictionary"
 async function loadInformation(list_type, name) {
     var list_id = list_type + "_list";
 
@@ -29,25 +29,42 @@ async function loadInformation(list_type, name) {
             document.getElementById('class_name').innerHTML = name;
             break;
         case "pref": //TODO
-            var request = requestInformation(name); //TODO: There is no request to get prefs for single student
+            var prefs = localStorage.getItem(name).split(";"); //Load Prefs
+
+            //Input Prefs into corresponding text field
             document.getElementById('pref_name').value = name;
+            document.getElementById('pref0').value = prefs[0];
+            document.getElementById('pref1').value = prefs[1];
+            document.getElementById('pref2').value = prefs[2];
+            document.getElementById('pref3').value = prefs[3];
+            //Select correct Button (Front/Back/Either)
+            switch(prefs[4]) {
+                case "1":
+                    document.getElementById('Front').checked = "checked";
+                    break;
+                case "-1":
+                    document.getElementById('Back').checked = "checked";
+                    break;
+                default: //checked="checked"
+                    document.getElementById('Either').checked = "checked";
+            }
             break;
         default:
 	        alert("students/loadInformation: type \"" + list_type + "\" not recognized");
     }
 
     request.done( function(information) {
-        addDict(information, 0, list_type, 1);
         if (list_type === "student") {  //TODO: needs a small rework to fit the new format of classes rn preferences get loaded instead
+            //Save student prefs to local Storage
             localStorage.clear();
-
-            // saves each key value pair into local storage for easier access
-            // example access localStorage.getItem("Jonas") would get all preferences of "Jonas" eg. "pref1;pref2;;;1;"
             for (student_name of Object.keys(information)) {
+                //Example: localStorage.getItem("Jonas") would get all preferences of "Jonas" eg. "pref1;pref2;;;1;"
                 localStorage.setItem(student_name, information[student_name])
             }
-            addDict(information, 0, "dropdown", 1);
+            addDict(information, 0, "dropdown", 1); //Add students to dropdown
+            information = Object.keys(information); //Add the keys (instead of their values) to list
         }
+        addDict(information, 0, list_type, 1);
     });
 
     request.fail(function(xhr, status, error){
@@ -69,18 +86,17 @@ function saveElement(element_type, name) {
             var title = name;
             var student_str = "";
         } else if (element_type == "student") {
-            var title = document.getElementById('class_name').value;
+            var title = document.getElementById('class_name').innerHTML;
             var student_str = "";
 
             //list to str
             var list = document.getElementById("student_list");
             var elements = list.getElementsByTagName("li");
             for ( var i = 0, len = elements.length; i < len; i++) {
-                student_str += elements[i].innerHTML + "|";
+                student_str += elements[i].innerHTML + "|"; //TODO: hier die prefs hinzufügen
             }
             student_str += name + "|";
         }
-
         saveData({"name": title, "students": student_str});
         //TODO update preflists when everything went fine
         return true;

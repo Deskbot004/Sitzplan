@@ -123,10 +123,11 @@ function trimList(searchInput, list_id){
 	@param element_type: Same as list_type but for the selected Element
 	@return: void
 */
+//TODO: hide all popups and clear input fields
 function selectElement(event_target, element_type) {
 	try {
 	    var list_id = element_type + "_list";
-        //TODO: hide all popups and clear input fields
+
 	    //Apply .current class to selected item
 	    var fullList = document.getElementById(list_id);
 	    for (let elem of fullList.children) {

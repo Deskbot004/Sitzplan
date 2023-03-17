@@ -117,7 +117,6 @@ async function saveData(info) {
 	    });
 	    data_return.fail(function(xhr, status, error) {
 	        error_case = "ERROR " + error.toString();
-	        alert(error_case);
 	    });
 
 	    await data_return;
