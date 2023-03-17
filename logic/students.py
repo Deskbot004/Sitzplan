@@ -11,6 +11,7 @@ Functions:
     get_all_student_list() -> array, state
     save_students(string, string) -> state
     delete_students(string) -> state
+    read_from_upload(string, string, string) -> state
 '''
 
 path = os.path.abspath(os.getcwd())
@@ -75,12 +76,14 @@ def save_students(name, student_str):
     try:
         student_str = student_str.split("|")
         student_dict = {}
-        num = 1
 
         for student in student_str:
-            if student != '' and student != ' ':
-                student_dict[num] = student
-                num = num + 1
+            student_arr = student.split(";", 1)
+            if len(student_arr) == 1:
+                student_arr.append(";;;;;")
+            student_name = student_arr[0]
+            if student_name != '' and student_name != ' ':
+                student_dict[student_name] = student_arr[1]
 
         file = open(class_path + name + ".json", "w")
         json.dump(student_dict, file)
