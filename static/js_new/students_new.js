@@ -27,7 +27,7 @@ async function loadInformation(list_type, name) {
         case "student":
             var request = requestInformation(name);
             localStorage.clear()
-            localStorage.setItem("filename", name);
+            localStorage.setItem("file_name", name);
 
             // Please keep this line for now as it will be useful when testing the file opened blocking later
             console.log("I am currently viewing the file " + name);
