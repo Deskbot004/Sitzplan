@@ -16,7 +16,7 @@
 */
 
 //_________________________________Functions________________________________________________
-//TODO: Local storage dictionary variable "read_dictionary"
+
 async function loadInformation(list_type, name) {
     var list_id = list_type + "_list";
 
@@ -34,7 +34,7 @@ async function loadInformation(list_type, name) {
 
             document.getElementById('class_name').innerHTML = name;
             break;
-        case "pref": //TODO
+        case "pref":
             var prefs = localStorage.getItem(name).split(";"); //Load Prefs
 
             //Input Prefs into corresponding text field
@@ -43,6 +43,7 @@ async function loadInformation(list_type, name) {
             document.getElementById('pref1').value = prefs[1];
             document.getElementById('pref2').value = prefs[2];
             document.getElementById('pref3').value = prefs[3];
+
             //Select correct Button (Front/Back/Either)
             switch(prefs[4]) {
                 case "1":
@@ -51,7 +52,7 @@ async function loadInformation(list_type, name) {
                 case "-1":
                     document.getElementById('Back').checked = "checked";
                     break;
-                default: //checked="checked"
+                default:
                     document.getElementById('Either').checked = "checked";
             }
             return;
@@ -75,40 +76,46 @@ async function loadInformation(list_type, name) {
     request.fail(function(xhr, status, error){
         //alert("Getting " + list_type + "-lists failed! Please reload!" + error.toString()); //TODO: This Error also shows, when new list is created
         console.log("Function getLists failed with ERROR " + error.toString());
-        document.getElementById('pref_name').value = name; //TODO: Remove, once case pref works
     });
 
     await request;
 }
 
+/* Saves the current local Storage into a file */
+function saveLocalStorage() {
+    //Convert students inside the storage into a string
+    var student_str = "";
+    for (var i=0; i<localStorage.length; ++i){
+        var student = localStorage.key(i);
+        if (student === "file_name") {continue;}
+        student_str += student + ";" + localStorage.getItem(student) + "|";
+    }
+    saveData({"name": localStorage.getItem("file_name"), "students": student_str});
+}
 
-function saveElement(element_type, name) {
+/* Creates and saves a new element */
+function createElement(element_type, name) {
 	try {
-	    //Check whether name empty
-	    if (name.trim() == "") throw "empty_name";
-
-        if (element_type == "class") {
-            var title = name;
-            var student_str = "";
-        } else if (element_type == "student") {
-            var title = document.getElementById('class_name').innerHTML;
-            var student_str = "";
-
-            //list to str
-            var list = document.getElementById("student_list");
-            var elements = list.getElementsByTagName("li");
-            for ( var i = 0, len = elements.length; i < len; i++) {
-                student_str += elements[i].innerHTML + "|"; //TODO: hier die prefs hinzufügen
-            }
-            student_str += name + "|";
+	    if (name.trim() == "") throw "empty_name"; //Check whether name empty
+        switch(element_type) {
+            case "class":
+                localStorage.clear();
+                localStorage.setItem("file_name", name);
+                break;
+            case "student":
+                localStorage.setItem(name, ";;;;;");
+                break;
+            default:
+                throw "unknown_type";
         }
-        saveData({"name": title, "students": student_str});
-        //TODO update preflists when everything went fine
+        saveLocalStorage();
         return true;
 	} catch (err) {
 		switch(err) {
 			case 'empty_name':
 				err_text = "Name can't be empty"; break;
+		    case 'unknown_type':
+		        err_text = "Type \"" + element_type + "\" unknown"; break;
 			default:
 				err_text = "Saving class went wrong! The class has not been saved!"; break;
 		}
@@ -126,5 +133,41 @@ function saveElement(element_type, name) {
 
 		showTooltip(element_type + "_tooltip", err_text);
 		return false;
+	}
+}
+
+/*
+	Saves changes to student Name and Prefs
+
+	@param name: name of student pre change
+*/
+function saveStudent() {
+	try {
+	    //Handle Name --------------------------------
+		var old_name = document.getElementById("student_current").innerHTML;
+		var new_name = document.getElementById("pref_name").value;
+		if(old_name != new_name) {
+		    //TODO: Check whether new name is legal
+		    localStorage.removeItem(old_name)
+		}
+
+        //Handle Prefs ---------------------------
+        //TODO: Check whether prefs legal
+        pref_string = document.getElementById("pref0").value + ";";
+        pref_string += document.getElementById("pref1").value + ";";
+        pref_string += document.getElementById("pref2").value + ";";
+        pref_string += document.getElementById("pref3").value + ";";
+        pref_string += document.querySelector("input[type='radio'][name='position']:checked").value + ";";
+		localStorage.setItem(new_name, pref_string);
+		saveLocalStorage();
+		//TODO: Animation/Tooltip, to show whether it was saved
+	} catch(err) {
+		switch (err) {
+			case "illegal_name":
+				//TODO: Handle Error
+			default:
+				err_text = "Adding student went wrong! Error: " + err; break;
+		}
+		//TODO: Show tooltip with error message
 	}
 }

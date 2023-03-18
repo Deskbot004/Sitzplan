@@ -132,8 +132,10 @@ function selectElement(event_target, element_type) {
 	    var fullList = document.getElementById(list_id);
 	    for (let elem of fullList.children) {
 	        elem.classList.remove("current");
+	        elem.removeAttribute("id");
 	    }
 	    event_target.classList.add("current");
+	    event_target.id = element_type + "_current";
 
 	    //Determine type of List that should be shown
 	    switch (element_type) {
@@ -151,7 +153,7 @@ function selectElement(event_target, element_type) {
 
 	    //Load Information into list
 	    loadList(list_type, event_target.innerHTML);
-	    //TODO: Currently, the next line of code don't wait for async function loadList to finish, resulting in a blinking title -> Fix that
+	    //TODO: Currently, the next lines of code don't wait for async function loadList to finish, resulting in a blinking title -> Fix that
 
 	    //Hide Prompt to select an item
         var prompt = document.getElementById(list_type + "_prompt");
@@ -213,11 +215,10 @@ function createListElement(tooltip_id, input_id, list_type) {
     if (tooltip.style.visibility == "visible"){ //Name not allowed
         tooltip.style.animation = "1s popupcolor"; //play tooltip animation
         setTimeout(function(){tooltip.style.animation = "";}, 1000); //reset animation
-        //console.log("Function createInformation() failed with " + err);
         return false;
     } else { //Create Element
         var name = document.getElementById(input_id).value;
-        if (!saveElement(list_type, name)) return;
+        if (!createElement(list_type, name)) return;
         var node = addElement(name, 0, list_type); //Add the new item to list
         selectElement(node, list_type); //Select that new item
         document.getElementById(input_id).value = "";//Clear input field

@@ -71,7 +71,7 @@
 
         <form class="prefs hide" id="pref_container">
             <h3>Name</h3>
-            <input type="text" autocomplete="off" placeholder="Name" class="textinput" id="pref_name">
+            <input type="text" autocomplete="off" placeholder="Name" class="textinput" id="pref_name"><!-- TODO: Same popup as create form missing -->
 
             <h3>Wants to sit next to</h3>
             <input type="text" autocomplete="off" placeholder="Type to search" class="textinput" list="dropdown_list" id="pref0">
@@ -83,15 +83,15 @@
             <datalist id="dropdown_list"></datalist>
 
             <h3>Should sit in the</h3>
-            <fieldset class="toggle">
-                <input type="radio" name="position" id="Either"> <label for="Either">Either</label>
-                <input type="radio" name="position" id="Front"> <label for="Front">Front</label>
-                <input type="radio" name="position" id="Back"> <label for="Back">Back</label>
+            <fieldset class="toggle" id="position">
+                <input type="radio" name="position" id="Either" value="0"> <label for="Either">Either</label>
+                <input type="radio" name="position" id="Front" value="1"> <label for="Front">Front</label>
+                <input type="radio" name="position" id="Back" value="-1"> <label for="Back">Back</label>
             </fieldset>
 
             <h3>Save Options</h3>
             <fieldset class="toggle">
-                <input type="button" id="Save"> <label for="Save" style="padding: 15px;">Save Student</label>
+                <input type="button" id="Save" onclick="saveStudent();"> <label for="Save" style="padding: 15px;">Save Student</label>
                 <input type="button" id="Delete"> <label for="Delete" style="padding: 15px;">Delete Student</label>
             </fieldset>
         </form>
