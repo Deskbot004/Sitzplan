@@ -31,21 +31,21 @@
 
 <!------- MAIN BODY ------->
 <div class="main">
-    <h1>Student Lists</h1>
+    <h1>Student Lists</h1> <!--Main Title-->
+    <h2 id="student_prompt" style="position: absolute;"><br>Please Select a Class -></h2> <!--Prompt while no class selected -->
 
-    <h2 id="student_prompt" style="position: absolute;"><br>Please Select a Class -></h2>
+    <!-- TODO: Bei Prefs kann man nur Studenten, die es gibt selecten-->
+    <!-- TODO: Wants to sit next to: Am Anfang nur ein Feld. Sobald voll erscheint button "Zweit/Drittwunsch hinzufügen"-->
+
+    <!-- Container for Student List & Preferences -->
     <div class="inner">
-
-        <!-- TODO: Bei Prefs kann man nur Studenten, die es gibt selecten-->
-        <!-- TODO: Wants to sit next to: Am Anfang nur ein Feld. Sobald voll erscheint button "Zweit/Drittwunsch hinzufügen"-->
-        <!-- String aus json auslesen
-        Either: 0, Front: 1, Back: -1 (als String)
-        -->
-
         <!------- Students List ------->
         <div class="students-list hide" id="student_container">
+            <h2 id="pref_prompt" style="position: absolute;"> <- Please Select a Student</h2> <!--Prompt while no student selected -->
+
+            <!-- Class Title & Dots Menu -->
             <div class="title-container">
-                <h2 id="class_name">Class Name Placeholder</h2> <!-- Class Name -->
+                <h2 id="class_name">Class Name Placeholder</h2>
                 <div class="dots-menu">
                     <svg onclick="event.stopPropagation(); showDropdown('dropdown_classname')" xmlns="http://www.w3.org/2000/svg" class="a" width="25px" height="25px" viewBox="0 0 25 25" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
                     <ul class="dots-dropdown hide" id="dropdown_classname">
@@ -54,9 +54,14 @@
                     </ul>
                 </div>
             </div>
-            <input type="text" autocomplete="off" placeholder="Search..." class="textinput searchbar" id="student_search"> <!-- Search bar -->
-            <ul id="student_list"></ul> <!-- The List itself -->
-            <form class="create-form" onsubmit="createListElement('student_tooltip', 'student_create', 'student'); return false"> <!-- Create new student -->
+
+            <!-- Search bar -->
+            <input type="text" autocomplete="off" placeholder="Search..." class="textinput searchbar" id="student_search">
+            <!-- The List itself -->
+            <ul id="student_list"></ul>
+
+            <!-- Create new student -->
+            <form class="create-form" onsubmit="createListElement('student_tooltip', 'student_create', 'student'); return false">
                 <label for="student_create">Add Student:</label>
                 <div class="tooltipcontainer">
                     <div class="tooltip" id="student_tooltip">Tooltip Placeholder</div>
@@ -64,14 +69,14 @@
                 </div>
                 <input type="submit" value="Create">
             </form>
-            <h2 id="pref_prompt" style="position: absolute;"> <- Please Select a Student</h2>
         </div>
 
         <!------- Preference List ------->
-
         <form class="prefs hide" id="pref_container">
             <h3>Name</h3>
-            <input type="text" autocomplete="off" placeholder="Name" class="textinput" id="pref_name"><!-- TODO: Same popup as create form missing -->
+            <input type="text" autocomplete="off" placeholder="Name" class="textinput" id="pref_name">
+            <div class="tooltip" id="pref_name_tooltip">Tooltip Placeholder</div>
+            <!-- TODO: Css for Tooltip -->
 
             <h3>Wants to sit next to</h3>
             <input type="text" autocomplete="off" placeholder="Type to search" class="textinput" list="dropdown_list" id="pref0">
@@ -128,8 +133,10 @@
     // Event Listeners for the Textinputs (Create Student/Class)
     const createClass = document.getElementById("class_create");
     const createStudent = document.getElementById("student_create");
+    const prefName = document.getElementById("pref_name");
     createClass.addEventListener("input", (e) => {checkInput(e, "class_tooltip", "class_list")});
     createStudent.addEventListener("input", (e) => {checkInput(e, "student_tooltip", "student_list")});
+    prefName.addEventListener("input", (e) => {checkInput(e, "pref_name_tooltip", "student_list", localStorage.getItem("current_student"))});
 </script>
 </body>
 </html>

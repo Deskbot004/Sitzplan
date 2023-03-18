@@ -83,11 +83,12 @@ async function loadInformation(list_type, name) {
 
 /* Saves the current local Storage into a file */
 function saveLocalStorage() {
+    var ignore = ["file_name", "current_student"];
     //Convert students inside the storage into a string
     var student_str = "";
     for (var i=0; i<localStorage.length; ++i){
         var student = localStorage.key(i);
-        if (student === "file_name") {continue;}
+        if (ignore.includes(student)) {continue;}
         student_str += student + ";" + localStorage.getItem(student) + "|";
     }
     saveData({"name": localStorage.getItem("file_name"), "students": student_str});
@@ -144,10 +145,11 @@ function createElement(element_type, name) {
 function saveStudent() {
 	try {
 	    //Handle Name --------------------------------
-		var old_name = document.getElementById("student_current").innerHTML;
+		var old_name = document.getElementById("student_current").innerHTML; //TODO: Evt braucht man die student_current-id wg local storage nicht
 		var new_name = document.getElementById("pref_name").value;
 		if(old_name != new_name) {
-		    //TODO: Check whether new name is legal
+		    if(!checkTooltip("pref_name_tooltip")) {return false;}
+		    if (name.trim() == "") {showTooltip("pref_name_tooltip", "Name can't be empty"); return false;}
 		    localStorage.removeItem(old_name)
 		}
 
@@ -159,15 +161,12 @@ function saveStudent() {
         pref_string += document.getElementById("pref3").value + ";";
         pref_string += document.querySelector("input[type='radio'][name='position']:checked").value + ";";
 		localStorage.setItem(new_name, pref_string);
+
+		//Save everything
 		saveLocalStorage();
+		document.getElementById("student_current").innerHTML = new_name;
 		//TODO: Animation/Tooltip, to show whether it was saved
 	} catch(err) {
-		switch (err) {
-			case "illegal_name":
-				//TODO: Handle Error
-			default:
-				err_text = "Adding student went wrong! Error: " + err; break;
-		}
-		//TODO: Show tooltip with error message
+	    alert("Error: " + err);
 	}
 }

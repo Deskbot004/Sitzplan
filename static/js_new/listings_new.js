@@ -146,6 +146,7 @@ function selectElement(event_target, element_type) {
             case "student":
                 var list_type = "pref";
                 var new_list_id = "n/a";
+                localStorage.setItem("current_student", event_target.innerHTML);
                 break;
             default:
                 alert("select Element: type \"" + list_type + "\" unknown"); break;
@@ -178,13 +179,13 @@ function selectElement(event_target, element_type) {
     @param list_id: Id of list to check for duplicates
     @return: void
 */
-function checkInput(createInput, tooltip_id, list_id) {
+function checkInput(createInput, tooltip_id, list_id, ignore="n/a") {
     var text = createInput.target.value;
 
     if (!checkForIllegalCharacters(text)) {
         err_text = "The name should only contain letters and numbers!";
         showTooltip(tooltip_id, err_text);
-    } else if (existsElement(text, list_id)) {
+    } else if (existsElement(text, list_id) && text != ignore) {
         err_text = "The entry \"" + text + "\" already exists!";
         showTooltip(tooltip_id, err_text);
     } else {
@@ -197,7 +198,7 @@ function showTooltip(tooltip_id, text){
     tooltip.innerHTML = text;
     tooltip.style.visibility = "visible";
 }
-
+//TODO: hide tooltip, when clicking outside if input
 function hideTooltip(tooltip_id){
     var tooltip = document.getElementById(tooltip_id);
     tooltip.style.visibility = "hidden";
@@ -212,16 +213,24 @@ function hideTooltip(tooltip_id){
 */
 function createListElement(tooltip_id, input_id, list_type) {
     var tooltip = document.getElementById(tooltip_id);
-    if (tooltip.style.visibility == "visible"){ //Name not allowed
-        tooltip.style.animation = "1s popupcolor"; //play tooltip animation
-        setTimeout(function(){tooltip.style.animation = "";}, 1000); //reset animation
-        return false;
-    } else { //Create Element
+    if (checkTooltip(tooltip_id)){
         var name = document.getElementById(input_id).value;
         if (!createElement(list_type, name)) return;
         var node = addElement(name, 0, list_type); //Add the new item to list
         selectElement(node, list_type); //Select that new item
         document.getElementById(input_id).value = "";//Clear input field
         event.preventDefault();
+        return true;
     }
+    return false
+}
+
+function checkTooltip(tooltip_id) {
+    var tooltip = document.getElementById(tooltip_id);
+    if (tooltip.style.visibility == "visible"){ //Name not allowed
+        tooltip.style.animation = "1s popupcolor"; //play tooltip animation
+        setTimeout(function(){tooltip.style.animation = "";}, 1000); //reset animation
+        return false;
+    }
+    return true;
 }
