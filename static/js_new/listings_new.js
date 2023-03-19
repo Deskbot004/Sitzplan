@@ -80,6 +80,26 @@ function existsElement(text, list_id) {
     return detected;
 }
 
+/*
+    Hides an entry from a list (with disable attribute)
+
+    @param enableOther: If true, hides _only_ the entry. If false, adds entry to the the disabled elements
+*/
+function disableEntry(entry, list_id, enableOther){
+    var fullList = document.getElementById(list_id);
+    for (let elem of fullList.children) {
+        if(elem.innerHTML == entry) {elem.disabled = true;}
+        else {if(enableOther){elem.disabled=false;}}
+    }
+}
+
+function enableEntry(entry, list_id){
+    var fullList = document.getElementById(list_id);
+    for (let elem of fullList.children) {
+        if(elem.innerHTML == entry) {elem.disabled = false;}
+    }
+}
+
 
 function loadList(list_type, name="n/a") {
     loadInformation(list_type, name); //Depends on the .js, that was loaded in the html file

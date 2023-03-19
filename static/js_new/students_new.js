@@ -35,7 +35,11 @@ async function loadInformation(list_type, name) {
             document.getElementById('class_name').innerHTML = name;
             break;
         case "pref":
-            var prefs = localStorage.getItem(name).split(";"); //Load Prefs
+            //Hide student from dropdown table
+            disableEntry(localStorage.getItem("current_student"), "dropdown_list", 1);
+
+            //Load Prefs
+            var prefs = localStorage.getItem(name).split(";");
 
             //Input Prefs into corresponding text field
             document.getElementById('pref_name').value = name;
@@ -67,8 +71,8 @@ async function loadInformation(list_type, name) {
                 //Example: localStorage.getItem("Jonas") would get all preferences of "Jonas" eg. "pref1;pref2;;;1;"
                 localStorage.setItem(student_name, information[student_name])
             }
-            addDict(information, 0, "dropdown", 1); //Add students to dropdown
             information = Object.keys(information); //Add the keys (instead of their values) to list
+            addDict(information, 0, "dropdown", 1); //Add students to dropdown
         }
         addDict(information, 0, list_type, 1);
     });
@@ -83,12 +87,12 @@ async function loadInformation(list_type, name) {
 
 /* Saves the current local Storage into a file */
 function saveLocalStorage() {
-    var ignore = ["file_name", "current_student"];
+    //var ignore = ["file_name", "current_student"];
     //Convert students inside the storage into a string
     var student_str = "";
     for (var i=0; i<localStorage.length; ++i){
         var student = localStorage.key(i);
-        if (ignore.includes(student)) {continue;}
+        if (student.includes('_')) {continue;}
         student_str += student + ";" + localStorage.getItem(student) + "|";
     }
     saveData({"name": localStorage.getItem("file_name"), "students": student_str});
@@ -137,6 +141,45 @@ function createElement(element_type, name) {
 	}
 }
 
+function resetPref(pref_nr) {
+    hideTooltip('pref' + pref_nr + '_tooltip');
+    enableEntry(localStorage.getItem("pref_" + pref_nr), "dropdown_list");
+    localStorage.removeItem("pref_" + pref_nr);
+}
+
+function checkPref(pref_nr) {
+    var pref_id = "pref" + pref_nr;
+    var pref = document.getElementById(pref_id);
+    var dropdown = document.getElementById("dropdown_list");
+
+    try {
+        if (pref.value.trim() == "") {return true;} //Field Empty
+        for (let student of dropdown.children) {
+            if(pref.value == student.innerHTML) {
+                if(student.disabled) {throw "student_used";} //Student was already used elsewhere
+                else { //Legal selection
+                    disableEntry(pref.value, "dropdown_list", 0);
+                    localStorage.setItem("pref_" + pref_nr, pref.value);
+                    //TODO: add next pref input field
+                    return true;
+                }
+            }
+        }
+        throw "not_student";
+    } catch(err) {
+        switch(err) {
+            case "student_used":
+                err_text = "Student already used"; break;
+            case "not_student":
+                err_text = "Student \"" + pref.value + "\" not found"; break;
+            default:
+                err_text = "Error: " + err;
+        }
+        showTooltip(pref_id + "_tooltip", err_text);
+        return false;
+    }
+}
+
 /*
 	Saves changes to student Name and Prefs
 
@@ -165,7 +208,7 @@ function saveStudent() {
 		//Save everything
 		saveLocalStorage();
 		document.getElementById("student_current").innerHTML = new_name;
-		//TODO: Animation/Tooltip, to show whether it was saved
+		alert("Saved"); //TODO: Animation/Tooltip, to show whether it was saved
 	} catch(err) {
 	    alert("Error: " + err);
 	}
