@@ -79,14 +79,22 @@
             <!-- TODO: Css for Tooltip -->
 
             <h3>Wants to sit next to</h3>
+            <!-- Pref0 -->
             <input type="text" oninput="resetPref(0)" onfocusout="checkPref(0)" autocomplete="off" placeholder="Type to search" class="textinput" list="dropdown_list" id="pref0">
             <div class="tooltip" id="pref0_tooltip">Tooltip Placeholder</div>
-            <input type="text" oninput="resetPref(1)" onfocusout="checkPref(1)" autocomplete="off" placeholder="Type to search" class="textinput" list="dropdown_list" id="pref1">
+
+            <!-- Pref1 -->
+            <button style="display:none;" id="pref1_button" onclick="addPrefField(1)" type="button">Add Second Wish</button>
+            <input style="display:none;" type="text" oninput="resetPref(1)" onfocusout="checkPref(1)" autocomplete="off" placeholder="Type to search" class="textinput" list="dropdown_list" id="pref1">
             <div class="tooltip" id="pref1_tooltip">Tooltip Placeholder</div>
-            <input type="text" oninput="resetPref(2)" onfocusout="checkPref(2)" autocomplete="off" placeholder="Type to search" class="textinput" list="dropdown_list" id="pref2">
+
+            <!-- Pref2 -->
+            <button style="display:none;" id="pref2_button" onclick="addPrefField(2)" type="button">Add Third Wish</button>
+            <input style="display:none;" type="text" oninput="resetPref(2)" onfocusout="checkPref(2)" autocomplete="off" placeholder="Type to search" class="textinput" list="dropdown_list" id="pref2">
             <div class="tooltip" id="pref2_tooltip">Tooltip Placeholder</div>
 
             <h3>Should not sit next to</h3>
+            <!-- Pref3 -->
             <input type="text" oninput="resetPref(3)" onfocusout="checkPref(3)" autocomplete="off" placeholder="Type to search" class="textinput" list="dropdown_list" id="pref3">
             <div class="tooltip" id="pref3_tooltip">Tooltip Placeholder</div>
             <datalist id="dropdown_list"></datalist>

@@ -48,6 +48,29 @@ async function loadInformation(list_type, name) {
             document.getElementById('pref2').value = prefs[2];
             document.getElementById('pref3').value = prefs[3];
 
+            //Make pref1 and pref2 visible/invisible, depending on whether they have a value
+            if(prefs[2]){ //TODO: Clean this shit up, make it into a function or smth
+                document.getElementById("pref1").style.display="block";
+                document.getElementById("pref2").style.display="block";
+                document.getElementById("pref1_button").style.display="none";
+                document.getElementById("pref2_button").style.display="none";
+            }else if(prefs[1]){
+                document.getElementById("pref1").style.display="block";
+                document.getElementById("pref2").style.display="none";
+                document.getElementById("pref1_button").style.display="none";
+                document.getElementById("pref2_button").style.display="block";
+            }else if(prefs[0]){
+                document.getElementById("pref1").style.display="none";
+                document.getElementById("pref2").style.display="none";
+                document.getElementById("pref1_button").style.display="block";
+                document.getElementById("pref2_button").style.display="none";
+            }else{
+                document.getElementById("pref1").style.display="none";
+                document.getElementById("pref2").style.display="none";
+                document.getElementById("pref1_button").style.display="none";
+                document.getElementById("pref2_button").style.display="none";
+            }
+
             //Select correct Button (Front/Back/Either)
             switch(prefs[4]) {
                 case "1":
@@ -147,20 +170,23 @@ function resetPref(pref_nr) {
     localStorage.removeItem("pref_" + pref_nr);
 }
 
-function checkPref(pref_nr) {
+function checkPref(pref_nr) { //TODO: Add the next button more intuitively: When pressing Enter/selecting from the list
     var pref_id = "pref" + pref_nr;
     var pref = document.getElementById(pref_id);
     var dropdown = document.getElementById("dropdown_list");
 
     try {
-        if (pref.value.trim() == "") {return true;} //Field Empty
+        if (pref.value.trim() == "") {return true;} //Field Empty //TODO: Remove pref field
         for (let student of dropdown.children) {
             if(pref.value == student.innerHTML) {
                 if(student.disabled) {throw "student_used";} //Student was already used elsewhere
                 else { //Legal selection
                     disableEntry(pref.value, "dropdown_list", 0);
                     localStorage.setItem("pref_" + pref_nr, pref.value);
-                    //TODO: add next pref input field
+                    if(pref_nr < 2) {
+                        var next_pref = pref_nr + 1;
+                        document.getElementById("pref"+next_pref+"_button").style.display="block";
+                    }
                     return true;
                 }
             }
@@ -179,6 +205,22 @@ function checkPref(pref_nr) {
         return false;
     }
 }
+
+function addPrefField(pref_nr){
+    document.getElementById("pref"+pref_nr+"_button").style.display = "none";
+    document.getElementById("pref"+pref_nr).style.display="block";
+
+    //$(pref_id + " input").focus();
+}
+
+/*
+$(function(){
+    $("#button-wrapper button").click(function(){
+
+        $("#button-wrapper").html('<input type="text" />');
+        $("#button-wrapper input").focus();
+    });
+});*/
 
 /*
 	Saves changes to student Name and Prefs
