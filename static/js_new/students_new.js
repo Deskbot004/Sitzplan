@@ -3,7 +3,12 @@
 
 	Functions:
         loadInformation() - Loads a list (or similar) from the server
-        saveElement() - Saves the Element to the server
+        saveLocalStorage() - Saves current local Storage into a file
+        createElement() - Creates a new class/student
+        resetPrefs() - Resets the local information about an input field
+        checkPrefs() - Reads pref input and shows tooltip on illegal argument/saves changes locally on legal argument
+        addPrefField() - Shows corresponding pref input field, when clicking on a pref button
+        saveStudent() - Saves student to the server
 
     Common Variables:
         list_id - id of a list
@@ -13,6 +18,7 @@
         "dropdown" - Dropdown menu, that gets narrowed down then you type ("type to search")
         "class" - List of all Classes
         "student" - List of all Students in a Class
+        "pref" - Preferences of a single student
 */
 
 //_________________________________Functions________________________________________________
@@ -108,9 +114,10 @@ async function loadInformation(list_type, name) {
     await request;
 }
 
-/* Saves the current local Storage into a file */
+/*
+    Saves the current local Storage into a file. Ignores keys in it, that contain "_"
+*/
 function saveLocalStorage() {
-    //var ignore = ["file_name", "current_student"];
     //Convert students inside the storage into a string
     var student_str = "";
     for (var i=0; i<localStorage.length; ++i){
@@ -183,7 +190,7 @@ function checkPref(pref_nr) { //TODO: Add the next button more intuitively: When
                 else { //Legal selection
                     disableEntry(pref.value, "dropdown_list", 0);
                     localStorage.setItem("pref_" + pref_nr, pref.value);
-                    if(pref_nr < 2) {
+                    if(pref_nr < 2) { //Show next input field
                         var next_pref = pref_nr + 1;
                         document.getElementById("pref"+next_pref+"_button").style.display="block";
                     }
@@ -209,18 +216,9 @@ function checkPref(pref_nr) { //TODO: Add the next button more intuitively: When
 function addPrefField(pref_nr){
     document.getElementById("pref"+pref_nr+"_button").style.display = "none";
     document.getElementById("pref"+pref_nr).style.display="block";
-
+    //TODO: Focus on new field
     //$(pref_id + " input").focus();
 }
-
-/*
-$(function(){
-    $("#button-wrapper button").click(function(){
-
-        $("#button-wrapper").html('<input type="text" />');
-        $("#button-wrapper input").focus();
-    });
-});*/
 
 /*
 	Saves changes to student Name and Prefs
@@ -234,7 +232,7 @@ function saveStudent() {
 		var new_name = document.getElementById("pref_name").value;
 		if(old_name != new_name) {
 		    if(!checkTooltip("pref_name_tooltip")) {return false;}
-		    if (name.trim() == "") {showTooltip("pref_name_tooltip", "Name can't be empty"); return false;}
+		    if (new_name.trim() == "") {showTooltip("pref_name_tooltip", "Name can't be empty"); return false;}
 		    localStorage.removeItem(old_name)
 		}
 
@@ -254,4 +252,30 @@ function saveStudent() {
 	} catch(err) {
 	    alert("Error: " + err);
 	}
+}
+
+function openRename() {
+    document.getElementById("class_name").style.display = "none";
+    document.getElementById("class_name_input").value = document.getElementById("class_name").innerHTML;
+    document.getElementById("class_name_input").style.display = "block";
+    document.getElementById("class_name_input").focus();
+}
+
+async function renameClass() {
+    if(!checkTooltip("class_name_tooltip")) {return false;}
+
+    //Rename File#
+    var old_name = localStorage.getItem("file_name");
+    var new_name = document.getElementById("class_name_input").value;
+    await renaming(old_name, new_name);
+    localStorage.setItem("file_name", new_name);
+    saveLocalStorage();
+
+    //Change input to title
+    document.getElementById("class_name_input").style.display = "none";
+    document.getElementById("class_name").innerHTML = document.getElementById("class_name_input").value;
+    document.getElementById("class_name").style.display = "block";
+
+    //Change name in class list
+    loadInformation("class", "class_list");
 }

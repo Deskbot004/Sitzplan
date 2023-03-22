@@ -34,9 +34,6 @@
     <h1>Student Lists</h1> <!--Main Title-->
     <h2 id="student_prompt" style="position: absolute;"><br>Please Select a Class -></h2> <!--Prompt while no class selected -->
 
-    <!-- TODO: Bei Prefs kann man nur Studenten, die es gibt selecten-->
-    <!-- TODO: Wants to sit next to: Am Anfang nur ein Feld. Sobald voll erscheint button "Zweit/Drittwunsch hinzufügen"-->
-
     <!-- Container for Student List & Preferences -->
     <div class="inner">
         <!------- Students List ------->
@@ -46,10 +43,14 @@
             <!-- Class Title & Dots Menu -->
             <div class="title-container">
                 <h2 id="class_name">Class Name Placeholder</h2>
+                <form onfocusout="renameClass(); return false;" onsubmit="renameClass(); return false;">
+                    <input type="text" autocomplete="off" style="display:none" id="class_name_input" class="textinput">
+                    <div class="tooltip" id="class_name_tooltip">Tooltip Placeholder</div>
+                </form>
                 <div class="dots-menu">
                     <svg onclick="event.stopPropagation(); showDropdown('dropdown_classname')" xmlns="http://www.w3.org/2000/svg" class="a" width="25px" height="25px" viewBox="0 0 25 25" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
                     <ul class="dots-dropdown hide" id="dropdown_classname">
-                        <li><a onclick="alert('rename');" class="elem">Rename</a></li>
+                        <li><a onclick="openRename()" class="elem">Rename</a></li>
                         <li><a onclick="alert('delete');" class="elem">Delete</a></li>
                     </ul>
                 </div>
@@ -97,6 +98,7 @@
             <!-- Pref3 -->
             <input type="text" oninput="resetPref(3)" onfocusout="checkPref(3)" autocomplete="off" placeholder="Type to search" class="textinput" list="dropdown_list" id="pref3">
             <div class="tooltip" id="pref3_tooltip">Tooltip Placeholder</div>
+
             <datalist id="dropdown_list"></datalist>
 
             <h3>Should sit in the</h3>
@@ -145,9 +147,12 @@
     // Event Listeners for the Textinputs (Create Student/Class)
     const createClass = document.getElementById("class_create");
     const createStudent = document.getElementById("student_create");
+    const className = document.getElementById("class_name_input");
     const prefName = document.getElementById("pref_name");
+
     createClass.addEventListener("input", (e) => {checkInput(e, "class_tooltip", "class_list")});
     createStudent.addEventListener("input", (e) => {checkInput(e, "student_tooltip", "student_list")});
+    className.addEventListener("input", (e) => {checkInput(e, "class_name_tooltip", "class_list", localStorage.getItem("file_name"), 1)});
     prefName.addEventListener("input", (e) => {checkInput(e, "pref_name_tooltip", "student_list", localStorage.getItem("current_student"))});
 </script>
 </body>
