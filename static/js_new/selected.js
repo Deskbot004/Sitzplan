@@ -156,7 +156,7 @@ async function saveData(info) {
 
 
 /*
-	Function that renames a classroom if the name does not already exist.
+	Function that deletes a file, if old and new name are different
 
 	@param old_name: Old name of the classroom as String
 	@param new_name: New name of the classroom as String
@@ -177,7 +177,7 @@ async function renaming(old_name, new_name) {
 	        if(data_dict[elem] == old_name) old_name_exists = 1;
 	    }
 
-	    document.getElementById('head_text').innerHTML = document.getElementById('head_text').innerHTML.replace(old_name, new_name);
+	    //document.getElementById('head_text').innerHTML = document.getElementById('head_text').innerHTML.replace(old_name, new_name);
 
 	    if (old_name_exists) {
 	        var delete_return = deleteRequest(old_name);

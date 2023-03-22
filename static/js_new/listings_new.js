@@ -197,9 +197,11 @@ function selectElement(event_target, element_type) {
     @param createInput: textinput object
     @param tooltip_id: Id of the tooltip object
     @param list_id: Id of list to check for duplicates
+    @param ignore: when checking, whether name already exists, it ignores this value
+    @param checkEmpty: Boolean, should the tooltip appear, when entry is empty?
     @return: void
 */
-function checkInput(createInput, tooltip_id, list_id, ignore="n/a") {
+function checkInput(createInput, tooltip_id, list_id, ignore="n/a", checkEmpty=0) {
     var text = createInput.target.value;
 
     if (!checkForIllegalCharacters(text)) {
@@ -207,6 +209,9 @@ function checkInput(createInput, tooltip_id, list_id, ignore="n/a") {
         showTooltip(tooltip_id, err_text);
     } else if (existsElement(text, list_id) && text != ignore) {
         err_text = "The entry \"" + text + "\" already exists!";
+        showTooltip(tooltip_id, err_text);
+    } else if (checkEmpty && text.trim() == "") {
+        err_text = "Can't be empty!";
         showTooltip(tooltip_id, err_text);
     } else {
         hideTooltip(tooltip_id);
