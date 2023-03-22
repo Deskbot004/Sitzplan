@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request
-from logic import students, classrooms, preferences, generator
+from logic import students, classrooms, generator
+import mysql.connector
 
 app = Flask(__name__)
+data_arr = []
 
 #app.config["SERVER_NAME"] = "randomseatings.de:5000"
 
@@ -214,9 +216,17 @@ def after_request(response):
     return response
 
 
+#TODO
+def ini_arr():
+    global data_arr
+    print("lol not yet")
+
+
 if __name__ == "__main__":
+    ini_arr()
     app.run(
         host="0.0.0.0",
+        # Aus Railway
         port=5000,
         debug=True
     )
