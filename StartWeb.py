@@ -3,9 +3,17 @@ from logic import students, classrooms, generator
 import mysql.connector
 
 app = Flask(__name__)
-data_arr = []
+data_dict = {}
 
-#app.config["SERVER_NAME"] = "randomseatings.de:5000"
+
+class File:
+    def __init__(self, file_type, name, data, access):
+        self.file_type = file_type
+        self.name = name
+        self.data = data
+        self.access = access
+
+# app.config["SERVER_NAME"] = "randomseatings.de:5000"
 
 # Websites
 @app.route('/')
@@ -217,17 +225,41 @@ def after_request(response):
 
 
 #TODO
-def ini_arr():
-    global data_arr
-    print("lol not yet")
+def ini_dict():
+    global data_dict
+    data_dict = {}
+
+    # Interpret all room files
+    # Example call:
+    # data_dict["rooms"][0].name => Name of the first found room
+    rooms = classrooms.get_all_classroom_lists()[0]
+    room_arr = []
+    for room_key in rooms:
+        room_name = rooms[room_key]
+        room_data = classrooms.get_classroom(room_name)[0]
+        room_arr.append(File("room", room_name, room_data, 0))
+    data_dict["rooms"] = room_arr
+
+    # Interpret all student lists
+    studentlists = students.get_all_student_lists()[0]
+    studentlist_arr = []
+    for student_key in studentlists:
+        student_name = studentlists[student_key]
+        student_data = students.get_student_list(student_name)[0]
+        print(student_data)
+        studentlist_arr.append(File("students", student_name, student_data, 0))
+    data_dict["studentlists"] = studentlist_arr
 
 
+# For some reason the main gets called twice on startup, but idk....
 if __name__ == "__main__":
-    ini_arr()
-    app.run(
-        host="0.0.0.0",
-        # Aus Railway
-        port=5000,
-        debug=True
-    )
-
+    try:
+        ini_dict()
+        app.run(
+            host="0.0.0.0",
+            # Aus Railway
+            port=5000,
+            debug=True
+        )
+    finally:
+        print("On Exit twice :)")
