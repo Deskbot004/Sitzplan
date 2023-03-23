@@ -88,7 +88,7 @@ function existsElement(text, list_id) {
 function disableEntry(entry, list_id, enableOther){
     var fullList = document.getElementById(list_id);
     for (let elem of fullList.children) {
-        if(elem.innerHTML == entry) {elem.disabled = true;}
+        if(elem.innerHTML == entry && entry.trim() != "") {elem.disabled = true;}
         else {if(enableOther){elem.disabled=false;}}
     }
 }

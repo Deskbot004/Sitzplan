@@ -42,7 +42,6 @@ async function loadInformation(list_type, name) {
             break;
         case "pref":
             //Hide student from dropdown table
-            disableEntry(localStorage.getItem("current_student"), "dropdown_list", 1);
 
             //Load Prefs
             var prefs = localStorage.getItem(name).split(";");
@@ -54,27 +53,19 @@ async function loadInformation(list_type, name) {
             document.getElementById('pref2').value = prefs[2];
             document.getElementById('pref3').value = prefs[3];
 
+            //Save them to local Storage and disable their entries
+            localStorage.setItem("pref_0", prefs[0]);
+            localStorage.setItem("pref_1", prefs[1]);
+            localStorage.setItem("pref_2", prefs[2]);
+            localStorage.setItem("pref_3", prefs[3]);
+            updateDropdown();
+
             //Make pref1 and pref2 visible/invisible, depending on whether they have a value
-            if(prefs[2]){ //TODO: Clean this shit up, make it into a function or smth
-                document.getElementById("pref1").style.display="block";
-                document.getElementById("pref2").style.display="block";
-                document.getElementById("pref1_button").style.display="none";
-                document.getElementById("pref2_button").style.display="none";
-            }else if(prefs[1]){
-                document.getElementById("pref1").style.display="block";
-                document.getElementById("pref2").style.display="none";
-                document.getElementById("pref1_button").style.display="none";
-                document.getElementById("pref2_button").style.display="block";
-            }else if(prefs[0]){
-                document.getElementById("pref1").style.display="none";
-                document.getElementById("pref2").style.display="none";
-                document.getElementById("pref1_button").style.display="block";
-                document.getElementById("pref2_button").style.display="none";
-            }else{
-                document.getElementById("pref1").style.display="none";
-                document.getElementById("pref2").style.display="none";
-                document.getElementById("pref1_button").style.display="none";
-                document.getElementById("pref2_button").style.display="none";
+            var prefButton = 0;
+            for(var i=0; i<4; i++){
+                if(prefs[i]){togglePref(i, "none", "block");}
+                else if(!prefButton || i==3){togglePref(i, "block", "none"); prefButton=1;}
+                else{togglePref(i, "none", "none");}
             }
 
             //Select correct Button (Front/Back/Either)
@@ -171,36 +162,88 @@ function createElement(element_type, name) {
 	}
 }
 
-function resetPref(pref_nr) {
-    hideTooltip('pref' + pref_nr + '_tooltip');
-    enableEntry(localStorage.getItem("pref_" + pref_nr), "dropdown_list");
-    localStorage.removeItem("pref_" + pref_nr);
+//_________________________________Handling Prefs________________________________________________
+/*
+    Turns Element of a pref on/off
+    @param pref_nr: Nr of pref (between 0 and 3)
+    @param button_display: display style of button ("none" or "block")
+    @param form_display: display style of form ("none" or "block")
+*/
+function togglePref(pref_nr, button_display, form_display){
+    document.getElementById("pref"+pref_nr+"_button").style.display = button_display;
+    document.getElementById("pref"+pref_nr+"_form").style.display = form_display;
 }
 
-function checkPref(pref_nr) { //TODO: Add the next button more intuitively: When pressing Enter/selecting from the list
+/*
+    Removes a Pref field and ripples the other fields
+*/
+function removePref(pref_nr){
+    if(pref_nr >= 2){ //Last pref in list
+        document.getElementById("pref"+pref_nr).value = "";
+        localStorage.removeItem("pref_" + pref_nr);
+        togglePref(pref_nr, "block", "none");
+    }else{
+        var next_pref = document.getElementById("pref"+(pref_nr+1)+"_form");
+        if(next_pref.style.display!="none"){ //Next Pref has a value
+            document.getElementById("pref"+pref_nr).value = document.getElementById("pref"+(pref_nr+1)).value;
+            localStorage.setItem("pref_" + pref_nr, document.getElementById("pref"+pref_nr).value);
+            removePref(pref_nr+1);
+        }else{ //Next pref is empty
+            document.getElementById("pref"+pref_nr).value = "";
+            localStorage.removeItem("pref_" + pref_nr);
+            togglePref(pref_nr, "block", "none");
+            for(var i=pref_nr+1; i<3; i++){
+                togglePref(i, "none", "none");
+            }
+        }
+    }
+    updateDropdown();
+}
+
+/*
+    Updates the dropdown for the prefs input fields (meaning removes used students/adds unused students),
+    based on information from the local storage
+*/
+function updateDropdown(){
+    disableEntry(localStorage.getItem("current_student"), "dropdown_list", 1);
+    for(var i=0; i<4; i++){
+        disableEntry(localStorage.getItem("pref_"+i), "dropdown_list", 0);
+    }
+}
+
+/*
+    Should be called when input field is focused
+*/
+function resetPref(pref_nr) {
+    hideTooltip('pref' + pref_nr + '_tooltip');
+    localStorage.removeItem("pref_" + pref_nr);
+    updateDropdown();
+}
+
+function checkPref(pref_nr) {
     var pref_id = "pref" + pref_nr;
     var pref = document.getElementById(pref_id);
+    updateDropdown();
     var dropdown = document.getElementById("dropdown_list");
 
     try {
-        if (pref.value.trim() == "") {return true;} //Field Empty //TODO: Remove pref field
-        for (let student of dropdown.children) {
+        if (pref.value.trim() == "") {throw "empty_field";} //Field Empty
+        for (let student of dropdown.children) { //Find Element in dropdown list that matches input
             if(pref.value == student.innerHTML) {
                 if(student.disabled) {throw "student_used";} //Student was already used elsewhere
                 else { //Legal selection
-                    disableEntry(pref.value, "dropdown_list", 0);
                     localStorage.setItem("pref_" + pref_nr, pref.value);
-                    if(pref_nr < 2) { //Show next input field
-                        var next_pref = pref_nr + 1;
-                        document.getElementById("pref"+next_pref+"_button").style.display="block";
-                    }
+                    updateDropdown();
                     return true;
                 }
             }
         }
         throw "not_student";
+        return true;
     } catch(err) {
         switch(err) {
+            case "empty_field":
+                err_text = "Please enter student or delete field"; break;
             case "student_used":
                 err_text = "Student already used"; break;
             case "not_student":
@@ -213,12 +256,16 @@ function checkPref(pref_nr) { //TODO: Add the next button more intuitively: When
     }
 }
 
+
+
 function addPrefField(pref_nr){
     document.getElementById("pref"+pref_nr+"_button").style.display = "none";
-    document.getElementById("pref"+pref_nr).style.display="block";
+    document.getElementById("pref"+pref_nr+"_form").style.display="block";
     //TODO: Focus on new field
     //$(pref_id + " input").focus();
 }
+
+//_________________________________Unsorted Functions________________________________________________
 
 /*
 	Saves changes to student Name and Prefs
