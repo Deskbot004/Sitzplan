@@ -64,27 +64,16 @@ def get_all_student_lists():
         return {}, "FAIL"
 
 
-def save_students(name, student_str):
+def save_students(name, student_dict):
     """
     Method to save a dictionary as .json from string.
 
     :param name: Name of the class
-    :param student_str: The students of the class seperated by "|"
+    :param student_dict: The dictionary of students
     :return: State of the function
     """
 
     try:
-        student_str = student_str.split("|")
-        student_dict = {}
-
-        for student in student_str:
-            student_arr = student.split(";", 1)
-            if len(student_arr) == 1:
-                student_arr.append(";;;;;")
-            student_name = student_arr[0]
-            if student_name != '' and student_name != ' ':
-                student_dict[student_name] = student_arr[1]
-
         file = open(class_path + name + ".json", "w")
         json.dump(student_dict, file)
         file.close()
@@ -92,6 +81,22 @@ def save_students(name, student_str):
     except Exception as err:
         print(f"Student saving failed with Error {err}")
         return "FAIL"
+
+
+def string_converter(student_str):
+    """
+
+    """
+    student_str = student_str.split("|")
+    student_dict = {}
+
+    for student in student_str:
+        student_arr = student.split(";", 1)
+        if len(student_arr) == 1:
+            student_arr.append(";;;;;")
+        student_name = student_arr[0]
+        if student_name != '' and student_name != ' ':
+            student_dict[student_name] = student_arr[1]
 
 
 def delete_students(name):
