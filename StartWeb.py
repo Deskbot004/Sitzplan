@@ -78,7 +78,8 @@ def student_info():
     try:
         if request.method == "POST":
             students_dict = request.form
-            call = students.save_students(students_dict["name"], students_dict["students"])
+            new_data = students.string_converter(students_dict["students"])
+            call = students.save_students(students_dict["name"], new_data)
             if call == "SUCCESS":
                 return "", 204
             else:

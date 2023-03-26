@@ -85,7 +85,10 @@ def save_students(name, student_dict):
 
 def string_converter(student_str):
     """
+        Converts the old student string format into a dictionary
 
+        :param student_str: String with student information split on |
+        :return: Dictionary in savable format
     """
     student_str = student_str.split("|")
     student_dict = {}
@@ -97,6 +100,8 @@ def string_converter(student_str):
         student_name = student_arr[0]
         if student_name != '' and student_name != ' ':
             student_dict[student_name] = student_arr[1]
+
+    return student_dict
 
 
 def delete_students(name):
