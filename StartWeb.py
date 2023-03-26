@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
-from logic import students, classrooms, generator
-import mysql.connector
+from logic import students, classrooms, generator, data_manager
 
 app = Flask(__name__)
 data_dict = {}
@@ -219,88 +218,16 @@ def after_request(response):
     return response
 
 
-# ________________________________________________________________________________________________________
-# Functions data dict
-
-class File:
-    """
-        Class that saves every important aspect of a file.
-        @param name: File name as found in data
-        @param data: Content of the file
-        param access: Either a 0 if no user is using this file at the moment or 1
-    """
-    def __init__(self, name, data, access):
-        self.name = name
-        self.data = data
-        self.access = access
-
-
-def ini_dict():
-    """
-        Function that reads all existing files in data and creates a multi-structure to edit.
-        First layer: Dictionary with keys depicting the type of data
-        Second layer: Arrays containing the different files of that type
-        Third layer: File Objects which contain every important information of the file
-
-        TODO add try except
-    """
-    global data_dict
-    data_dict = {}
-
-    # Interpret all room files
-    # Example call:
-    # data_dict["rooms"][0].name => Name of the first found room
-    rooms = classrooms.get_all_classroom_lists()[0]
-    room_arr = []
-    for room_key in rooms:
-        room_name = rooms[room_key]
-        room_data = classrooms.get_classroom(room_name)[0]
-        room_arr.append(File(room_name, room_data, 0))
-    data_dict["rooms"] = room_arr
-
-    # Interpret all student lists
-    studentlists = students.get_all_student_lists()[0]
-    studentlist_arr = []
-    for student_key in studentlists:
-        student_name = studentlists[student_key]
-        student_data = students.get_student_list(student_name)[0]
-        studentlist_arr.append(File(student_name, student_data, 0))
-    data_dict["studentlists"] = studentlist_arr
-
-
 def create_backup():
     global data_dict
     global back_up_dict
     back_up_dict = data_dict
 
 
-def save_dict():
-    """
-    Saves the dict into different files.
-
-    TODO add try except
-    """
-    global data_dict
-    call = "FAIL"
-    for file_type in data_dict:
-        to_save = data_dict[file_type]
-        if file_type == "rooms":
-            for file_obj in to_save:
-                call = classrooms.save_classroom(file_obj.name, file_obj.data)
-        elif file_type == "studentlists":
-            for file_obj in to_save:
-                call = students.save_students(file_obj.name, file_obj.data)
-        else:
-            print("Warning: unknown file_type saved:")
-            print(file_type)
-            call = "FAIL"
-    return call
-
-
 # For some reason the main gets called twice on startup, but idk....
 if __name__ == "__main__":
     try:
-        ini_dict()
+        data_dict = data_manager.ini_dict(data_dict)
         app.run(
             host="0.0.0.0",
             # Aus Railway
@@ -309,4 +236,4 @@ if __name__ == "__main__":
         )
     finally:
         print("Saving dict:")
-        print(save_dict())
+        print(data_manager.save_dict(data_dict))
