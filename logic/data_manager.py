@@ -88,8 +88,16 @@ def list_filetype(data_dict, filetype):
         return {}, "FAIL"
 
 
-def get_file_data(data_dict, fileytpe, name):
+def get_file_data(data_dict, filetype, name):
     """
         Get the data from a file, and lock the access!
+
+        :param data_dict: Array containing the cache data
+        :param filetype: The type of the filetype that should be listed
+        :param name: The name of the file to get
+        :return:
     """
-    return
+    for file_obj in data_dict[filetype]:
+        if file_obj.name == name:
+            return file_obj.data, "SUCCESS"
+    return {}, "FAIL"
