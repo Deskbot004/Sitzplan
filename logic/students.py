@@ -41,7 +41,7 @@ def get_all_student_lists():
     Simple function to find all student lists in /data.
     All found lists are then returned as an array.
 
-    :return: Array containing all found lists, State of the function
+    :return: Dictionary containing all found lists, State of the function
     """
 
     try:

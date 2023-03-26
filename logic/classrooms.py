@@ -33,7 +33,7 @@ def save_classroom(class_name, class_information):
 
         return "SUCCESS"
     except Exception as err:
-        print(f"Classroom saving failed... with Error {err}")
+        print(f"Classroom saving failed with Error {err}")
         return "FAIL"
 
 
@@ -52,7 +52,7 @@ def get_classroom(name_room):
         read_file.close()
         return room, "SUCCESS"
     except Exception as err:
-        print(f"Classroom getting failed... with Error {err}")
+        print(f"Classroom getting failed with Error {err}")
         return "", "FAIL"
 
 
@@ -78,7 +78,7 @@ def get_all_classroom_lists():
 
         return file_dict, "SUCCESS"
     except Exception as err:
-        print(f"Classroom list getting failed... with Error {err}")
+        print(f"Classroom list getting failed with Error {err}")
         return {}, "FAIL"
 
 
@@ -93,7 +93,7 @@ def delete_classroom(name):
         os.remove(room_path + name + ".txt")
         return "SUCCESS"
     except Exception as err:
-        print(f"Classroom deleting failed... with Error {err}")
+        print(f"Classroom deleting failed with Error {err}")
         return "FAIL"
 
 

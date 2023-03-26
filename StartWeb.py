@@ -62,8 +62,9 @@ def get_students_lists():
         if request.method == "POST":
             call = students.get_student_list(request.form["result"])
         elif request.method == "GET":
-            call = students.get_all_student_lists()
+            call = data_manager.list_filetype(data_dict, "studentlists")
         if call[1] == "SUCCESS":
+            print(call[0])
             return call[0], 200
         else:
             return "", 404
@@ -139,8 +140,9 @@ def get_classroom_lists():
         if request.method == "POST":
             call = classrooms.get_classroom(request.form["result"])
         elif request.method == "GET":
-            call = classrooms.get_all_classroom_lists()
+            call = data_manager.list_filetype(data_dict, "classrooms")
         if call[1] == "SUCCESS":
+            print(call[0])
             return call[0], 200
         else:
             return "", 404

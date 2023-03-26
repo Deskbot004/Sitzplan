@@ -4,9 +4,10 @@ from logic import students, classrooms
 class File:
     """
         Class that saves every important aspect of a file.
-        @param name: File name as found in data
-        @param data: Content of the file
-        param access: Either a 0 if no user is using this file at the moment or 1
+
+        :param name: File name as found in data
+        :param data: Content of the file
+        :param access: Either a 0 if no user is using this file at the moment or 1
     """
     def __init__(self, name, data, access):
         self.name = name
@@ -32,7 +33,7 @@ def ini_dict(in_data_dict):
         room_name = rooms[room_key]
         room_data = classrooms.get_classroom(room_name)[0]
         room_arr.append(File(room_name, room_data, 0))
-    in_data_dict["rooms"] = room_arr
+    in_data_dict["classrooms"] = room_arr
 
     # Interpret all student lists
     studentlists = students.get_all_student_lists()[0]
@@ -54,7 +55,7 @@ def save_dict(in_data_dict):
     call = "FAIL"
     for file_type in in_data_dict:
         to_save = in_data_dict[file_type]
-        if file_type == "rooms":
+        if file_type == "classrooms":
             for file_obj in to_save:
                 call = classrooms.save_classroom(file_obj.name, file_obj.data)
         elif file_type == "studentlists":
@@ -65,3 +66,30 @@ def save_dict(in_data_dict):
             print(file_type)
             call = "FAIL"
     return call
+
+
+def list_filetype(data_dict, filetype):
+    """
+        Method to list all available files of a given filetype as a dictionary.
+
+        :param data_dict: Array containing the cache data
+        :param filetype: The type of the filetype that should be listed
+        :return: The created dictionary and the state of the function
+    """
+    try:
+        list_dict = {}
+        counter = 0
+        for file_obj in data_dict[filetype]:
+            counter += 1
+            list_dict[counter] = file_obj.name
+        return list_dict, "SUCCESS"
+    except Exception as err:
+        print(f"Listing available files failed with Error {err}")
+        return {}, "FAIL"
+
+
+def get_file_data(data_dict, fileytpe, name):
+    """
+        Get the data from a file, and lock the access!
+    """
+    return
