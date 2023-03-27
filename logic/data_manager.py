@@ -68,6 +68,23 @@ def save_dict(in_data_dict):
     return call
 
 
+def clean_folder(data_dict):
+    call = "FAIL"
+    for file_type in data_dict:
+        to_delete = data_dict[file_type]
+        if file_type == "classrooms":
+            for file_obj in to_delete:
+                call = classrooms.delete_classroom(file_obj.name)
+        elif file_type == "studentlists":
+            for file_obj in to_delete:
+                call = students.delete_students(file_obj.name)
+        else:
+            print("Warning: unknown file_type saved:")
+            print(file_type)
+            call = "FAIL"
+    return call
+
+
 def list_filetype(data_dict, filetype):
     """
         Method to list all available files of a given filetype as a dictionary.
@@ -92,6 +109,8 @@ def get_file_data(data_dict, filetype, name):
     """
         Get the data from a file, and lock the access!
 
+        TODO ACCESS LOCK AND CATCHING
+
         :param data_dict: Array containing the cache data
         :param filetype: The type of the filetype that should be listed
         :param name: The name of the file to get
@@ -101,3 +120,30 @@ def get_file_data(data_dict, filetype, name):
         if file_obj.name == name:
             return file_obj.data, "SUCCESS"
     return {}, "FAIL"
+
+
+def delete_file_data(data_dict, filetype, name):
+    for file_obj in data_dict[filetype]:
+        if file_obj.name == name:
+            data_dict.remove(file_obj)
+    return data_dict, "SUCCESS"
+
+
+def save_file_data(data_dict, filetype, name, data):
+    data_dict[filetype].append(File(name, data, 0))
+    return data_dict, "SUCCESS"
+
+
+# On that note how the fuck wird gerade das renaming verwaltet???
+def rename_file_data(data_dict, filetype, name, new_name):
+    data = ""
+    for file_obj in data_dict[filetype]:
+        if file_obj.name == name:
+            data = file_obj.data
+            data_dict = delete_file_data(data_dict, filetype, name)
+            data_dict = save_file_data(data_dict, filetype, new_name, data)
+            return data_dict, "SUCCESS"
+    return {}, "FAIL"
+
+
+

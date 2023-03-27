@@ -235,5 +235,7 @@ if __name__ == "__main__":
             debug=True
         )
     finally:
-        print("Saving dict:")
+        print("Cleaning folder:")
+        print(data_manager.clean_folder(data_dict))
+        print("Saving new dict:")
         print(data_manager.save_dict(data_dict))
