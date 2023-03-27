@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from logic import students, classrooms, generator, data_manager
+from logic import generator, data_manager
 
 app = Flask(__name__)
 data_dict = {}
@@ -59,6 +59,7 @@ def from_seating():
 @app.route('/getstudentlists', methods=["POST","GET"])
 def get_students_lists():
     try:
+        global data_dict
         if request.method == "POST":
             call = data_manager.get_file_data(data_dict, "studentlists", request.form["result"])
         elif request.method == "GET":
@@ -75,11 +76,11 @@ def get_students_lists():
 @app.route('/student_info', methods=["POST"])
 def student_info():
     try:
+        global data_dict
         if request.method == "POST":
-            students_dict = request.form
-            new_data = students.string_converter(students_dict["students"])
-            call = students.save_students(students_dict["name"], new_data)
-            if call == "SUCCESS":
+            call = data_manager.save_file_data(data_dict, "studentlists", request.form["name"], request.form["students"])
+            if call[1] == "SUCCESS":
+                data_dict = call[0]
                 return "", 204
             else:
                 return "", 404
@@ -91,9 +92,11 @@ def student_info():
 @app.route("/delstudent", methods=["POST"])
 def del_students():
     try:
+        global data_dict
         if request.method == "POST":
-            call = students.delete_students(request.form["result"])
-            if call == "SUCCESS":
+            call = data_manager.delete_file_data(data_dict, "studentlists", request.form["result"])
+            if call[1] == "SUCCESS":
+                data_dict = call[0]
                 return "", 204
             else:
                 return "", 404
@@ -107,10 +110,11 @@ def del_students():
 @app.route("/classroom_info", methods=["POST"])
 def classroom_info():
     try:
+        global data_dict
         if request.method == "POST":
-            classroom_dict = request.form
-            call = classrooms.save_classroom(classroom_dict["name"], classroom_dict["layout"])
-            if call == "SUCCESS":
+            call = data_manager.save_file_data(data_dict, "classrooms", request.form["name"], request.form["layout"])
+            if call[1] == "SUCCESS":
+                data_dict = call[0]
                 return "", 204
             else:
                 return "", 404
@@ -122,9 +126,11 @@ def classroom_info():
 @app.route("/delclassroom", methods=["POST"])
 def del_classroom():
     try:
+        global data_dict
         if request.method == "POST":
-            call = classrooms.delete_classroom(request.form["result"])
-            if call == "SUCCESS":
+            call = data_manager.delete_file_data(data_dict, "classrooms", request.form["result"])
+            if call[1] == "SUCCESS":
+                data_dict = call[0]
                 return "", 204
             else:
                 return "", 404
@@ -136,6 +142,7 @@ def del_classroom():
 @app.route('/getclassroomlists', methods=["POST", "GET"])
 def get_classroom_lists():
     try:
+        global data_dict
         if request.method == "POST":
             call = data_manager.get_file_data(data_dict, "classrooms", request.form["result"])
         elif request.method == "GET":
@@ -208,7 +215,8 @@ def get_seating():
 def upload():
     gotten_files = request.files
     list = gotten_files["files[]"]
-    students.read_from_upload(list.read(), list.mimetype, list.filename)
+    # TODO
+    #students.read_from_upload(list.read(), list.mimetype, list.filename)
     return switch_about()
 
 

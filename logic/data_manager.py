@@ -125,11 +125,13 @@ def get_file_data(data_dict, filetype, name):
 def delete_file_data(data_dict, filetype, name):
     for file_obj in data_dict[filetype]:
         if file_obj.name == name:
-            data_dict.remove(file_obj)
+            data_dict[filetype].remove(file_obj)
     return data_dict, "SUCCESS"
 
 
 def save_file_data(data_dict, filetype, name, data):
+    if filetype == "studentlists":
+        data = students.string_converter(data)
     data_dict[filetype].append(File(name, data, 0))
     return data_dict, "SUCCESS"
 
