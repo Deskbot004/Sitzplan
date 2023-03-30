@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from logic import generator, data_manager
+from logic import generator, data_manager, classrooms
 
 app = Flask(__name__)
 data_dict = {}
@@ -240,7 +240,8 @@ if __name__ == "__main__":
             host="0.0.0.0",
             # Aus Railway
             port=5000,
-            debug=True
+            debug=True,
+            use_reloader=False
         )
     finally:
         print("Cleaning folder:")

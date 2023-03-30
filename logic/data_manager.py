@@ -7,7 +7,9 @@ class File:
 
         :param name: File name as found in data
         :param data: Content of the file
-        :param access: Either a 0 if no user is using this file at the moment or 1
+        :param access: Different meanings:
+                        0: not accessed
+                        1: accessed by a user
     """
     def __init__(self, name, data, access):
         self.name = name
@@ -68,20 +70,22 @@ def save_dict(in_data_dict):
     return call
 
 
+# redundant
 def clean_folder(data_dict):
-    call = "FAIL"
-    for file_type in data_dict:
-        to_delete = data_dict[file_type]
-        if file_type == "classrooms":
-            for file_obj in to_delete:
-                call = classrooms.delete_classroom(file_obj.name)
-        elif file_type == "studentlists":
-            for file_obj in to_delete:
-                call = students.delete_students(file_obj.name)
-        else:
-            print("Warning: unknown file_type saved:")
-            print(file_type)
-            call = "FAIL"
+    call = "NONE DELETED"
+    print("Hi")
+    rooms = classrooms.get_all_classroom_lists()[0]
+    data_rooms = list_filetype(data_dict, "classrooms")[0]
+    print(rooms)
+    print(data_rooms)
+    studentlists = students.get_all_student_lists()[0]
+    data_studentlists = list_filetype(data_dict, "studentlists")[0]
+    for room in rooms.values():
+        if room not in data_rooms.values():
+            call = classrooms.delete_classroom(room)
+    for studentlist in studentlists.values():
+        if studentlist not in data_studentlists.values():
+            call = students.delete_students(studentlist)
     return call
 
 
