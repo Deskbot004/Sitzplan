@@ -73,11 +73,8 @@ def save_dict(in_data_dict):
 # redundant
 def clean_folder(data_dict):
     call = "NONE DELETED"
-    print("Hi")
     rooms = classrooms.get_all_classroom_lists()[0]
     data_rooms = list_filetype(data_dict, "classrooms")[0]
-    print(rooms)
-    print(data_rooms)
     studentlists = students.get_all_student_lists()[0]
     data_studentlists = list_filetype(data_dict, "studentlists")[0]
     for room in rooms.values():

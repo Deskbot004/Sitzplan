@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from logic import generator, data_manager, classrooms
+from logic import generator, data_manager
 
 app = Flask(__name__)
 data_dict = {}
@@ -232,7 +232,10 @@ def create_backup():
     back_up_dict = data_dict
 
 
-# For some reason the main gets called twice on startup, but idk....
+"""
+    With reloader active a child process is created, which sadly rewrites changes from the new cache array
+    So for data rewriting to work it needs to disabled!
+"""
 if __name__ == "__main__":
     try:
         data_dict = data_manager.ini_dict(data_dict)
@@ -241,6 +244,7 @@ if __name__ == "__main__":
             # Aus Railway
             port=5000,
             debug=True,
+            # Useful for debugging but needs to be FALSE for cache to work
             use_reloader=False
         )
     finally:
