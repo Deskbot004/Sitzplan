@@ -5,7 +5,9 @@
     <title>Student lists</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_students_list.css') }}">
     <script src="{{ url_for('static', filename='js_new/common.js') }}"></script>
     <script src="{{ url_for('static', filename='js_new/selected.js') }}"></script>
     <script src="{{ url_for('static', filename='js_new/requests.js') }}"></script>
@@ -16,6 +18,7 @@
 </head>
 <body>
 <!-- ATTRIBUTES ORDER: id class functions style other -->
+<!-- TODO: Create Student replace with + button -->
 
 <!------- SIDEBAR ------->
 <aside>
@@ -55,11 +58,11 @@
                 <!-- Three Dots Menu -->
                 <div class="dots-menu">
                     <!-- Three Dots Button -->
-                    <svg onclick="event.stopPropagation(); showDropdown('dropdown_classname');" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 25 25" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                    <svg onclick="event.stopPropagation(); showDropdown('dropdown_classname');" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 25 25" fill="none" stroke="var(--col-dots-button)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
                     <!-- Menu itself -->
                     <ul id="dropdown_classname" class="dots-dropdown hide">
-                        <li><a class="elem" onclick="openRename()">Rename</a></li>
-                        <li><a class="elem" onclick="alert('delete');">Delete</a></li>
+                        <li><a class="elem" onclick="openRename()">Rename Class</a></li>
+                        <li><a class="elem" onclick="alert('delete');">Delete Class</a></li>
                     </ul>
                 </div>
             </div>
@@ -83,13 +86,13 @@
         <!------- Preference List ------->
         <div id="pref_container" class="prefs hide">
             <h3>Name</h3>
-            <input id="pref_name" class="textinput" type="text" autocomplete="off" placeholder="Name">
+            <input id="pref_name" class="textinput pref-input" type="text" autocomplete="off" placeholder="Name">
             <div id="pref_name_tooltip" class="tooltip">Tooltip Placeholder</div>
 
             <h3>Wants to sit next to</h3>
             <!-- Pref0 -->
             <button id="pref0_button" onclick="togglePref(0, 'none', 'block'); togglePref(1, 'block', 'none');" type="button">Add Student</button>
-            <form id="pref0_form" onsubmit="checkPref(0); return false;" onfocusout="checkPref(0)" style="display:none">
+            <form id="pref0_form" class="pref-input" onsubmit="checkPref(0); return false;" onfocusout="checkPref(0)" style="display:none">
                 <input id="pref0" class="textinput" oninput="resetPref(0)" type="text" autocomplete="off" placeholder="Type to search" list="dropdown_list">
                 <button id="pref0_x" onclick="removePref(0)" type="button">X</button>
                 <div id="pref0_tooltip" class="tooltip">Tooltip Placeholder</div>
@@ -97,7 +100,7 @@
 
             <!-- Pref1 -->
             <button id="pref1_button" onclick="togglePref(1, 'none', 'block'); togglePref(2, 'block', 'none');" type="button">Add Student</button>
-            <form id="pref1_form" onsubmit="checkPref(1); return false;" onfocusout="checkPref(1)" style="display:none">
+            <form id="pref1_form" class="pref-input" onsubmit="checkPref(1); return false;" onfocusout="checkPref(1)" style="display:none">
                 <input id="pref1" class="textinput" oninput="resetPref(1)" type="text" autocomplete="off" placeholder="Type to search" list="dropdown_list">
                 <button id="pref1_x" onclick="removePref(1)" type="button">X</button>
                 <div id="pref1_tooltip" class="tooltip">Tooltip Placeholder</div>
@@ -105,7 +108,7 @@
 
             <!-- Pref2 -->
             <button id="pref2_button" onclick="togglePref(2, 'none', 'block')" type="button">Add Student</button>
-            <form id="pref2_form" onsubmit="checkPref(2); return false;" onfocusout="checkPref(2)" style="display:none">
+            <form id="pref2_form" class="pref-input" onsubmit="checkPref(2); return false;" onfocusout="checkPref(2)" style="display:none">
                 <input id="pref2" class="textinput" oninput="resetPref(2)" type="text" autocomplete="off" placeholder="Type to search" list="dropdown_list">
                 <button id="pref2_x" onclick="removePref(2)" type="button">X</button>
                 <div id="pref2_tooltip" class="tooltip">Tooltip Placeholder</div>
@@ -114,7 +117,7 @@
             <h3>Should not sit next to</h3>
             <!-- Pref3 -->
             <button id="pref3_button" onclick="togglePref(3, 'none', 'block')" type="button">Add Student</button>
-            <form id="pref3_form" onsubmit="checkPref(3); return false;" onfocusout="checkPref(3)" style="display:none" >
+            <form id="pref3_form" class="pref-input" onsubmit="checkPref(3); return false;" onfocusout="checkPref(3)" style="display:none" >
                 <input id="pref3" class="textinput" oninput="resetPref(3)" type="text" autocomplete="off" placeholder="Type to search" list="dropdown_list">
                 <button id="pref3_x" onclick="removePref(3)" type="button">X</button>
                 <div id="pref3_tooltip" class="tooltip">Tooltip Placeholder</div>
@@ -143,7 +146,7 @@
     <h2>List of all Classes</h2>
     <input type="text" autocomplete="off" placeholder="Search..." class="textinput searchbar" id="class_search"> <!-- Search bar -->
 
-    <ul id="class_list"></ul> <!-- TODO The List itself -->
+    <ul id="class_list"></ul> <!-- The List itself -->
     <span id="class_list_empty">No classes found</span>
     <form class="create-form" onsubmit="createListElement('class_tooltip', 'class_create', 'class'); return false"> <!-- Create new Class -->
         <label for="class_create">Create New Class:</label>

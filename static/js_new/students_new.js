@@ -22,7 +22,7 @@
 */
 
 //_________________________________Functions________________________________________________
-
+//TODO: Preferences wird nicht geschlossen, wenn man ne neue klasse öffnet
 async function loadInformation(list_type, name) {
     var list_id = list_type + "_list";
 

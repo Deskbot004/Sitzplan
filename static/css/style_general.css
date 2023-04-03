@@ -1,0 +1,218 @@
+/*Stylings that appear on every page*/
+/*TODO: Scaling*/
+html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    background: red; /*Should only be visible, if something is formatted incorrectly*/
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+
+    background: var(--col-background);
+    //background: linear-gradient(#171717 var(--grad-begin), var(--col-background) var(--grad-end), var(--col-background));
+}
+
+.hide { /*Content that's dependent on a selection*/
+    visibility: hidden;
+}
+
+
+/*-------------------------Sidebar (Left)-------------------------*/
+aside { /*Sidebar General*/
+    width: calc(var(--sidebar-width) + 20px);   /* +20px to mach the offset of the logo*/
+    min-height: 100%;   /* Even if it's not full, it'll reach the bottom of the page */
+    float: left;
+    position: relative;
+    z-index: 1;
+
+    background: var(--col-sidebar-background);
+    box-shadow: 0px 0px 5px var(--col-sidebar-shadow);
+}
+
+aside img { /*Sidebar Logo*/
+    height: var(--topbar-height);
+    width: calc(var(--sidebar-width) - 4px);
+    margin: 10px 14px 10px 10px;
+    object-fit: cover; /*Options: cover, fill, contain, none*/
+}
+
+/*-------------------------Main (Middle)-------------------------*/
+.main { /*Main Body General*/
+    min-height: 100%;
+    height: 100vh;
+    min-width: 500px;
+    width: 63vw;
+
+    float: left;
+	position: sticky;
+
+	font-family: var(--font1);
+	text-align:center;
+
+	background: var(--col-background);
+}
+
+.main h1 {
+	margin-top: 5px;
+	margin-bottom: 15px;
+	padding: 0;
+	padding-bottom: 5px;
+
+	font-size: var(--topbar-height);
+	color: var(--col-title);
+	background: var(--col-title-background);
+}
+
+/*-------------------------Side Body (Right)-------------------------*/
+.side { /*Side Body General*/
+    min-height: 100%;
+    height: 100%;
+    overflow: hidden;
+	position: sticky;
+
+	/*Flexible layout inside*/
+	display: flex;
+	flex-direction: column;
+
+	font-family: var(--font1);
+	text-align: center;
+
+	background: var(--col-sidebar-background);
+    box-shadow: 0px 0px 5px var(--col-sidebar-shadow);
+}
+
+.side h2 {
+    color: var(--col-sidebar-text);
+}
+
+
+/*-------------------------Lists-------------------------*/
+/* (Sidebar List style is default) */
+
+ul { /*List container*/
+    list-style-type: none; /*no dots before list entry*/
+    overflow: auto; /*Automatic scrollbar*/
+    padding-left: 0px;
+    margin-top: 0px;
+
+    /*separator at top and bottom*/
+    border: solid;
+    border-width: var(--border-width) 0 0 0; /*only top border*/
+    border-image: linear-gradient(to right, rgba(0,0,0,0) 5%, var(--col-sidebar-separator) 10%, var(--col-sidebar-separator) 90%, rgba(0,0,0,0) 95%) 1;
+}
+
+.elem { /*Elements inside lists*/
+    line-height: 45px; /*vertical size of button*/
+    padding-left: 10px;
+    display: block; /*change size to match the list element*/
+
+    text-decoration: none; /*Not underlined when visited*/
+    font-family: var(--font1);
+    font-size: 18px;
+
+    background-color: var(--col-sidebar-background);
+    color: var(--col-sidebar-text);
+
+    border: solid;
+    border-width: 0 0 var(--border-width) 0; /*only bottom border*/
+    border-image: linear-gradient(to right, rgba(0,0,0,0) 5%, var(--col-sidebar-separator) 10%, var(--col-sidebar-separator) 90%, rgba(0,0,0,0) 95%) 1;
+}
+
+.elem:hover { /*Sidebar List Entry when hovered over*/
+    cursor: pointer;
+    box-shadow: inset 0 0 0 1000px var(--col-sidebar-hover);
+}
+
+.elem:active { /*Sidebar List Entry when clicked*/
+    box-shadow: inset 0 0 0 1000px var(--col-sidebar-click);
+    /*Empty line, so that pycharm lets me collapse the class*/
+}
+
+.elem.current { /*Currently selected Element*/
+    background: var(--col-sidebar-current);
+    /*Empty line, so that pycharm lets me collapse the class*/
+}
+
+.elem.current:hover { /*Currently selected Element*/
+    box-shadow: inset 0 0 0 1000px var(--col-sidebar-current-hover);
+    /*Empty line, so that pycharm lets me collapse the class*/
+}
+
+.elem.current:active { /*Currently selected Element*/
+    box-shadow: inset 0 0 0 1000px var(--col-sidebar-current-click);
+    /*Empty line, so that pycharm lets me collapse the class*/
+}
+
+
+
+/*-------------------------Textinputs-------------------------*/
+.textinput {
+    width: 100%;
+    padding: 0px 2px;
+    outline: none; /*No blue border when selected*/
+    position: relative;
+
+    line-height: 25px;
+    font-size: 14px;
+
+    background: var(--col-textbox-background); /*Boxfarbe*/
+    color: var(--col-textbox-text);
+    border: var(--border-width) solid var(--col-textbox-border);
+}
+
+/* Chrome, Firefox, Opera, Safari 10.1+ */
+.textinput::placeholder{ /*Text inside, when empty*/
+    color: var(--col-textbox-placeholder);
+    opacity: var(--textbox-placeholder-opacity); /* Firefox */
+}
+
+.textinput:focus { /*Textinput when clicked*/
+    background: var(--col-textbox-background-focus); /*Boxfarbe*/
+    color: var(--col-textbox-text-focus);
+    border: var(--border-width) solid var(--col-textbox-border-focus);
+}
+
+.textinput:focus::placeholder { /*Text inside, when empty and focused*/
+    color: var(--col-textbox-placeholder-focus);
+    opacity: var(--textbox-placeholder-opacity); /* Firefox */
+}
+
+.searchbar {
+    width: 85%; /*To match the width of the separator lines of lists*/
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/*-------------------------Three Dots Menu-------------------------*/
+.dots-menu { /*Button itself*/
+    height: 25px;
+    width: 25px;
+    margin: 0px 5px;
+}
+
+.dots-menu svg {
+    cursor: pointer;
+    /*Empty line, so that pycharm lets me collapse the class*/
+}
+
+.dots-menu .dots-dropdown { /*Dropdown list*/
+    min-width: 150px;
+    height: auto;
+
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    text-align: center; /*TODO: This doesn't align it correctly*/
+
+    background: var(--col-dots-background);
+    border-top: var(--border-width) solid;
+}

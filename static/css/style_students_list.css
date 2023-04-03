@@ -1,0 +1,165 @@
+/*Stylings for students_list.html*/
+.inner { /*Container of everything (except title) inside main body*/
+    height: 100%;
+    margin-top:0px;
+    display: flex;
+    flex-direction: row;
+}
+
+
+/*-------------------------Class List-------------------------*/
+.side .searchbar {
+    margin-top: 0px;
+}
+
+.side ul { /*List of Classes*/
+    height: 100%;
+    flex: 1;
+    padding-left: 0px;
+    margin-top: 0px;
+}
+
+.side .current { /*Current Page in Sidebar*/
+    background: var(--col-classlist-current);
+}
+
+#class_list_empty { /*Test when no class is found*/
+    position: absolute;
+    left: 52%;
+    top: 15%;
+    transform: translate(-50%, -50%);
+
+    display: none;
+
+    color: var(--col-classlist-empty);
+}
+
+#student_prompt { /*Please select a Class prompt*/
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    color: var(--col-select-prompt);
+}
+
+/*-------------------------Students List-------------------------*/
+.students-list { /*General*/
+    width: 40%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+    /*Flexible layout inside*/
+    display: flex;
+    flex-direction: column;
+}
+
+.students-list .title-container { /*Contains title + three dots dropdown*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.students-list h2 { /*Title of Class*/
+    margin: 0px;
+    color: var(--col-studlist-text);
+}
+
+.students-list svg { /*Three Dots Button*/
+    vertical-align:bottom;
+    padding: 0px;
+    margin-left: 5px;
+}
+
+.students-list ul { /*List itself*/
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 70px; /*TODO: Change, once create form works*/
+
+    background: var(--col-studlist-background);
+    /*
+    flex: 1;
+    margin-bottom: calc(var(--create-height) + 22px);
+    */
+}
+
+.students-list .elem { /*List Entry*/
+    padding-left: 7%;
+    text-align: left;
+
+    background-color: var(--col-studlist-background);
+    color: var(--col-studlist-text);
+}
+
+.students-list .current { /*Current Page in Sidebar*/
+    background: var(--col-studlist-current);
+}
+
+#pref_prompt { /*Please select a Student prompt*/
+    left: 57%;
+    top: 20%;
+    transform: translate(-50%, -50%);
+
+    color: var(--col-select-prompt);
+}
+
+
+/*-------------------------Preferences-------------------------*/
+.prefs { /*prefs container*/
+    width: 60%;
+    height: 100%;
+    padding: 0px 40px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.prefs h3 { /*Titles, like "Name", "Wants to sit next to" etc.*/
+    padding-left: 20px;
+    text-align: left;
+    color: var(--col-prefs-text);
+}
+
+.pref-input { /*Textinputs*/ /*TODO*/
+    display: flex;
+    flex-flow: row nowrap;
+/*
+    width: 100%;
+    margin-left: 20px;
+    margin-bottom: 10px;*/
+}
+
+.toggle { /*Button Groups (Last two sections in prefs)*/
+    width: 100%;
+    border: 0px;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.toggle input { /*Circles from radio button*/
+    visibility: hidden;
+}
+
+.toggle label { /*Text of button*/
+    cursor: pointer;
+    padding: 20px;
+
+	font-family: var(--font1);
+    font-size: 18px;
+
+    color: var(--col-prefs-text);
+	border: solid 1px var(--col-sidebar-separator);
+}
+
+.toggle input:checked + label { /*Selected button*/
+    color: var(--col-button-checked-text);
+    background: var(--col-button-checked-background);
+}
+
+.toggle input:hover + label { /*Hovered buttons*/
+    box-shadow: inset 0 0 0 1000px var(--col-sidebar-hover);
+}
+
+.toggle input:active + label { /*Button while clicked*/
+    box-shadow: inset 0 0 0 1000px var(--col-sidebar-click);
+}

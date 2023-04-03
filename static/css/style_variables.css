@@ -1,0 +1,107 @@
+:root {
+    --cursorForLink: pointer;
+    --font1: Verdana, "Lucida Sans";
+    --font2: Arial, serif;
+
+    /*Not quite sure where to put it*/
+    --topbar-height: 50px;
+    --logo-height: var(--topbar-height);
+    --sidebar-width: max(150px, min(200px, 20vw)); /*min: 100px, max: 200px, default: 10vw*/
+
+    --border-width: 1px;
+    --textbox-placeholder-opacity: 0.7;
+
+
+    /*---Color Palette---*/
+    --mattBlue: #162344;
+    --darkBlue: #0C2670;
+    --iceBlue: #B5E0FF;
+    --peach: #F76C8F;
+
+    --grey1: #202020;
+    --grey2: #272727;
+    --grey3: #333333;
+    --grey4: #555555;
+
+    /*---General Colors---*/
+    --col-main: var(--mattBlue);
+    --col-side: var(--grey1);
+    --col-accent: var(--darkBlue);
+    --col-accent2: var(--iceBlue);
+    --col-accent3: var(--peach);
+
+    /*-------------------------style_general.css-------------------------*/
+    --col-background: var(--col-main);
+    --col-title: white;
+    --col-title-background: var(--grey4);
+
+    /*Sidebar & default lists*/
+    --col-sidebar-background: var(--grey1); /*Sidebar is also default style for lists */
+    --col-sidebar-text: white;
+    --col-sidebar-shadow: var(--col-accent2);
+    --col-sidebar-separator: var(--col-accent2);
+
+    --col-sidebar-hover: rgba(255,255,255,.1); /*Overlay over original color*/
+    --col-sidebar-click: rgba(255,255,255,.2); /*Overlay over original color*/
+
+    --col-sidebar-current: linear-gradient(124deg, var(--darkBlue) 5%, var(--iceBlue) 100%);
+    --col-sidebar-current-hover: rgba(255,255,255,.1); /*Overlay over original color*/
+    --col-sidebar-current-click: rgba(255,255,255,.2); /*Overlay over original color*/
+
+
+    /*Input textbox*/
+    --col-textbox-background: var(--grey4);
+    --col-textbox-text: white;
+    --col-textbox-border: var(--col-accent);
+    --col-textbox-placeholder: white; /*Text inside textbox, while it's empty*/
+
+    --col-textbox-background-focus: white;
+    --col-textbox-text-focus: black;
+    --col-textbox-border-focus: var(--col-accent3);
+    --col-textbox-placeholder-focus: black; /*Text inside textbox, while it's empty*/
+
+    /*Three Dots Menu*/
+    --col-dots-button: white;
+    --col-dots-background: var(--grey4); /*Background of the list*/
+
+
+    /*-------------------------style_students_list.css-------------------------*/
+    --col-select-prompt: white;
+
+    /*Class List*/
+    --col-classlist-current: var(--col-sidebar-current);
+    --col-classlist-empty: white;
+
+    /*Students List*/
+    --col-studlist-text: white;
+    --col-studlist-background: var(--col-main);
+    --col-studlist-current: var(--col-sidebar-current);
+
+    /*Pref List*/
+    --col-prefs-text: white;
+
+    --col-button-border: var(--col-sidebar-separator);
+    --col-button-checked-text: black;
+    --col-button-checked-background: var(--col-sidebar-current);
+
+
+ /*-------------------------------------------------*/
+
+    /* Dunkel Blau
+    Dark Mode
+    Wenig Kontraste
+    Main Accent: 0C2670 (dark blue)
+    Second Accent: FF9BAC/F76C8F (peach) or F49F1C (gold) or B5E0FF (icy blue)
+    Eher dünne linien
+    Schattierungen!
+    Saubere, dünne cuts
+    */
+
+    /*---Gradient---*/
+    --grad-begin: 60px;
+    --grad-end: 70px; /*old: 100px*/
+
+    /*---Other things---*/
+    --sidebar-width: max(150px, min(200px, 20vw)); /*min: 100px, max: 200px, default: 10vw*/
+    --create-height: 75px; /*Height of Create X (f.e. Create Class)*/
+}
