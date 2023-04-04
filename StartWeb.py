@@ -228,6 +228,7 @@ def after_request(response):
 
 
 def create_backup():
+    # TODO LOOP TRIES
     global data_dict
     global back_up_dict
     global failures
@@ -236,22 +237,22 @@ def create_backup():
         call = data_manager.clean_folder(data_dict)
         if call[0] == "FAIL":
             raise Exception(call[1])
-        print(call[0]) # TODO catch "classroom failed" , "student failed"
+        print(call[0])
 
         print("Saving new dict:")
         call = data_manager.save_dict(data_dict)
         if call[0] == "FAIL":
             raise Exception(call[1])
-        print(call[0])  # TODO catch "classroom failed" , "student failed", "unknown filetype"
+        print(call[0])
 
         back_up_dict = data_dict
     except Exception as err:
         if err == "classroom failed":
-            return
+            return # TODO get old rooms from backup and count failures
         elif err == " student failed":
-            return
+            return # TODO get old rooms from backup and count failures
         elif err == "unknown filetype":
-            return
+            return # TODO idk rn lol
 
 
 """
