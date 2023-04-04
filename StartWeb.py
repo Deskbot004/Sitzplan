@@ -4,6 +4,7 @@ from logic import generator, data_manager
 app = Flask(__name__)
 data_dict = {}
 back_up_dict = {}
+failures = 0
 
 
 # app.config["SERVER_NAME"] = "randomseatings.de:5000"
@@ -63,7 +64,7 @@ def get_students_lists():
         if request.method == "POST":
             call = data_manager.get_file_data(data_dict, "studentlists", request.form["result"])
         elif request.method == "GET":
-            call = data_manager.list_filetype(data_dict, "studentlists")
+            call = [data_manager.list_filetype(data_dict, "studentlists"), "SUCCESS"]
         if call[1] == "SUCCESS":
             return call[0], 200
         else:
@@ -146,7 +147,7 @@ def get_classroom_lists():
         if request.method == "POST":
             call = data_manager.get_file_data(data_dict, "classrooms", request.form["result"])
         elif request.method == "GET":
-            call = data_manager.list_filetype(data_dict, "classrooms")
+            call = [data_manager.list_filetype(data_dict, "classrooms"), "SUCCESS"]
         if call[1] == "SUCCESS":
             return call[0], 200
         else:
@@ -216,7 +217,7 @@ def upload():
     gotten_files = request.files
     list = gotten_files["files[]"]
     # TODO
-    #students.read_from_upload(list.read(), list.mimetype, list.filename)
+    # students.read_from_upload(list.read(), list.mimetype, list.filename)
     return switch_about()
 
 
@@ -229,7 +230,28 @@ def after_request(response):
 def create_backup():
     global data_dict
     global back_up_dict
-    back_up_dict = data_dict
+    global failures
+    try:
+        print("Cleaning folder:")
+        call = data_manager.clean_folder(data_dict)
+        if call[0] == "FAIL":
+            raise Exception(call[1])
+        print(call[0]) # TODO catch "classroom failed" , "student failed"
+
+        print("Saving new dict:")
+        call = data_manager.save_dict(data_dict)
+        if call[0] == "FAIL":
+            raise Exception(call[1])
+        print(call[0])  # TODO catch "classroom failed" , "student failed", "unknown filetype"
+
+        back_up_dict = data_dict
+    except Exception as err:
+        if err == "classroom failed":
+            return
+        elif err == " student failed":
+            return
+        elif err == "unknown filetype":
+            return
 
 
 """
@@ -238,7 +260,18 @@ def create_backup():
 """
 if __name__ == "__main__":
     try:
-        data_dict = data_manager.ini_dict(data_dict)
+        counter = 10
+        while counter != 0:
+            # Wait?
+            data_information = data_manager.ini_dict(data_dict)
+            data_dict = data_information[0]
+            if data_information[1] == "SUCCESS":
+                break
+            counter -= 1
+
+        if counter == 0:
+            raise Exception("File reading failed")
+
         app.run(
             host="0.0.0.0",
             # Aus Railway
@@ -247,8 +280,8 @@ if __name__ == "__main__":
             # Useful for debugging but needs to be FALSE for cache to work
             use_reloader=False
         )
+    except Exception as err:
+        print(f"Starting Server failed with Error {err}")
     finally:
-        print("Cleaning folder:")
-        print(data_manager.clean_folder(data_dict))
-        print("Saving new dict:")
-        print(data_manager.save_dict(data_dict))
+        if data_dict:
+            create_backup()

@@ -9,8 +9,8 @@ Classes:
     
 Functions:
     ini_dict(dictionary) -> dictionary, state
-    save_dict(dictionary) -> state
-    clean_folder(dictionary) -> state
+    save_dict(dictionary) -> state, string
+    clean_folder(dictionary) -> state, string
     list_filetype(dictionary, string) -> dictionary
     get_file_data(dictionary, string, string) -> var
     delete_file_data(dictionary, string, string) -> dictionary
@@ -44,28 +44,36 @@ def ini_dict(data_dict):
 
     :param data_dict: Empty cache given from the server
     :return: Initialized cache, state of the function
-    TODO add try except
     """
     # Interpret all room files
     # Example call:
     # data_dict["rooms"][0].name => Name of the first found room
-    rooms = classrooms.get_all_classroom_lists()[0]
-    room_arr = []
-    for room_key in rooms:
-        room_name = rooms[room_key]
-        room_data = classrooms.get_classroom(room_name)[0]
-        room_arr.append(File(room_name, room_data, 0))
-    data_dict["classrooms"] = room_arr
+    try:
+        rooms = classrooms.get_all_classroom_lists()[0]
+        room_arr = []
+        for room_key in rooms:
+            room_name = rooms[room_key]
+            room_data = classrooms.get_classroom(room_name)
+            if room_data[1] == "FAIL":
+                raise Exception("classroom_fail")
+            room_arr.append(File(room_name, room_data[0], 0))
+        data_dict["classrooms"] = room_arr
 
-    # Interpret all student lists
-    studentlists = students.get_all_student_lists()[0]
-    studentlist_arr = []
-    for student_key in studentlists:
-        student_name = studentlists[student_key]
-        student_data = students.get_student_list(student_name)[0]
-        studentlist_arr.append(File(student_name, student_data, 0))
-    data_dict["studentlists"] = studentlist_arr
-    return data_dict
+        # Interpret all student lists
+        studentlists = students.get_all_student_lists()[0]
+        studentlist_arr = []
+        for student_key in studentlists:
+            student_name = studentlists[student_key]
+            student_data = students.get_student_list(student_name)
+            if student_data[1] == "FAIL":
+                raise Exception("student_fail")
+            studentlist_arr.append(File(student_name, student_data[0], 0))
+        data_dict["studentlists"] = studentlist_arr
+        return data_dict, "SUCCESS"
+
+    except Exception as err:
+        print(f"Listing available files failed with Error {err}")
+        return {}, "FAIL"
 
 
 def save_dict(data_dict):
@@ -73,23 +81,36 @@ def save_dict(data_dict):
     Saves the cache into different files.
 
     :param data_dict: Cache to be converted into files
-    :return: state of the function
-    TODO add try except
+    :return: state of the function, reason of fail
     """
-    call = "FAIL"
-    for file_type in data_dict:
-        to_save = data_dict[file_type]
-        if file_type == "classrooms":
-            for file_obj in to_save:
-                call = classrooms.save_classroom(file_obj.name, file_obj.data)
-        elif file_type == "studentlists":
-            for file_obj in to_save:
-                call = students.save_students(file_obj.name, file_obj.data)
-        else:
-            print("Warning: unknown file_type saved:")
+    try:
+        call = "FAIL"
+        for file_type in data_dict:
+            to_save = data_dict[file_type]
+            if file_type == "classrooms":
+                for file_obj in to_save:
+                    call = classrooms.save_classroom(file_obj.name, file_obj.data)
+                    if call == "FAIL":
+                        raise Exception("classroom failed")
+            elif file_type == "studentlists":
+                for file_obj in to_save:
+                    call = students.save_students(file_obj.name, file_obj.data)
+                    if call == "FAIL":
+                        raise Exception("student failed")
+            else:
+                print("Warning: unknown file_type saved:")
+                print(file_type)
+                raise Exception("unknown filetype")
+        return call, "none"
+    except Exception as err:
+        if err == "classroom failed":
+            print(f"Saving files failed with Error {err}")
+        elif err == "student failed":
+            print(f"Saving files failed with Error {err}")
+        elif err == "unknown filetype":
+            print(f"Saving files failed with Error {err}")
             print(file_type)
-            call = "FAIL"
-    return call
+        return "FAIL", err
 
 
 # redundant
@@ -98,21 +119,35 @@ def clean_folder(data_dict):
     Deletes every file which was deleted in runtime.
 
     :param data_dict: Cache from the server
-    :return: State of the function
-    TODO ADD TRY CATCH
+    :return: State of the function, reason of fail
     """
-    call = "NONE DELETED"
-    rooms = classrooms.get_all_classroom_lists()[0]
-    data_rooms = list_filetype(data_dict, "classrooms")[0]
-    studentlists = students.get_all_student_lists()[0]
-    data_studentlists = list_filetype(data_dict, "studentlists")[0]
-    for room in rooms.values():
-        if room not in data_rooms.values():
-            call = classrooms.delete_classroom(room)
-    for studentlist in studentlists.values():
-        if studentlist not in data_studentlists.values():
-            call = students.delete_students(studentlist)
-    return call
+    try:
+        call = "NONE DELETED"
+        rooms = classrooms.get_all_classroom_lists()
+        if rooms[1] == "FAIL":
+            raise Exception("classroom failed")
+
+        data_rooms = list_filetype(data_dict, "classrooms")
+
+        studentlists = students.get_all_student_lists()
+        if studentlists[1] == "FAIL":
+            raise Exception("student failed")
+
+        data_studentlists = list_filetype(data_dict, "studentlists")
+
+        for room in rooms[0].values():
+            if room not in data_rooms.values():
+                call = classrooms.delete_classroom(room)
+        for studentlist in studentlists[0].values():
+            if studentlist not in data_studentlists.values():
+                call = students.delete_students(studentlist)
+        return call, "none"
+    except Exception as err:
+        if err == "classroom failed":
+            print(f"Deleting files failed with Error {err}")
+        elif err == "student failed":
+            print(f"Deleting files failed with Error {err}")
+        return "FAIL", err
 
 
 def list_filetype(data_dict, filetype):
@@ -121,19 +156,14 @@ def list_filetype(data_dict, filetype):
 
     :param data_dict: Array containing the cache data
     :param filetype: The type of the filetype that should be listed
-    :return: The created dictionary and the state of the function
-    TODO REMOVE STATE /TRY CATCH
+    :return: The created dictionary
     """
-    try:
-        list_dict = {}
-        counter = 0
-        for file_obj in data_dict[filetype]:
-            counter += 1
-            list_dict[counter] = file_obj.name
-        return list_dict, "SUCCESS"
-    except Exception as err:
-        print(f"Listing available files failed with Error {err}")
-        return {}, "FAIL"
+    list_dict = {}
+    counter = 0
+    for file_obj in data_dict[filetype]:
+        counter += 1
+        list_dict[counter] = file_obj.name
+    return list_dict
 
 
 def get_file_data(data_dict, filetype, name):

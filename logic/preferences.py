@@ -44,7 +44,7 @@ def preferences_create(clas, clas_name):
         time.sleep(3)
         return
 
-    # Creation of empty dict to setup
+    # Creation of empty dict to set up
     for studentnr in clas:
         clear_screen()
         new_pref = "0"
