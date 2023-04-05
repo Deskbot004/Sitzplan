@@ -63,7 +63,7 @@ async function loadInformation(list_type, name) {
             //Make pref1 and pref2 visible/invisible, depending on whether they have a value
             var prefButton = 0;
             for(var i=0; i<4; i++){
-                if(prefs[i]){togglePref(i, "none", "block");}
+                if(prefs[i]){togglePref(i, "none", "flex");}
                 else if(!prefButton || i==3){togglePref(i, "block", "none"); prefButton=1;}
                 else{togglePref(i, "none", "none");}
             }
@@ -157,7 +157,7 @@ function createElement(element_type, name) {
 				console.log("Undetected Error type: " + typeof err);break;
 		}
 
-		showTooltip(element_type + "_tooltip", err_text);
+		showTooltip(element_type + "_tooltip", err_text, element_type + "_create");
 		return false;
 	}
 }
@@ -167,7 +167,7 @@ function createElement(element_type, name) {
     Turns Element of a pref on/off
     @param pref_nr: Nr of pref (between 0 and 3)
     @param button_display: display style of button ("none" or "block")
-    @param form_display: display style of form ("none" or "block")
+    @param form_display: display style of form ("none" or "flex")
 */
 function togglePref(pref_nr, button_display, form_display){
     document.getElementById("pref"+pref_nr+"_button").style.display = button_display;
@@ -215,7 +215,7 @@ function updateDropdown(){
     Should be called when input field is focused
 */
 function resetPref(pref_nr) {
-    hideTooltip('pref' + pref_nr + '_tooltip');
+    hideTooltip('pref' + pref_nr + '_tooltip', "pref" + pref_nr);
     localStorage.removeItem("pref_" + pref_nr);
     updateDropdown();
 }
@@ -251,7 +251,7 @@ function checkPref(pref_nr) {
             default:
                 err_text = "Error: " + err;
         }
-        showTooltip(pref_id + "_tooltip", err_text);
+        showTooltip(pref_id + "_tooltip", err_text, pref_id);
         return false;
     }
 }
@@ -279,7 +279,7 @@ function saveStudent() {
 		var new_name = document.getElementById("pref_name").value;
 		if(old_name != new_name) {
 		    if(!checkTooltip("pref_name_tooltip")) {return false;}
-		    if (new_name.trim() == "") {showTooltip("pref_name_tooltip", "Name can't be empty"); return false;}
+		    if (new_name.trim() == "") {showTooltip("pref_name_tooltip", "Name can't be empty", "pref_name"); return false;}
 		    localStorage.removeItem(old_name)
 		}
 
@@ -303,20 +303,22 @@ function saveStudent() {
 
 function openRename() {
     document.getElementById("class_name").style.display = "none";
-    document.getElementById("class_name_input").value = document.getElementById("class_name").innerHTML;
     document.getElementById("class_name_input").style.display = "block";
+    document.getElementById("class_name_input").value = document.getElementById("class_name").innerHTML;
     document.getElementById("class_name_input").focus();
+
 }
 
 async function renameClass() {
     if(!checkTooltip("class_name_tooltip")) {return false;}
 
-    //Rename File#
+    //Rename File
+    /*
     var old_name = localStorage.getItem("file_name");
     var new_name = document.getElementById("class_name_input").value;
     await renaming(old_name, new_name);
     localStorage.setItem("file_name", new_name);
-    saveLocalStorage();
+    saveLocalStorage();*/
 
     //Change input to title
     document.getElementById("class_name_input").style.display = "none";

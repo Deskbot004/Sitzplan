@@ -48,12 +48,11 @@
 
             <!-- Class Title & Dots Menu -->
             <div class="title-container">
-                <!-- Title itself -->
-                <h2 id="class_name">Class Name Placeholder</h2>
-                <!-- Text Input when renaming -->
-                <form onfocusout="renameClass()" onsubmit="renameClass(); return false;">
+                <!-- Title/Text Input when renaming -->
+                <form id="class_name_form" onfocusout="renameClass()" onsubmit="renameClass(); return false;">
+                    <h2 id="class_name">Class Name Placeholder</h2>
                     <input id="class_name_input" class="textinput" style="display:none" type="text" autocomplete="off">
-                    <div id="class_name_tooltip" class="tooltip">Tooltip Placeholder</div>
+                    <div id="class_name_tooltip" class="tooltip hide">Tooltip Placeholder</div>
                 </form>
                 <!-- Three Dots Menu -->
                 <div class="dots-menu">
@@ -76,7 +75,7 @@
             <form class="create-form" onsubmit="createListElement('student_tooltip', 'student_create', 'student'); return false;">
                 <label for="student_create">Add Student:</label>
                 <div class="tooltipcontainer">
-                    <div id="student_tooltip" class="tooltip">Tooltip Placeholder</div>
+                    <div id="student_tooltip" class="tooltip hide">Tooltip Placeholder</div>
                     <input id="student_create" class="textinput" type="text" autocomplete="off"  name="filename" placeholder="Student Name" >
                 </div>
                 <input type="submit" value="Create">
@@ -87,40 +86,48 @@
         <div id="pref_container" class="prefs hide">
             <h3>Name</h3>
             <input id="pref_name" class="textinput pref-input" type="text" autocomplete="off" placeholder="Name">
-            <div id="pref_name_tooltip" class="tooltip">Tooltip Placeholder</div>
+            <div id="pref_name_tooltip" class="tooltip hide">Tooltip Placeholder</div>
 
             <h3>Wants to sit next to</h3>
             <!-- Pref0 -->
-            <button id="pref0_button" onclick="togglePref(0, 'none', 'block'); togglePref(1, 'block', 'none');" type="button">Add Student</button>
-            <form id="pref0_form" class="pref-input" onsubmit="checkPref(0); return false;" onfocusout="checkPref(0)" style="display:none">
-                <input id="pref0" class="textinput" oninput="resetPref(0)" type="text" autocomplete="off" placeholder="Type to search" list="dropdown_list">
-                <button id="pref0_x" onclick="removePref(0)" type="button">X</button>
-                <div id="pref0_tooltip" class="tooltip">Tooltip Placeholder</div>
+            <button id="pref0_button" class="pref-add-button" onclick="togglePref(0, 'none', 'flex'); togglePref(1, 'block', 'none');" type="button">Add Student</button>
+            <form id="pref0_form" class="pref-form" onsubmit="checkPref(0); return false;" onfocusout="checkPref(0)" style="display:none">
+                <div class="pref-input">
+                    <input id="pref0" class="textinput" oninput="resetPref(0)" type="text" autocomplete="off" placeholder="Type to search" list="dropdown_list">
+                    <div id="pref0_tooltip" class="tooltip hide">Tooltip Placeholder</div>
+                </div>
+                <button id="pref0_x" class="pref-remove-button" onclick="removePref(0)" type="button">X</button>
             </form>
 
             <!-- Pref1 -->
-            <button id="pref1_button" onclick="togglePref(1, 'none', 'block'); togglePref(2, 'block', 'none');" type="button">Add Student</button>
-            <form id="pref1_form" class="pref-input" onsubmit="checkPref(1); return false;" onfocusout="checkPref(1)" style="display:none">
-                <input id="pref1" class="textinput" oninput="resetPref(1)" type="text" autocomplete="off" placeholder="Type to search" list="dropdown_list">
-                <button id="pref1_x" onclick="removePref(1)" type="button">X</button>
-                <div id="pref1_tooltip" class="tooltip">Tooltip Placeholder</div>
+            <button id="pref1_button" class="pref-add-button" onclick="togglePref(1, 'none', 'flex'); togglePref(2, 'block', 'none');" type="button">Add Student</button>
+            <form id="pref1_form" class="pref-form" onsubmit="checkPref(1); return false;" onfocusout="checkPref(1)" style="display:none">
+                <div class="pref-input">
+                    <input id="pref1" class="textinput" oninput="resetPref(1)" type="text" autocomplete="off" placeholder="Type to search" list="dropdown_list">
+                    <div id="pref1_tooltip" class="tooltip hide">Tooltip Placeholder</div>
+                </div>
+                <button id="pref1_x" class="pref-remove-button" onclick="removePref(1)" type="button">X</button>
             </form>
 
             <!-- Pref2 -->
-            <button id="pref2_button" onclick="togglePref(2, 'none', 'block')" type="button">Add Student</button>
-            <form id="pref2_form" class="pref-input" onsubmit="checkPref(2); return false;" onfocusout="checkPref(2)" style="display:none">
-                <input id="pref2" class="textinput" oninput="resetPref(2)" type="text" autocomplete="off" placeholder="Type to search" list="dropdown_list">
-                <button id="pref2_x" onclick="removePref(2)" type="button">X</button>
-                <div id="pref2_tooltip" class="tooltip">Tooltip Placeholder</div>
+            <button id="pref2_button" class="pref-add-button" onclick="togglePref(2, 'none', 'flex')" type="button">Add Student</button>
+            <form id="pref2_form" class="pref-form" onsubmit="checkPref(2); return false;" onfocusout="checkPref(2)" style="display:none">
+                <div class="pref-input">
+                    <input id="pref2" class="textinput" oninput="resetPref(2)" type="text" autocomplete="off" placeholder="Type to search" list="dropdown_list">
+                    <div id="pref2_tooltip" class="tooltip hide">Tooltip Placeholder</div>
+                </div>
+                <button id="pref2_x" class="pref-remove-button" onclick="removePref(2)" type="button">X</button>
             </form>
 
             <h3>Should not sit next to</h3>
             <!-- Pref3 -->
-            <button id="pref3_button" onclick="togglePref(3, 'none', 'block')" type="button">Add Student</button>
-            <form id="pref3_form" class="pref-input" onsubmit="checkPref(3); return false;" onfocusout="checkPref(3)" style="display:none" >
-                <input id="pref3" class="textinput" oninput="resetPref(3)" type="text" autocomplete="off" placeholder="Type to search" list="dropdown_list">
-                <button id="pref3_x" onclick="removePref(3)" type="button">X</button>
-                <div id="pref3_tooltip" class="tooltip">Tooltip Placeholder</div>
+            <button id="pref3_button" class="pref-add-button" onclick="togglePref(3, 'none', 'flex')" type="button">Add Student</button>
+            <form id="pref3_form" class="pref-form" onsubmit="checkPref(3); return false;" onfocusout="checkPref(3)" style="display:none" >
+                <div class="pref-input">
+                    <input id="pref3" class="textinput" oninput="resetPref(3)" type="text" autocomplete="off" placeholder="Type to search" list="dropdown_list">
+                    <div id="pref3_tooltip" class="tooltip hide">Tooltip Placeholder</div>
+                </div>
+                <button id="pref3_x" class="pref-remove-button" onclick="removePref(3)" type="button">X</button>
             </form>
 
             <datalist id="dropdown_list"></datalist>
@@ -151,7 +158,7 @@
     <form class="create-form" onsubmit="createListElement('class_tooltip', 'class_create', 'class'); return false"> <!-- Create new Class -->
         <label for="class_create">Create New Class:</label>
         <div class="tooltipcontainer">
-            <div class="tooltip" id="class_tooltip">Tooltip Text </div>
+            <div class="tooltip hide" id="class_tooltip">Tooltip Text </div>
             <input type="text" autocomplete="off" id="class_create" name="filename" placeholder="Class Name" class="textinput">
         </div>
         <input type="submit" value="Create">

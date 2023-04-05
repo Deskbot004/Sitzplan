@@ -9,6 +9,7 @@
     --sidebar-width: max(150px, min(200px, 20vw)); /*min: 100px, max: 200px, default: 10vw*/
 
     --border-width: 1px;
+    --textbox-border-width: 2px;
     --textbox-placeholder-opacity: 0.7;
 
 
@@ -57,8 +58,11 @@
 
     --col-textbox-background-focus: white;
     --col-textbox-text-focus: black;
-    --col-textbox-border-focus: var(--col-accent3);
+    --col-textbox-border-focus: var(--col-accent);
     --col-textbox-placeholder-focus: black; /*Text inside textbox, while it's empty*/
+
+    /*Tooltips*/
+    --col-tooltip-text: red;
 
     /*Three Dots Menu*/
     --col-dots-button: white;

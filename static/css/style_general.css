@@ -164,7 +164,7 @@ ul { /*List container*/
 
     background: var(--col-textbox-background); /*Boxfarbe*/
     color: var(--col-textbox-text);
-    border: var(--border-width) solid var(--col-textbox-border);
+    border: var(--textbox-border-width) solid var(--col-textbox-border);
 }
 
 /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -176,7 +176,7 @@ ul { /*List container*/
 .textinput:focus { /*Textinput when clicked*/
     background: var(--col-textbox-background-focus); /*Boxfarbe*/
     color: var(--col-textbox-text-focus);
-    border: var(--border-width) solid var(--col-textbox-border-focus);
+    border: var(--textbox-border-width) solid var(--col-textbox-border-focus);
 }
 
 .textinput:focus::placeholder { /*Text inside, when empty and focused*/
@@ -189,6 +189,23 @@ ul { /*List container*/
     margin: auto;
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+
+/*-------------------------Tooltips-------------------------*/
+.tooltip {
+    width: calc(100% + 8px);
+    text-align: right;
+    white-space: nowrap;
+    color: red;
+}
+
+.tooltip-error { /*Is added to input textbox, when tooltip is shown*/
+    border-color: var(--col-tooltip-text);
+}
+
+.tooltip-error:focus { /*Is added to input textbox, when tooltip is shown*/
+    border-color: var(--col-tooltip-text);
 }
 
 /*-------------------------Three Dots Menu-------------------------*/

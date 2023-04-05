@@ -203,30 +203,33 @@ function selectElement(event_target, element_type) {
 */
 function checkInput(createInput, tooltip_id, list_id, ignore="n/a", checkEmpty=0) {
     var text = createInput.target.value;
+    var textbox_id = createInput.target.id;
 
     if (!checkForIllegalCharacters(text)) {
-        err_text = "The name should only contain letters and numbers!";
-        showTooltip(tooltip_id, err_text);
+        err_text = "Can only contain letters and numbers!";
+        showTooltip(tooltip_id, err_text, textbox_id);
     } else if (existsElement(text, list_id) && text != ignore) {
         err_text = "The entry \"" + text + "\" already exists!";
-        showTooltip(tooltip_id, err_text);
+        showTooltip(tooltip_id, err_text, textbox_id);
     } else if (checkEmpty && text.trim() == "") {
         err_text = "Can't be empty!";
-        showTooltip(tooltip_id, err_text);
+        showTooltip(tooltip_id, err_text, textbox_id);
     } else {
-        hideTooltip(tooltip_id);
+        hideTooltip(tooltip_id, textbox_id);
     }
 }
 
-function showTooltip(tooltip_id, text){
+function showTooltip(tooltip_id, text, textbox_id="n/a"){
     var tooltip = document.getElementById(tooltip_id);
     tooltip.innerHTML = text;
     tooltip.style.visibility = "visible";
+    document.getElementById(textbox_id).classList.add("tooltip-error");
 }
-//TODO: hide tooltip, when clicking outside if input
-function hideTooltip(tooltip_id){
+
+function hideTooltip(tooltip_id, textbox_id="n/a"){
     var tooltip = document.getElementById(tooltip_id);
     tooltip.style.visibility = "hidden";
+    document.getElementById(textbox_id).classList.remove("tooltip-error");
 }
 
 
