@@ -248,8 +248,10 @@ def create_backup():
         back_up_dict = data_dict
     except Exception as err:
         if err == "classroom failed":
-            return # TODO get old rooms from backup and count failures
+            data_dict["classrooms"] = back_up_dict["classrooms"]
+            # TODO get old rooms from backup and count failures
         elif err == " student failed":
+            data_dict["studentlists"] = back_up_dict["studentlists"]
             return # TODO get old rooms from backup and count failures
         elif err == "unknown filetype":
             return # TODO idk rn lol
