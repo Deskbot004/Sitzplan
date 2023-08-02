@@ -67,7 +67,10 @@
             </div>
 
             <!-- Search bar -->
-            <input id="student_search" class="textinput searchbar" type="text" autocomplete="off" placeholder="Search...">
+            <div class="search_new">
+                <input id="student_search" class="textinput searchbar" type="text" autocomplete="off" placeholder="Search...">
+                <button class="new_button">+</button>
+            </div>
             <!-- Students List -->
             <ul id="student_list"></ul>
 
@@ -151,7 +154,10 @@
 <!------- SIDE BODY ------->
 <div class="side">
     <h2>List of all Classes</h2>
-    <input type="text" autocomplete="off" placeholder="Search..." class="textinput searchbar" id="class_search"> <!-- Search bar -->
+    <div class="search_new">
+        <input type="text" autocomplete="off" placeholder="Search..." class="textinput searchbar" id="class_search"> <!-- Search bar -->
+        <button class="new_button">+</button>
+    </div>
 
     <ul id="class_list"></ul> <!-- The List itself -->
     <span id="class_list_empty">No classes found</span>
