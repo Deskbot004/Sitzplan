@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from logic import generator, data_manager
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='static', static_folder='static') #template_folder='static'
 data_dict = {}
 back_up_dict = {}
 failures = 0
