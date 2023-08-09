@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Markup
 from logic import generator, data_manager
+import http
 
 app = Flask(__name__, template_folder='static', static_folder='static') #template_folder='static'
 data_dict = {}
@@ -53,7 +54,6 @@ def from_students():
 @app.route('/from_seating')
 def from_seating():
     return render_template("seating_editor.html", user_image="static/images/working.png")
-
 
 # ________________________________________________________________________________________________________
 # Functions students
@@ -148,8 +148,8 @@ def get_classroom_lists():
             call = data_manager.get_file_data(data_dict, "classrooms", request.form["result"])
         elif request.method == "GET":
             call = [data_manager.list_filetype(data_dict, "classrooms"), "SUCCESS"]
-        if call[1] == "SUCCESS":
-            return call[0], 200
+        if call[1] == "SUCCESS": 
+            return call[0], http.HTTPStatus.OK # TODO: Do this everywhere else
         else:
             return "", 404
     except Exception as err:
@@ -255,6 +255,18 @@ def create_backup():
             return # TODO get old rooms from backup and count failures
         elif err == "unknown filetype":
             return # TODO idk rn lol
+
+# ________________________________________________________________________________________________________
+# Reusable components
+# TODO devalidate with unknown credentials
+
+@app.route('/sidebar')
+def sidebar():
+    return render_template("comp/sidebar.html")
+
+@app.route('/header')
+def header():
+    return render_template("comp/header.html")
 
 
 """
