@@ -241,7 +241,7 @@ function hideTooltip(tooltip_id, textbox_id="n/a"){
 */
 function createListElement(tooltip_id, input_id, list_type) {
     var tooltip = document.getElementById(tooltip_id);
-    if (checkTooltip(tooltip_id)){
+    if (tooltip_id == "0" || checkTooltip(tooltip_id)) {
         var name = document.getElementById(input_id).value;
         if (!createElement(list_type, name)) return;
         var node = addElement(name, 0, list_type); //Add the new item to list

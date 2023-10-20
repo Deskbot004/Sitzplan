@@ -334,5 +334,5 @@ async function renameClass() {
 
 function add_Student_new() {
     console.log("Test")
-    createElement("student", "new Student");
+    createListElement("0", "student_search", "student")
 }
