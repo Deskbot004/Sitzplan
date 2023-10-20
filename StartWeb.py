@@ -258,7 +258,7 @@ def create_backup():
 
 # ________________________________________________________________________________________________________
 # Reusable components
-# TODO devalidate with unknown credentials
+# TODO devalidate with unknown credentials <- skip
 
 @app.route('/sidebar')
 def sidebar():

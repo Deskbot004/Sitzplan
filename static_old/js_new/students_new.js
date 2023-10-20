@@ -121,7 +121,8 @@ function saveLocalStorage() {
 
 /* Creates and saves a new element */
 function createElement(element_type, name) {
-	try {
+	console.log(element_type)
+    try {
 	    if (name.trim() == "") throw "empty_name"; //Check whether name empty
         switch(element_type) {
             case "class":
@@ -327,4 +328,11 @@ async function renameClass() {
 
     //Change name in class list
     loadInformation("class", "class_list");
+}
+
+// functions that are needed for the base functionality and needed to be rewritten on the new UI
+
+function add_Student_new() {
+    console.log("Test")
+    createElement("student", "new Student");
 }

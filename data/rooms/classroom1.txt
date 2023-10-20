@@ -1,0 +1,1 @@
+13;6,13;7,teacher-12;2,12;3,student-10;2,10;3,student-8;2,8;3,student-6;2,6;3,student-12;6,12;7,student-12;8,12;9,student-10;8,10;9,student-10;6,10;7,student-8;6,8;7,student-8;8,8;9,student-6;6,6;7,student-6;8,6;9,student-13;10,12;10,unusable-11;10,10;10,student-9;10,8;10,student-7;10,6;10,student
