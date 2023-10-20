@@ -138,6 +138,6 @@ async function start() {
 	var filepath = await requestInformation(data);
 
 	var image = document.getElementById("seating_image");
-	image.src = "/static/seatings/" + filepath;
+	image.src = "/static_old/seatings/" + filepath;
 
 };
