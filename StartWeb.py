@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, Markup
 from logic import generator, data_manager
 import http
 
-app = Flask(__name__, template_folder='static', static_folder='static') #template_folder='static'
+app = Flask(__name__, template_folder='static_old/templates', static_folder='static_old') #template_folder='static'
 data_dict = {}
 back_up_dict = {}
 failures = 0
